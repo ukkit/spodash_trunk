@@ -158,6 +158,9 @@ a.navbar-brand,
     color: red;
 }
 
+.paisf_build_display {
+    margin-top: 2px;
+}
 
 .navbar-brand>.role {
     color: #faebb8;
@@ -250,6 +253,39 @@ a.navbar-brand,
     padding: 1px 3px;
     border: 1px solid #666363;
     border-radius: 3px;
+}
+
+.foundation {
+    /* display: block; */
+    color: #790c0c !important;
+    background-color: #76eec6;
+    text-transform: lowercase;
+    padding: 1px 3px;
+    border: 1px solid #666363;
+    border-radius: 3px;
+}
+
+.machine_learning {
+    /* display: block; */
+    color: #790c0c !important;
+    background-color: #2BECAC;
+    text-transform: lowercase;
+    padding: 1px 3px;
+    border: 1px solid #666363;
+    border-radius: 3px;
+}
+
+.for-demo {
+    display: block;
+    font-size: 1.5em;
+    color: #250D65 !important;
+    /* background-color: #C4EF5E; */
+    text-transform: uppercase;
+    padding: 1px 3px;
+    /* border: 1px solid #250D65; */
+    border-radius: 3px;
+    font-weight: bolder;
+    margin-top: 2px;
 }
 
 .grey_color {

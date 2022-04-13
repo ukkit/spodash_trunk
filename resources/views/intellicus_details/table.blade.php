@@ -22,9 +22,12 @@
                 <th>Intellicus Install Path</th>
                 <th class="hidden">Hidden Figures</th>
                 <th class="text-center id_column">CFT</th>
-                @canany('edit_databaseDetails','delete_databaseDetails')
-                    <th class="text-center action_column"><i class="fas fa-tools" title="Actions"></i></th>
-                @endcanany
+                @can('edit_databaseDetails')
+                    <th class="text-center icon_column"><i class="fas fa-pencil-alt" title="Actions"></i></th>
+                @endcan
+                @can('delete_databaseDetails')
+                    <th class="text-center icon_column"><i class="fas fa-trash" title="Actions"></i></th>
+                @endcan
             </tr>
         </thead>
         <tbody>
@@ -70,18 +73,25 @@
             $int_ver_return = $intellicusDetail->getIntellicusVersionbyID($intellicusDetail->intellicus_versions_id);
             if(count($int_ver_return)) {
                 $int_version = $int_ver_return[0]->intellicus_version;
-                $int_version .=  " ".$int_ver_return[0]->intellicus_patch;
+
+                $intell_patch = $int_ver_return[0]->intellicus_patch;
+                if (! empty($intell_patch)){
+                    $X1 = explode('Patch', $intell_patch);
+                    $int_version .= "p".trim($X1[1]);
+                }
+                // if (($int_ver_return[0]->intellicus_patch) != null) {
+                //     $patch_exp = explode("Patch", $int_ver_return[0]->intellicus_patch);
+                //     $int_version .= " P".$patch_exp[0];
+                // }
+                // $int_version .=  " ".$int_ver_return[0]->intellicus_patch;
             }
 
             if($intellicusDetail->is_https == "Y") {
                 $http_tag = "https";
                 $link_icon = "<i class=\"fas fa-lock fs-sm\" ></i> ".$int_version;
-                // $link_icon = "<button type=\"button\" class=\"btn $app_btn_type btn-xs xsmall\" title=\"$intellicusDetail->intellicus_name\"><i class=\"fas fa-lock fs-sm\" ></i> ".$int_version."</button>";
             } else {
                 $http_tag = "http";
                 $link_icon = "<i class=\"fas fa-lock-open fs-sm\" ></i> ".$int_version;
-
-                // $link_icon = "<button type=\"button\" class=\"btn $app_btn_type btn-xs xsmall\" title=\"$intellicusDetail->intellicus_name\"><i class=\"fas fa-lock-open fa-sm\" ></i> ".$int_version   ."</button>";
             }
             $inturl = $http_tag."://" .$server_ip.":".$intellicusDetail->intellicus_port."/Intellicus";
             $intellicus = "<a href=\"".$inturl."\" target=\"_blank\"> $link_icon </a>";
@@ -122,22 +132,24 @@
                 <td class="hidden">{{ $hidden_figures }}</td>
                 <td class="text-center">{{ $intellicusDetail->check_fail_count }}</td>
 
-                @canany('edit_databaseDetails','delete_databaseDetails')
-                    <td class="text-center">
-                        <div class="btn-group" role="group" aria-label="...">
-                            @can('edit_databaseDetails')
-                                {!! Form::open(['class'=>'inline','route' => ['intellicusDetails.edit', $intellicusDetail->id], 'method' => 'get']) !!}
-                                {!! Form::button('<i class="fas fa-pencil-alt" title="Edit"></i>', ['type' => 'submit', 'class' => 'btn btn-info btn-xs']) !!}
-                                {!! Form::close() !!}
-                            @endcan
-                            @can('delete_databaseDetails')
-                                {!! Form::open(['class'=>'inline','route' => ['intellicusDetails.destroy', $intellicusDetail->id], 'method' => 'delete']) !!}
-                                {!! Form::button('<i class="fas fa-trash" title="Delete"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure you want to DELETE this Intellicus details?')"]) !!}
-                                {!! Form::close() !!}
-                            @endcan
-                        </div>
-                    </td>
-                @endcanany
+                <td class="text-center">
+                    <div class="btn-group" role="group" aria-label="...">
+                        @can('edit_databaseDetails')
+                            {!! Form::open(['class'=>'inline','route' => ['intellicusDetails.edit', $intellicusDetail->id], 'method' => 'get']) !!}
+                            {!! Form::button('<i class="fas fa-pencil-alt" title="Edit"></i>', ['type' => 'submit', 'class' => 'btn btn-edit btn-xs']) !!}
+                            {!! Form::close() !!}
+                        @endcan
+                    </div>
+                </td>
+                <td class="text-center">
+                    <div class="btn-group" role="group" aria-label="...">
+                        @can('delete_databaseDetails')
+                            {!! Form::open(['class'=>'inline','route' => ['intellicusDetails.destroy', $intellicusDetail->id], 'method' => 'delete']) !!}
+                            {!! Form::button('<i class="fas fa-trash" title="Delete"></i>', ['type' => 'submit', 'class' => 'btn btn-delete btn-xs', 'onclick' => "return confirm('Are you sure you want to DELETE this Intellicus details?')"]) !!}
+                            {!! Form::close() !!}
+                        @endcan
+                    </div>
+                </td>
             </tr>
         @endforeach
         </tbody>

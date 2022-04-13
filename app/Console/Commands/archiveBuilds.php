@@ -70,9 +70,9 @@ class archiveBuilds extends Command
         DB::statement($archiveTable2);
         DB::statement($archiveTable3);
 
-        $oldSPMData = DB::table($existingSPMTable)->where('is_release_build', 'N')->whereRaw('created_at < now() - interval 60 DAY')->get();
-        $oldPAIData = DB::table($existingPAITable)->where('is_release_build', 'N')->whereRaw('created_at < now() - interval 60 DAY')->get();
-        $oldSFData = DB::table($existingSFTable)->where('is_release_build', 'N')->whereRaw('created_at < now() - interval 60 DAY')->get();
+        $oldSPMData = DB::table($existingSPMTable)->where('is_release_build', 'N')->whereRaw('created_at < now() - interval 15 DAY')->get();
+        $oldPAIData = DB::table($existingPAITable)->where('is_release_build', 'N')->whereRaw('created_at < now() - interval 15 DAY')->get();
+        $oldSFData = DB::table($existingSFTable)->where('is_release_build', 'N')->whereRaw('created_at < now() - interval 15 DAY')->get();
 
         // echo count($oldData);
 

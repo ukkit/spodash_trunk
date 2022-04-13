@@ -54,12 +54,16 @@
 
 
     {{-- Google Fonts --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Oswald|Cuprum|Source+Sans+Pro&display|Roboto|Noto+Sans+JP&display=swap" rel="stylesheet">
 
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@500&display=swap" rel="stylesheet">
+
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ URL::asset('css/copper.css?version=7') }}">
-    <link rel="stylesheet" href="{{ URL::asset('css/tables.css?version=7') }}">
-    <link rel="stylesheet" href="{{ URL::asset('css/buttons.css?version=7') }}">
+    <link rel="stylesheet" href="{{ URL::asset('css/copper.css?version=15') }}">
+    <link rel="stylesheet" href="{{ URL::asset('css/tables.css?version=15') }}">
+    <link rel="stylesheet" href="{{ URL::asset('css/buttons.css?version=15') }}">
     <link rel="icon" href="{{ URL::asset('img/favicon.png') }}" type="image/x-icon">
 
     @yield('css')

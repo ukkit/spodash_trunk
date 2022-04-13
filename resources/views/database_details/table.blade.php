@@ -24,10 +24,12 @@
             <th class="text-center"><i class="fas fa-calendar-check" title="Last Access"></i></th> {{-- 13. Last Access --}}
             <th class="text-center"><i class="fas fa-clipboard" title="Notes"></i></th> {{-- 14. Notes --}}
             <th>Data Updated</th> {{-- 15. Data Updated --}}
-            @canany('edit_databaseDetails','delete_databaseDetails')
-                <th class="text-center"><i class="fas fa-tools" title="Actions"></i></th> {{-- 16. Actions --}}
-            @endcanany
-
+            @can('edit_databaseDetails','delete_databaseDetails')
+                <th class="text-center icon_column"><i class="fas fa-pencil-alt" title="Actions"></i></th> {{-- 16. Actions --}}
+            @endcan
+            @can('edit_databaseDetails','delete_databaseDetails')
+                <th class="text-center icon_column"><i class="fas as fa-trash" title="Actions"></i></th> {{-- 16. Actions --}}
+            @endcan
         </tr>
     </thead>
     <tbody>
@@ -163,18 +165,18 @@
                 @endif
 
                 <td class="text-center">{{-- 16. Actions --}}
-                    <div class="btn-group" role="group" aria-label="...">
-                        @can('edit_databaseDetails')
-                            {!! Form::open(['class'=>'inline','route' => ['databaseDetails.edit', $databaseDetail->id], 'method' => 'get']) !!}
-                            {!! Form::button('<i class="fas fa-pencil-alt" title="Edit"></i>', ['type' => 'submit', 'class' => 'btn btn-info btn-xs']) !!}
-                            {!! Form::close() !!}
-                        @endcan
+                    @can('edit_databaseDetails')
+                        {!! Form::open(['class'=>'inline','route' => ['databaseDetails.edit', $databaseDetail->id], 'method' => 'get']) !!}
+                        {!! Form::button('<i class="fas fa-pencil-alt" title="Edit"></i>', ['type' => 'submit', 'class' => 'btn btn-edit btn-xs']) !!}
+                        {!! Form::close() !!}
+                    @endcan
+                </td>
+                <td class="text-center">{{-- 16. Actions --}}
                         @can('delete_databaseDetails')
-                            {!! Form::open(['class'=>'inline','route' => ['databaseDetails.destroy', $databaseDetail->id], 'method' => 'delete']) !!}
-                            {!! Form::button('<i class="fas fa-trash" title="Delete"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure you want to DELETE this database details?')"]) !!}
-                            {!! Form::close() !!}
-                        @endcan
-                    </div>
+                        {!! Form::open(['class'=>'inline','route' => ['databaseDetails.destroy', $databaseDetail->id], 'method' => 'delete']) !!}
+                        {!! Form::button('<i class="fas fa-trash" title="Delete"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure you want to DELETE this database details?')"]) !!}
+                        {!! Form::close() !!}
+                    @endcan
                 </td>
             </tr>
             <?php $CX++; ?>

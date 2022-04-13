@@ -29,12 +29,15 @@ class Kernel extends ConsoleKernel
         //$schedule->command('backup:clean')->daily()->at('01:00');
         $schedule->command('backup:run')->daily()->at('05:00');
         $schedule->command('command:archiveBuild')->daily()->at('04:00');
-        $schedule->command('command:actionhistories')->twiceDaily(1, 13);
+        $schedule->command('command:actionhistories')->hourly();
         $schedule->command('command:populateRN')->twiceDaily(1, 13);
         // $schedule->command('command:generateSystemStats')->weekdays()->twiceDaily(1, 13);
         $schedule->command('command:getDBSize')->twiceDaily(2, 14);
+        $schedule->command('command:command:archiveDBSizes')->twiceDaily(3, 15);
         $schedule->command('command:urlCheck')->weekdays()->everyFifteenMinutes();
         $schedule->command('command:stats1')->daily()->at('02:00');
+        $schedule->command('command:command:archiveFI')->daily()->at('02:30');
+
     }
 
     /**

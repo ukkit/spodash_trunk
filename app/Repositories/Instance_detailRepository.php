@@ -70,6 +70,7 @@ class Instance_detailRepository extends BaseRepository
         'is_insight_enabled',
         'is_contrast_configured',
         'snowflake_configured',
+        'pai_foundation',
         'check_fail_count'
     ];
 
