@@ -70,21 +70,80 @@ class archiveBuilds extends Command
         DB::statement($archiveTable2);
         DB::statement($archiveTable3);
 
-        $oldSPMData = DB::table($existingSPMTable)->where('is_release_build', 'N')->whereRaw('created_at < now() - interval 15 DAY')->get();
-        $oldPAIData = DB::table($existingPAITable)->where('is_release_build', 'N')->whereRaw('created_at < now() - interval 15 DAY')->get();
-        $oldSFData = DB::table($existingSFTable)->where('is_release_build', 'N')->whereRaw('created_at < now() - interval 15 DAY')->get();
+        $spm_moved = 0;
+        $pai_moved = 0;
+        $sf_moved = 0;
 
-        // echo count($oldData);
+        $oldSPMData = DB::table($existingSPMTable)->where('is_release_build', 'N')->whereRaw('created_at < now() - interval 15 DAY')->get();
+        $spm_rec_count = count($oldSPMData);
+        $oldPAIData = DB::table($existingPAITable)->where('is_release_build', 'N')->whereRaw('created_at < now() - interval 15 DAY')->get();
+        $pai_rec_count = count($oldPAIData);
+        $oldSFData = DB::table($existingSFTable)->where('is_release_build', 'N')->whereRaw('created_at < now() - interval 15 DAY')->get();
+        $sf_rec_count = count($oldSFData);
+
+        // CHECKING IF RECORD IS NOT USED IN INSTANCE_DETAILS OR ACTIONS_HISTORIES TABLE
+        $pvid_array = array();
+        $sf_pvid_array = array();
+        $pai_pvid_array = array();
+
+        $instD_pv_id = DB::table('instance_details')->select('pv_id')->whereNotNull('pv_id')->get();
+        $instD_pai_pv_id = DB::table('instance_details')->select('pai_pv_id')->whereNotNull('pai_pv_id')->get();
+        $instD_sf_pv_id = DB::table('instance_details')->select('sf_pv_id')->whereNotNull('sf_pv_id')->get();
+        $ahsql = DB::table('action_histories')->get();
+
+        foreach ($instD_pv_id as $key => $value) {
+            array_push($pvid_array, trim($value->pv_id));
+        }
+        foreach ($instD_pai_pv_id as $key => $value) {
+            array_push($pai_pvid_array, trim($value->pai_pv_id));
+        }
+        foreach ($instD_sf_pv_id as $key => $value) {
+            array_push($sf_pvid_array, trim($value->sf_pv_id));
+        }
+        foreach ($ahsql as $key => $value) {
+            // array_push($ah_pv_id_array, trim($value->pv_id));
+            if ($value->old_build_id) {
+                array_push($pvid_array, trim($value->old_build_id));
+            }
+            if ($value->new_build_id) {
+                array_push($pvid_array, trim($value->new_build_id));
+            }
+
+            if ($value->old_pai_build_id) {
+                array_push($pai_pvid_array, trim($value->old_pai_build_id));
+            }
+            if ($value->new_pai_build_id) {
+                array_push($pai_pvid_array, trim($value->new_pai_build_id));
+            }
+
+            if ($value->old_sf_build_id) {
+                array_push($sf_pvid_array, trim($value->old_sf_build_id));
+            }
+            if ($value->new_sf_build_id) {
+                array_push($sf_pvid_array, trim($value->new_sf_build_id));
+            }
+        }
+        $pvid_array = array_unique($pvid_array);
+        $pai_pvid_array = array_unique($pai_pvid_array);
+        $sf_pvid_array = array_unique($sf_pvid_array);
+
+        // dd(count($pvid_array), count($pai_pvid_array), count($sf_pvid_array));
 
         // CODE FOR SPM PRODUCT VERSION TABLE
         foreach ($oldSPMData as $old) {
-            $delete_record = True;
-            $todayz = Carbon::now();
+            $delete_record = False;
             try {
-                DB::table($archiveSPMTable)->insert(['id' => Null,'product_versions_id' => $old->id, 'product_ver_number' => $old->product_ver_number, 'product_build_numer' => $old->product_build_numer, 'pv_id' => $old->pv_id, 'is_release_build' => $old->is_release_build, 'created_at' => $old->created_at, 'updated_at' => $old->updated_at, 'deleted_at' => $old->deleted_at, 'record_moved_to_archive_at' => $todayz]);
+                if (in_array($old->pv_id, $pvid_array)) {
+                    $delete_record = False;
+                    // As the pv_id is present in instance_details or action_histories table, so we will not move the record from product_versions table
+                } else {
+                    $todayz = Carbon::now();
+                    DB::table($archiveSPMTable)->insert(['id' => Null,'product_versions_id' => $old->id, 'product_ver_number' => $old->product_ver_number, 'product_build_numer' => $old->product_build_numer, 'pv_id' => $old->pv_id, 'is_release_build' => $old->is_release_build, 'created_at' => $old->created_at, 'updated_at' => $old->updated_at, 'deleted_at' => $old->deleted_at, 'record_moved_to_archive_at' => $todayz]);
+                    $delete_record = True;
+                    $spm_moved++;
+                }
             } catch (\Exception $e) {
                 echo $e->getMessage();
-                $delete_record = False;
             }
 
             if($delete_record) {
@@ -98,12 +157,21 @@ class archiveBuilds extends Command
             }
         }
 
+        echo "SPM - Total: ".$spm_rec_count." | Moved: ".$spm_moved."\n";
+
         // CODE FOR PAI VERSION TABLE
         foreach ($oldPAIData as $old2) {
-            $delete_record = True;
-            $todayz = Carbon::now();
+            $delete_record = False;
             try {
-                DB::table($archivePAITable)->insert(['id' => Null,'pai_builds_id' => $old2->id, 'pai_version' => $old2->pai_version, 'pai_build' => $old2->pai_build, 'pv_id' => $old2->pv_id, 'is_release_build' => $old2->is_release_build, 'created_at' => $old2->created_at, 'updated_at' => $old2->updated_at, 'deleted_at' => $old2->deleted_at, 'record_moved_to_archive_at' => $todayz]);
+                if (in_array($old2->pv_id, $pai_pvid_array)) {
+                    $delete_record = False;
+                    // As the pai_pv_id is present in instance_details or action_histories table, so we will not move the record from product_versions table
+                } else {
+                    $todayz = Carbon::now();
+                    DB::table($archivePAITable)->insert(['id' => Null,'pai_builds_id' => $old2->id, 'pai_version' => $old2->pai_version, 'pai_build' => $old2->pai_build, 'pv_id' => $old2->pv_id, 'is_release_build' => $old2->is_release_build, 'created_at' => $old2->created_at, 'updated_at' => $old2->updated_at, 'deleted_at' => $old2->deleted_at, 'record_moved_to_archive_at' => $todayz]);
+                    $delete_record = True;
+                    $pai_moved++;
+                }
             } catch (\Exception $e) {
                 echo $e->getMessage();
                 $delete_record = False;
@@ -120,12 +188,21 @@ class archiveBuilds extends Command
             }
         }
 
+        echo "PAI - Total: ".$pai_rec_count." | Moved: ".$pai_moved."\n";
         // CODE FOR SF VERSION TABLE
         foreach ($oldSFData as $old3) {
             $delete_record = True;
-            $todayz = Carbon::now();
+
             try {
-                DB::table($archiveSFTable)->insert(['id' => Null,'sf_builds_id' => $old3->id, 'sf_pai_version' => $old3->sf_pai_version, 'sf_pai_build' => $old3->sf_pai_build, 'pv_id' => $old3->pv_id, 'is_release_build' => $old3->is_release_build, 'created_at' => $old3->created_at, 'updated_at' => $old3->updated_at, 'deleted_at' => $old3->deleted_at, 'record_moved_to_archive_at' => $todayz]);
+                if (in_array($old3->pv_id, $sf_pvid_array)) {
+                    $delete_record = False;
+                    // As the sf_pv_id is present in instance_details or action_histories table, so we will not move the record from product_versions table
+                } else {
+                    $todayz = Carbon::now();
+                    DB::table($archiveSFTable)->insert(['id' => Null,'sf_builds_id' => $old3->id, 'sf_pai_version' => $old3->sf_pai_version, 'sf_pai_build' => $old3->sf_pai_build, 'pv_id' => $old3->pv_id, 'is_release_build' => $old3->is_release_build, 'created_at' => $old3->created_at, 'updated_at' => $old3->updated_at, 'deleted_at' => $old3->deleted_at, 'record_moved_to_archive_at' => $todayz]);
+                    $delete_record = True;
+                    $sf_moved++;
+                }
             } catch (\Exception $e) {
                 echo $e->getMessage();
                 $delete_record = False;
@@ -141,5 +218,6 @@ class archiveBuilds extends Command
                 }
             }
         }
+        echo "SF - Total: ".$pai_rec_count." | Moved: ".$pai_moved."\n";
     }
 }
