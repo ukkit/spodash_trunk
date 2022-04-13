@@ -1,0 +1,84 @@
+.btn-flat {
+    font-family: 'Roboto', sans-serif;
+    /* font-size: small; */
+}
+
+.btn-disabled {
+    background-color: #eeeeee;
+    opacity: 1;
+}
+
+.btn100px {
+    width: 100px;
+    margin-right: 20px;
+}
+
+.xsmall {
+    font-size: x-small;
+}
+
+.btn-upgrade-top {
+    /* display: block; */
+    width: 50px !important;
+    margin-top: 2px;
+    padding: 1px 3px;
+    font-size: x-small;
+}
+
+.btn-upgrade-other {
+    /* display: block; */
+    width: 50px !important;
+    margin-top: 1px;
+    font-size: x-small;
+}
+
+.btn-apricot {
+    background-color: #ffc107;
+    color: #fff;
+    border-color: #ffc107;
+}
+
+/* Blue colro scheme for Instance button */
+.btn-instance {
+    background-color: #2E76CF !important;
+    color: #ffffff;
+    border-color: #173b67;
+}
+
+.btn-instance:hover {
+    background-color: #173b67 !important;
+    color: #ffffff;
+    border-color: #173b67;
+}
+
+/* Turquoise Color Scheme for ML buttons */
+.btn-ml {
+    background-color: #5585b5 !important;
+    color: #000;
+    border-color: #79c2d0;
+}
+
+.btn-ml:hover {
+    background-color: #79c2d0 !important;
+    color: #000;
+    border-color: #79c2d0;
+}
+
+/* Yellowish color scheme for ML buttons */
+.btn-intellicus {
+    background-color: #97cba9 !important;
+    color: #000;
+    border-color: #668ba4;
+}
+
+.btn-intellicus:hover {
+    background-color: #668ba4 !important;
+    color: #000;
+    border-color: #668ba4;
+}
+/* .btn {
+    /* padding: 2px;
+    font-size: x-small;
+    padding: 1px 3px;
+    line-height: 1.3;
+} */
