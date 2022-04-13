@@ -55,6 +55,7 @@
                     $hidden_figures = "";
                     $current_pai = null;
                     $has_snowflake = False;
+                    $has_pai = False;
                     $spm_build_display = "";
                     $paisf_build_display = "<div class=\"paisf_build_display\">";
                     $user = Auth::user();
@@ -362,6 +363,7 @@
                             $pai_update_text = "<i class=\"fas fa-level-up-alt\" title=\"Upgrade to PAI ". $current_pai_release ." Build ". $newest_pai_build ."\"></i> ".$newest_pai_build;
                             $pai_title_text = "Upgrade PAI to ".$current_pai_release . " Build ".$newest_pai_build;
                             $has_snowflake = False;
+                            $has_pai = True;
                         } catch (\Throwable $th) {
                             Log::error("[$instanceDetail->id] Error getting data for  PAI_PV_ID " . $pai_pv_id, [$th]);
                             $current_pai_release = null;
@@ -403,7 +405,7 @@
                                 $show_both_upgrade_btn = False;
                             }
                         }
-                    } else { // SHOW PAI DETAILS
+                    } elseif ($has_pai) { // SHOW PAI DETAILS
                         if (empty($current_pai_release)) {
                             $do_continue = False;
                             $show_both_upgrade_btn = False;
@@ -434,6 +436,10 @@
                                 }
                             }
                         }
+                    } else {
+                        $show_paisf_upgrade_btn = False;
+                        $show_both_upgrade_btn = False;
+                        $do_continue = False;
                     }
 
                     // dd($paisf_build_display);
