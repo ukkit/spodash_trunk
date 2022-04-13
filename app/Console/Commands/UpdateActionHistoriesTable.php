@@ -1,4 +1,4 @@
-<?php
+git<?php
 
 namespace App\Console\Commands;
 

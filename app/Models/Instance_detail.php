@@ -76,6 +76,7 @@ class Instance_detail extends Model
         'is_insight_enabled',
         'is_contrast_configured',
         'snowflake_configured',
+        'pai_foundation',
         'check_fail_count'
     ];
 
@@ -138,6 +139,7 @@ class Instance_detail extends Model
         'is_insight_enabled' => 'string',
         'is_contrast_configured' => 'string',
         'snowflake_configured' => 'string',
+        'pai_foundation' => 'string',
         'check_fail_count' => 'integer'
     ];
 
