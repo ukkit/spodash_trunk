@@ -619,7 +619,7 @@
                         if (($status == "In Progress") && ($instanceDetail->running_jenkins_job == "Y" )) {
                             // if status is in progress and running_jenkins_job is y then it's shown as in progress
                             $action_histories .= "<i class=\"fas fa-sync fa-spin fa-sm\" title=\"Job in Progress\"></i><br>";
-                            $action_histories .= "<i class=\"fas fa-clock fa-sm\" title=\"Start Time\"></i> ".trim($action_hist_record->start_time,'[]"')." IST<br>";
+                            $action_histories .= "<i class=\"fas fa-clock fa-sm\" title=\"Start Time\"></i> ".trim($action_hist_record->start_time,'[]"')."<br>";
                         } elseif (($status == "In Progress") && ($instanceDetail->running_jenkins_job == "N" )) {
                             // if status is in progress and running_jenkins_job is n then it's shown as in progress but an exclamation mark is also shown as it means there is some problem
                             $action_histories .= "<br><i class=\"fas fa-exclamation-triangle fa-sm\" title=\"Status Mismatch\"></i> ";
@@ -639,19 +639,24 @@
                             $status_td = "<td class=\"status_warning\">";
                         } elseif (($status == "Successful") && ($instanceDetail->running_jenkins_job == "N" )) {
                             $action_histories .= " <i class=\"far fa-check-circle fa-sm\" title=\"Successfull\"></i><br>";
-                            $action_histories .= "<i class=\"fas fa-clock fa-sm\" title=\"Time\"></i> ".trim($action_hist_record->end_time,'[]"')." IST<br>";
+                            $action_histories .= "<i class=\"fas fa-clock fa-sm\" title=\"Time\"></i> ".trim($action_hist_record->end_time,'[]"')."<br>";
                         } elseif ($status == "Failed") {
                             $action_histories .= "<i class=\"far fa-times-circle fa-sm\" title=\"Failed\"></i><br>";
-                            $action_histories .= "<i class=\"fas fa-clock fa-sm\" title=\"Time\"></i> ".trim($action_hist_record->end_time,'[]"')." IST<br>";
+                            $action_histories .= "<i class=\"fas fa-clock fa-sm\" title=\"Time\"></i> ".trim($action_hist_record->end_time,'[]"')."<br>";
                             $status_td = "<td class=\"status_failed\">";
                         } elseif ($status == "Scheduler")  {
                             // $action_histories .= "<br><i class=\"fas fa-exclamation-triangle fa-sm\" title=\"Status Mismatch\"></i> ";
-                            $action_histories .= "<br><i class=\"fas fa-clock fa-sm\" title=\"Time\"></i> ".trim($action_hist_record->end_time,'[]"')." IST<br>";
+                            $action_histories .= "<br><i class=\"fas fa-clock fa-sm\" title=\"Time\"></i> ".trim($action_hist_record->end_time,'[]"')."<br>";
                             $status_td = "<td class=\"status_warning\">";
                         }
 
                         $action_histories .= "<i class=\"fas fa-user fa-sm\" title=\"User\"></i> ".$username->name;
                         $action_histories .= "</small>";
+                    }
+
+                    // IN-USE MESSAGE
+                    if ($instanceDetail->in_use == "Y") {
+                        list($first_half, $second_half) = splitString($instanceDetail->in_use_msg);
                     }
 
                 ?>
@@ -760,15 +765,13 @@
                     <td> <!-- start-td-block APPLICATION SERVER DETAILS -->
                         {!! $appDetails !!}
                         @if ($instanceDetail->in_use == "Y")
-                        <div class="for-demo text-center">
+                        <div class="for-demo text-right">
                             {!! strtoupper($instanceDetail->in_use_msg) ?? '' !!}
+                            {{-- {{ strtoupper($first_half) }} --}}
                         </div>
                         @endif
                     </td> <!-- end-td-block APPLICATION SERVER DETAILS -->
                     <td> <!-- start-td-block DATABASE SERVER DETAILS -->
-                        {{-- @if ($instanceDetail->in_use == "Y")
-                            <div style="color:blue;font-size:20px;font-weight:bold">!! Dont Use It !!</div>
-                        @endif --}}
                         {!! $dbDetails !!}
                     </td> <!-- end-td-block DATABASE SERVER DETAILS -->
                     <td class="hidden">{!! $instanceDetail->jdk_type !!}</td> <!-- td-block HIDDEN JDK DETAILS -->
