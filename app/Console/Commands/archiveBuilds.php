@@ -70,6 +70,36 @@ class archiveBuilds extends Command
         DB::statement($archiveTable2);
         DB::statement($archiveTable3);
 
+        function id_to_pvid($id, $type) {
+            if ($type == "SPM") {
+                $sql = DB::table('product_versions')->select('pv_id')->where('id',$id)->first();
+                if(empty($sql)) {
+                    $sql2 = DB::table('archive_product_versions')->select('pv_id')->where('id',$id)->first();
+                    $rv = $sql2->pv_id;
+                } else {
+                    $rv = $sql->pv_id;
+                }
+            } elseif ($type == "PAI") {
+                $sql = DB::table('pai_builds')->select('pv_id')->where('id',$id)->first();
+                if(empty($sql)) {
+                    $sql2 = DB::table('archive_pai_builds')->select('pv_id')->where('id',$id)->first();
+                    $rv = $sql2->pv_id;
+                } else {
+                    $rv = $sql->pv_id;
+                }
+            } elseif ($type == "SF") {
+                $sql = DB::table('sf_builds')->select('pv_id')->where('id',$id)->first();
+                if(empty($sql)) {
+                    $sql2 = DB::table('archive_sf_builds')->select('pv_id')->where('id',$id)->first();
+                    $rv = $sql2->pv_id;
+                } else {
+                    $rv = $sql->pv_id;
+                }
+            }
+            echo $rv."\n";
+            return $rv;
+        }
+
         $spm_moved = 0;
         $pai_moved = 0;
         $sf_moved = 0;
@@ -103,47 +133,54 @@ class archiveBuilds extends Command
         foreach ($ahsql as $key => $value) {
             // array_push($ah_pv_id_array, trim($value->pv_id));
             if ($value->old_build_id) {
-                array_push($pvid_array, trim($value->old_build_id));
+                echo "Old Build ID: ".$value->old_build_id." | ";
+                $old_pvid = id_to_pvid(trim($value->old_build_id), "SPM");
+                array_push($pvid_array, trim($old_pvid));
             }
             if ($value->new_build_id) {
-                array_push($pvid_array, trim($value->new_build_id));
+                echo "New  Build ID: ".$value->new_build_id." | ";
+                $new_pvid = id_to_pvid(trim($value->new_build_id), "SPM");
+                array_push($pvid_array, trim($new_pvid));
             }
 
             if ($value->old_pai_build_id) {
-                array_push($pai_pvid_array, trim($value->old_pai_build_id));
+                echo "Old PAI Build ID: ".$value->old_pai_build_id." | ";
+                $old_pai_pvid = id_to_pvid($value->old_pai_build_id, "PAI");
+                array_push($pai_pvid_array, trim($old_pai_pvid));
             }
             if ($value->new_pai_build_id) {
-                array_push($pai_pvid_array, trim($value->new_pai_build_id));
+                echo "New PAI Build ID: ".$value->new_pai_build_id." | ";
+                $new_pai_pvid = id_to_pvid($value->new_pai_build_id, "PAI");
+                array_push($pai_pvid_array, trim($new_pai_pvid));
             }
 
             if ($value->old_sf_build_id) {
-                array_push($sf_pvid_array, trim($value->old_sf_build_id));
+                $old_sf_pvid = id_to_pvid($value->old_sf_build_id, "SF");
+                array_push($sf_pvid_array, trim($old_sf_pvid));
             }
             if ($value->new_sf_build_id) {
-                array_push($sf_pvid_array, trim($value->new_sf_build_id));
+                $new_sf_pvid = id_to_pvid($value->new_sf_build_id, "SF");
+                array_push($sf_pvid_array, trim($new_sf_pvid));
             }
         }
         $pvid_array = array_unique($pvid_array);
         $pai_pvid_array = array_unique($pai_pvid_array);
         $sf_pvid_array = array_unique($sf_pvid_array);
 
-        // dd(count($pvid_array), count($pai_pvid_array), count($sf_pvid_array));
+        // dd($pvid_array);
 
         // CODE FOR SPM PRODUCT VERSION TABLE
         foreach ($oldSPMData as $old) {
             $delete_record = False;
-            try {
-                if (in_array($old->pv_id, $pvid_array)) {
-                    $delete_record = False;
-                    // As the pv_id is present in instance_details or action_histories table, so we will not move the record from product_versions table
-                } else {
+            if(!in_array($old->pv_id, $pvid_array)) {
+                try {
                     $todayz = Carbon::now();
                     DB::table($archiveSPMTable)->insert(['id' => Null,'product_versions_id' => $old->id, 'product_ver_number' => $old->product_ver_number, 'product_build_numer' => $old->product_build_numer, 'pv_id' => $old->pv_id, 'is_release_build' => $old->is_release_build, 'created_at' => $old->created_at, 'updated_at' => $old->updated_at, 'deleted_at' => $old->deleted_at, 'record_moved_to_archive_at' => $todayz]);
                     $delete_record = True;
                     $spm_moved++;
+                } catch (\Throwable $th) {
+                    echo $e->getMessage();
                 }
-            } catch (\Exception $e) {
-                echo $e->getMessage();
             }
 
             if($delete_record) {
@@ -158,6 +195,7 @@ class archiveBuilds extends Command
         }
 
         echo "SPM - Total: ".$spm_rec_count." | Moved: ".$spm_moved."\n";
+        // dd(count($pvid_array), count($pai_pvid_array), count($sf_pvid_array));
 
         // CODE FOR PAI VERSION TABLE
         foreach ($oldPAIData as $old2) {
