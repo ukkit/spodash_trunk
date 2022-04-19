@@ -44,6 +44,15 @@ class Sf_buildController extends AppBaseController
     {
         $input = $request->all();
 
+        $strip_pvn = preg_replace("/[^0-9]/","",$input['sf_pai_version']);
+        $strip_pbn = preg_replace("/[^0-9]/","",$input['sf_pai_build']);
+        $old_pvid = $strip_pvn.$strip_pbn;
+        $pv_id = $strip_pvn."_".$strip_pbn;
+
+        // Generating pv_id by merging numbers of sf_pai_version and sf_pai_build
+        $input['pv_id'] = $pv_id;
+        $input['old_pvid'] = $old_pvid;
+
         $sfBuild = $this->sfBuildRepository->create($input);
 
         Flash::success('Sf Build saved successfully.');
