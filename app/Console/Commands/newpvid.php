@@ -13,6 +13,9 @@ use Carbon\Carbon;
 class newpvid extends Command
 {
 
+    // this is one-time executing script to change logic of generating pv_id
+    // refer to IT-5593 for details
+
     protected $signature = 'command:pvid';
 
     protected $description = 'Command description';
