@@ -492,7 +492,7 @@ $jenkins_token_array = array(array("US Jenknis Server (andcsv-svgcjk01)","11d0c4
         </div>
 
 
-        @role('superadmin')
+        {{-- @role('superadmin') --}}
             <!-- Running Jenkins Job Field -->
             <div class="form-group col-sm-2">
                 {!! Form::label('running_jenkins_job', 'Running Jenkins Job?') !!}
@@ -505,7 +505,7 @@ $jenkins_token_array = array(array("US Jenknis Server (andcsv-svgcjk01)","11d0c4
                     </label>
                 </div>
             </div>
-        @endrole
+        {{-- @endrole --}}
 
         {{-- Enable instance db backup enabled field --}}
         <div class="form-group col-sm-2">

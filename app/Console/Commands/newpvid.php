@@ -57,14 +57,17 @@ class newpvid extends Command
             return ($pv_id);
         }
 
-        function update_tables($tablename, $id, $old_pvid, $release, $build) {
+        function update_tables($tablename, $id, $old_pvid, $release, $build, $field) {
             $pvid = gen_pvid($release, $build);
             DB::table($tablename)->where('id', $id)->update(['pv_id' => $pvid]);
-            $inst = DB::table('instance_details')->where('pv_id',$old_pvid)->get();
+
+            $inst = DB::table('instance_details')->where($field,$old_pvid)->get();
+            // echo $old_pvid . " ";
             if($inst) {
+
                 foreach ($inst as $in) {
-                    DB::table('instance_details')->where('pv_id',$old_pvid)->update(['pv_id' => $pvid]);
-                    echo "Changed pv_id for instance_details ".$in->id."\n";
+                    DB::table('instance_details')->where('id',$in->id)->update([$field => $pvid]);
+                    echo "Changed $field for instance_details ".$in->id."\n";
                 }
             }
         }
@@ -92,7 +95,8 @@ class newpvid extends Command
                 pvid_column('product_versions', True);
                 $pvsql = DB::table('product_versions')->get();
                 foreach ($pvsql as $pvr) {
-                    update_tables('product_versions', $pvr->id, $pvr->pv_id, $pvr->product_ver_number, $pvr->product_build_numer);
+                    // echo $pvr->old_pvid." | ";
+                    update_tables('product_versions', $pvr->id, $pvr->old_pvid, $pvr->product_ver_number, $pvr->product_build_numer,'pv_id');
                 }
                 echo ".... completed product_versions \n";
 
@@ -100,7 +104,7 @@ class newpvid extends Command
                 pvid_column('archive_product_versions', False);
                 $apvsql = DB::table('archive_product_versions')->get();
                 foreach ($apvsql as $apv) {
-                    update_tables('archive_product_versions', $apv->id, $apv->pv_id, $apv->product_ver_number, $apv->product_build_numer);
+                    update_tables('archive_product_versions', $apv->id, $apv->old_pvid, $apv->product_ver_number, $apv->product_build_numer, 'pv_id');
                 }
 
                 echo ".... completed archive_product_versions \n";
@@ -110,6 +114,7 @@ class newpvid extends Command
                 $doIT = False;
             }
 
+            // dd("Done");
             // pai_builds & archive_pai_builds
             try {
 
@@ -117,7 +122,7 @@ class newpvid extends Command
                 pvid_column('pai_builds', True);
                 $pbsql = DB::table('pai_builds')->get();
                 foreach ($pbsql as $pvr) {
-                    update_tables('pai_builds', $pvr->id, $pvr->pv_id, $pvr->pai_version, $pvr->pai_build);
+                    update_tables('pai_builds', $pvr->id, $pvr->old_pvid, $pvr->pai_version, $pvr->pai_build, 'pai_pv_id');
                 }
                 echo "............ completed pai_builds \n";
 
@@ -125,7 +130,7 @@ class newpvid extends Command
                 pvid_column('archive_pai_builds', False);
                 $apbsql = DB::table('archive_pai_builds')->get();
                 foreach ($apbsql as $pvr) {
-                    update_tables('archive_pai_builds', $pvr->id, $pvr->pv_id, $pvr->pai_version, $pvr->pai_build);
+                    update_tables('archive_pai_builds', $pvr->id, $pvr->old_pvid, $pvr->pai_version, $pvr->pai_build, 'pai_pv_id');
                 }
                 echo "............ completed archive_pai_builds \n";
 
@@ -146,7 +151,7 @@ class newpvid extends Command
 
                 $sfsql = DB::table('sf_builds')->get();
                 foreach ($sfsql as $pvr) {
-                    update_tables('sf_builds', $pvr->id, $pvr->pv_id, $pvr->sf_pai_version, $pvr->sf_pai_build);
+                    update_tables('sf_builds', $pvr->id, $pvr->old_pvid, $pvr->sf_pai_version, $pvr->sf_pai_build, 'sf_pv_id');
                 }
                 echo ".... completed sf_builds \n";
 
@@ -154,7 +159,7 @@ class newpvid extends Command
                 pvid_column('archive_sf_builds', True);
                 $asfsql = DB::table('sf_builds')->get();
                 foreach ($asfsql as $pvr) {
-                    update_tables('archive_sf_builds', $pvr->id, $pvr->pv_id, $pvr->sf_pai_version, $pvr->sf_pai_build);
+                    update_tables('archive_sf_builds', $pvr->id, $pvr->old_pvid, $pvr->sf_pai_version, $pvr->sf_pai_build, 'sf_pv_id');
                 }
                 echo ".... completed archive_sf_builds \n";
 
