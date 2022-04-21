@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use Carbon\Carbon;
+use Artisan;
 
 class newpvid extends Command
 {
@@ -61,7 +62,7 @@ class newpvid extends Command
             $pvid = gen_pvid($release, $build);
             DB::table($tablename)->where('id', $id)->update(['pv_id' => $pvid]);
 
-            $inst = DB::table('instance_details')->where($field,$old_pvid)->get();
+            $inst = DB::table('instance_details')->where($field,$old_pvid)->whereNull('deleted_at')->get();
             // echo $old_pvid . " ";
             if($inst) {
 
@@ -173,6 +174,7 @@ class newpvid extends Command
         // echo $scriptID;
         if ($doIT) {
             DB::table('one_time_executions')->insert(['script_id' => $scriptID, 'executed' => 'Y', 'created_at'=>Carbon::now()]);
+            Artisan::call('command:unarchiveBuild');
         }
     }
 }

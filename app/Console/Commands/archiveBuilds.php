@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use DB;
 use Carbon\Carbon;
 use Log;
+use Artisan;
 
 class archiveBuilds extends Command
 {
@@ -260,5 +261,6 @@ class archiveBuilds extends Command
             }
         }
         echo "SF - Total: ".$pai_rec_count." | Moved: ".$pai_moved."\n";
+        Artisan::call('command:unarchiveBuild');
     }
 }
