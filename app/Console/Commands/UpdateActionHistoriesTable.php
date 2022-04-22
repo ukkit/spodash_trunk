@@ -13,7 +13,7 @@ class UpdateActionHistoriesTable extends Command
 
     protected $signature = 'command:actionhistories';
 
-    protected $description = 'Command description';
+    protected $description = 'Executed every hour';
 
     public function __construct()
     {
@@ -24,9 +24,11 @@ class UpdateActionHistoriesTable extends Command
     {
         $scriptID = '8kA2mWiWrJVGUPufbha4rmkcGdnvZjEhEaUnkJbzCfhWuSnj2QTTt3rTKRJyCf3G'; //NOT TO BE CHANGED
 
+        echo " =====> ".Carbon::now()->sub('minutes', 45)."\n";
         $actions = DB::table('action_histories')
                     ->whereNull('end_time')
-                    ->whereDate('start_time', '<', Carbon::now()->sub('hour', 1))
+                    ->whereTime('start_time', '<', Carbon::now()->sub('minutes', 45))
+                    // ->whereDate('start_time', '<', Carbon::now()->sub('hour', 1))
                     ->get();
         $counter = 0;
         echo "Found ".count($actions)." record(s) to update \n";
@@ -81,8 +83,8 @@ class UpdateActionHistoriesTable extends Command
                         'original_created_at' => $o_created_at,
                         'original_updated_at' => $o_updated_at,
                         'notes' => $notes,
-                        'created_at' => Carbon::now(),
-                        'updated_at' => Carbon::now()
+                        'created_at' => Carbon::now()
+                        // 'updated_at' => Carbon::now()
                     ]);
                 } catch (\Throwable $th) {
                     throw $th;
