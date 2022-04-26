@@ -3,7 +3,7 @@ $java_type_array = array("Oracle JDK","Amazon Corretto");
 // $java_type_array = array("Oracle JDK","Amazon Corretto","OpenJDK");
 $jenkins_token_array = array(array("US Jenknis Server (andcsv-svgcjk01)","11d0c46e4f38bf0a2a4ea82ef9d5266294"),array("Pune Jenkins Server 1 (10.192.110.23)","f92871a081a7d7ec3353d538bdac9b5f"),array("Pune Jenkins Server 2 (ppumsv-svgjk01d)","113b0a8f28346617b9065b1677a240e14d"));
 // $pai_type_array = array("Hadoop","Oracle");
-
+$escm_type_array = array("Production","Sandbox");
 ?>
 
     {{-- FIRST BLOCK STARTS HERE --}}
@@ -316,7 +316,11 @@ $jenkins_token_array = array(array("US Jenknis Server (andcsv-svgcjk01)","11d0c4
 
     <div class="row">
         <!-- Jenkins URL Field -->
+        @if($show_is_active)
+        <div class="form-group col-sm-2">
+        @else
         <div class="form-group col-sm-4 col-lg-4">
+        @endif
             {!! Form::label('jenkins_url', 'Jenkins URL:') !!}
             {!! Form::text('jenkins_url', null, ['class' => 'form-control', 'placeholder' => 'Optional']) !!}
         </div>
@@ -348,6 +352,25 @@ $jenkins_token_array = array(array("US Jenknis Server (andcsv-svgcjk01)","11d0c4
         </div>
 
         @if($show_is_active)
+
+        @if(($record->product_names_id == "1" || $record->product_names_id == "2" || $record->product_names_id == "3"))
+        <!-- ESCM type Field -->
+        <div class="form-group col-sm-2">
+            {!! Form::label('escm_type', 'ESCM Type:') !!}
+            <select name="escm_type" class="form-control">
+                <option value="">Select .... </option>
+                @foreach($escm_type_array as $jta)
+                    @if($this_is_edit)
+                    <option value="{{ $jta }}" @if($jta==$record->escm_type) selected='selected' @endif >{{ $jta }}</option>
+                    @else
+                        <option value="{{ $jta }}">{{ $jta }}</option>
+                    @endif
+                @endforeach
+            </select>
+        </div>
+        @endif
+
+
         <!-- Check Fail Threshold -->
         <div class="form-group col-sm-2">
             {!! Form::label('check_fail_count', 'Check Fail Threshold:') !!}
