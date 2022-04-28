@@ -384,7 +384,8 @@ class Instance_detailController extends AppBaseController
                     log::error('Jenkins URL '.$instanceDetail->jenkins_url.' is not online, please check');
                     Flash::error('Jenkins URL for ID '. $instanceDetail->id .' is not online, hence '.$action.' will not be executed');
 
-                    $mailto = $spo_incredibles;
+                    // $mailto = $spo_incredibles;
+                    $mailto = 'ntikku@ptc.com';
                     $mail_data['subject'] = "Jenkins URL is not online for ID ".$instanceDetail->id;
                     $error_email = "Y";
                 } else {
@@ -400,11 +401,11 @@ class Instance_detailController extends AppBaseController
                         ->insert(['unique_id'=>$uuid, 'users_id'=>$user_details->id, 'instance_details_id'=>$id,'jenkins_build_id'=>0,'action'=>$action,'start_time'=>now(), 'status'=>'In Progress', 'old_pai_build_id'=>$old_build_id, 'new_pai_build_id'=>$new_build_id,'created_at' => now()]);
                     } elseif ($action == "SF_upgrade") {
                         DB::table('action_histories')
-                        ->insert(['unique_id'=>$uuid, 'users_id'=>$user_details->id, 'instance_details_id'=>$id,'jenkins_build_id'=>0,'action'=>$action,'start_time'=>now(), 'status'=>'In Progress', 'old_pai_build_id'=>$old_build_id, 'new_pai_build_id'=>$new_build_id,'created_at' => now()]);
-                    } elseif ($action == "SPM_PAI_upgrade") {
+                        ->insert(['unique_id'=>$uuid, 'users_id'=>$user_details->id, 'instance_details_id'=>$id,'jenkins_build_id'=>0,'action'=>$action,'start_time'=>now(), 'status'=>'In Progress', 'old_sf_build_id'=>$old_build_id, 'new_sf_build_id'=>$new_build_id,'created_at' => now()]);
+                    } elseif (($action == "SPM_PAI_upgrade" || $action == "BuildUpdate")) {
                         DB::table('action_histories')->insert(['unique_id'=>$uuid, 'users_id'=>$user_details->id, 'instance_details_id'=>$id,'jenkins_build_id'=>0,'action'=>$action,'start_time'=>now(), 'status'=>'In Progress', 'old_build_id'=>$old_build_id_spo, 'new_build_id'=>$new_build_id_spo, 'old_pai_build_id'=>$old_build_id_pai, 'new_pai_build_id'=>$new_build_id_pai, 'created_at' => now()]);
                     } elseif ($action == "SPM_SF_upgrade") {
-                        DB::table('action_histories')->insert(['unique_id'=>$uuid, 'users_id'=>$user_details->id, 'instance_details_id'=>$id,'jenkins_build_id'=>0,'action'=>$action,'start_time'=>now(), 'status'=>'In Progress', 'old_build_id'=>$old_build_id_spo, 'new_build_id'=>$new_build_id_spo, 'old_pai_build_id'=>$old_build_id_sf, 'new_pai_build_id'=>$new_build_id_sf, 'created_at' => now()]);
+                        DB::table('action_histories')->insert(['unique_id'=>$uuid, 'users_id'=>$user_details->id, 'instance_details_id'=>$id,'jenkins_build_id'=>0,'action'=>$action,'start_time'=>now(), 'status'=>'In Progress', 'old_build_id'=>$old_build_id_spo, 'new_build_id'=>$new_build_id_spo, 'old_sf_build_id'=>$old_build_id_sf, 'new_sf_build_id'=>$new_build_id_sf, 'created_at' => now()]);
                     } else {
                         DB::table('action_histories')
                         ->insert(['unique_id'=>$uuid, 'users_id'=> $user_details->id, 'instance_details_id'=>$id,'jenkins_build_id'=>0,'action'=>$action,'start_time'=>now(), 'status'=>'In Progress','created_at' => now()]);

@@ -62,10 +62,9 @@ class newpvid extends Command
             $pvid = gen_pvid($release, $build);
             DB::table($tablename)->where('id', $id)->update(['pv_id' => $pvid]);
 
-            $inst = DB::table('instance_details')->where($field,$old_pvid)->whereNull('deleted_at')->get();
-            // echo $old_pvid . " ";
-            if($inst) {
+            $inst = DB::table('instance_details')->where($field,$old_pvid)->get();
 
+            if($inst) {
                 foreach ($inst as $in) {
                     DB::table('instance_details')->where('id',$in->id)->update([$field => $pvid]);
                     echo "Changed $field for instance_details ".$in->id."\n";
@@ -158,7 +157,7 @@ class newpvid extends Command
 
                 echo "Starting with archive_sf_builds \n";
                 pvid_column('archive_sf_builds', True);
-                $asfsql = DB::table('sf_builds')->get();
+                $asfsql = DB::table('archive_sf_builds')->get();
                 foreach ($asfsql as $pvr) {
                     update_tables('archive_sf_builds', $pvr->id, $pvr->old_pvid, $pvr->sf_pai_version, $pvr->sf_pai_build, 'sf_pv_id');
                 }
@@ -174,7 +173,7 @@ class newpvid extends Command
         // echo $scriptID;
         if ($doIT) {
             DB::table('one_time_executions')->insert(['script_id' => $scriptID, 'executed' => 'Y', 'created_at'=>Carbon::now()]);
-            Artisan::call('command:unarchiveBuild');
+            Artisan::call('command:unarchiveAll');
         }
     }
 }

@@ -303,26 +303,7 @@ try {
                         break;
                     }
                     $action_done = trim($records->action,'[]"');
-                    switch($action_done) {
-                        case "StartAppServer":
-                            $action_text = "Start Server";
-                            break;
-                        case "ShutDownAppServer":
-                            $action_text = "Stop Server";
-                            break;
-                        case "Restart":
-                            $action_text = "Restart Server";
-                            break;
-                        case "SPO_upgrade":
-                            $action_text = "SPO Update";
-                            break;
-                        case "PAI_upgrade":
-                            $action_text = "PAI Upgrade";
-                            break;
-                        case "BuildUpdate":
-                            $action_text = "SPO + PAI Upgrade";
-                            break;
-                    }
+                    $action_text = get_action_text($action_done);
 
                     $status_icon = "";
                     if ($records->status == "Successful") {

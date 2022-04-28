@@ -21,6 +21,10 @@ class archiveBuilds extends Command
 
     public function handle()
     {
+
+        $scriptID = 'W9ESxxiD9Ut7Nd2koolD4ldHsrrTzFcVGyxRyjitacSXmvQcyy3fmKHO8SwuJIAM'; //NOT TO BE CHANGED
+        $scriptName = 'archiveBuild'; //NOT TO BE CHANGED
+
         $existingSPMTable = 'product_versions';
         $archiveSPMTable = 'archive_product_versions';
         $existingPAITable = 'pai_builds';
@@ -262,5 +266,8 @@ class archiveBuilds extends Command
         }
         echo "SF - Total: ".$pai_rec_count." | Moved: ".$pai_moved."\n";
         Artisan::call('command:unarchiveBuild');
+
+        DB::table('command_histories')->insert(['script_id' => $scriptID, 'script_name' => $scriptName, 'created_at'=>Carbon::now()]);
+
     }
 }
