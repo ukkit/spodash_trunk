@@ -31,7 +31,8 @@ class newpvid extends Command
         $scriptID = '6uDh9i4FqPjfSUQ5XP7Mifx0Qgn9L8CHotGla8j7NvV4XxjlH9OlezKccJarHIvc'; //NOT TO BE CHANGED
         $doIT = True;
 
-        function pvid_column($tablename,$unique) {
+        function pvid_column($tablename, $unique)
+        {
             echo " ------===>>>> Creating pvid column for table: $tablename\n";
             Schema::table($tablename, function (Blueprint $table) {
                 $table->string('pv_id')->nullable()->change();
@@ -51,23 +52,25 @@ class newpvid extends Command
             echo "\tDone with adding pv_id column \n";
         }
 
-        function gen_pvid($release, $build) {
-            $strip_pvn = preg_replace("/[^0-9]/","",$release);
-            $strip_pbn = preg_replace("/[^0-9]/","",$build);
-            $pv_id = $strip_pvn."_".$strip_pbn;
+        function gen_pvid($release, $build)
+        {
+            $strip_pvn = preg_replace("/[^0-9]/", "", $release);
+            $strip_pbn = preg_replace("/[^0-9]/", "", $build);
+            $pv_id = $strip_pvn . "_" . $strip_pbn;
             return ($pv_id);
         }
 
-        function update_tables($tablename, $id, $old_pvid, $release, $build, $field) {
+        function update_tables($tablename, $id, $old_pvid, $release, $build, $field)
+        {
             $pvid = gen_pvid($release, $build);
             DB::table($tablename)->where('id', $id)->update(['pv_id' => $pvid]);
 
-            $inst = DB::table('instance_details')->where($field,$old_pvid)->get();
+            $inst = DB::table('instance_details')->where($field, $old_pvid)->get();
 
-            if($inst) {
+            if ($inst) {
                 foreach ($inst as $in) {
-                    DB::table('instance_details')->where('id',$in->id)->update([$field => $pvid]);
-                    echo "Changed $field for instance_details ".$in->id."\n";
+                    DB::table('instance_details')->where('id', $in->id)->update([$field => $pvid]);
+                    echo "Changed $field for instance_details " . $in->id . "\n";
                 }
             }
         }
@@ -96,7 +99,7 @@ class newpvid extends Command
                 $pvsql = DB::table('product_versions')->get();
                 foreach ($pvsql as $pvr) {
                     // echo $pvr->old_pvid." | ";
-                    update_tables('product_versions', $pvr->id, $pvr->old_pvid, $pvr->product_ver_number, $pvr->product_build_numer,'pv_id');
+                    update_tables('product_versions', $pvr->id, $pvr->old_pvid, $pvr->product_ver_number, $pvr->product_build_numer, 'pv_id');
                 }
                 echo ".... completed product_versions \n";
 
@@ -133,7 +136,6 @@ class newpvid extends Command
                     update_tables('archive_pai_builds', $pvr->id, $pvr->old_pvid, $pvr->pai_version, $pvr->pai_build, 'pai_pv_id');
                 }
                 echo "............ completed archive_pai_builds \n";
-
             } catch (\Throwable $th) {
                 echo "SOMETHING WENT WRONG = pai_builds / archive_pai_builds \n";
                 echo $th;
@@ -162,18 +164,17 @@ class newpvid extends Command
                     update_tables('archive_sf_builds', $pvr->id, $pvr->old_pvid, $pvr->sf_pai_version, $pvr->sf_pai_build, 'sf_pv_id');
                 }
                 echo ".... completed archive_sf_builds \n";
-
             } catch (\Throwable $th) {
                 echo "SOMETHING WENT WRONG = sf_builds \n";
                 echo $th;
                 $doIT = False;
             }
-
         }
         // echo $scriptID;
         if ($doIT) {
-            DB::table('one_time_executions')->insert(['script_id' => $scriptID, 'executed' => 'Y', 'created_at'=>Carbon::now()]);
+            DB::table('one_time_executions')->insert(['script_id' => $scriptID, 'executed' => 'Y', 'created_at' => Carbon::now()]);
             Artisan::call('command:unarchiveAll');
+            Artisan::call('command:archiveBuild');
         }
     }
 }
