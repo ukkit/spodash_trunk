@@ -3,9 +3,9 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
-use Artisan;
+use Illuminate\Support\Facades\Artisan;
 
 class unArchiveBuilds extends Command
 {
@@ -27,7 +27,6 @@ class unArchiveBuilds extends Command
         Artisan::call('command:unarchivePAI');
         Artisan::call('command:unarchiveSF');
 
-        DB::table('command_histories')->insert(['script_id' => $scriptID, 'script_name' => $scriptname,'created_at'=>Carbon::now()]);
-
+        DB::table('command_histories')->insert(['script_id' => $scriptID, 'script_name' => $scriptname, 'created_at' => Carbon::now()]);
     }
 }

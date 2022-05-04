@@ -3,10 +3,10 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Log;
-use Artisan;
+use Illuminate\Support\Facades\Artisan;
 
 class archiveBuilds extends Command
 {
@@ -188,7 +188,7 @@ class archiveBuilds extends Command
                     $delete_record = True;
                     $spm_moved++;
                 } catch (\Throwable $th) {
-                    echo $e->getMessage();
+                    echo $th;
                 }
             }
 

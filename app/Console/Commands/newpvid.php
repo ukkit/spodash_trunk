@@ -4,12 +4,12 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use Carbon\Carbon;
-use Artisan;
+use Illuminate\Support\Facades\Artisan;
 
 class newpvid extends Command
 {
