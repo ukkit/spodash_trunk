@@ -38,7 +38,7 @@ class ServerRestarted extends Mailable
      */
     public function build()
     {
-        return $this->from('SPO-Dashboard@ptc.com')->markdown('emails.action.server-restarted')->subject($this->subject)
+        return $this->markdown('emails.action.server-restarted')->subject($this->subject)
             ->with('instance', $this->instance)
             ->with('username', $this->username)
             ->with('instance_id', $this->instance_id)

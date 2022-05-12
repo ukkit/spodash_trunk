@@ -38,7 +38,7 @@ class ServerStarted extends Mailable
      */
     public function build()
     {
-        return $this->from('SPO-Dashboard@ptc.com')->subject($this->subject)->markdown('emails.action.server-started')
+        return $this->subject($this->subject)->markdown('emails.action.server-started')
             ->with('instance', $this->instance)
             ->with('username', $this->username)
             ->with('instance_id', $this->instance_id)

@@ -56,8 +56,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'donotreply@ptc.com'),
-        'name' => env('MAIL_FROM_NAME', 'SPODash-Mail'),
+        'address' => env('MAIL_FROM_ADDRESS', 'slmqauser@ptc.com'),
+        'name' => env('MAIL_FROM_NAME', 'SPO-Dashboard'),
     ],
 
     // 'from' => ['address' => 'donotreply@ptc.com', 'name' => 'SPODash-Mail'],

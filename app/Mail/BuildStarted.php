@@ -41,7 +41,7 @@ class BuildStarted extends Mailable
      */
     public function build()
     {
-        return $this->from('SPO-Dashboard@ptc.com')->subject($this->subject)->markdown('emails.action.build-started')
+        return $this->subject($this->subject)->markdown('emails.action.build-started')
             ->with('instance', $this->instance)
             ->with('username', $this->username)
             ->with('current_build', $this->current_build)

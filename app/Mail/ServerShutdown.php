@@ -38,7 +38,7 @@ class ServerShutdown extends Mailable
      */
     public function build()
     {
-        return $this->from('SPO-Dashboard@ptc.com')->subject($this->subj)->markdown('emails.action.server-shutdown')
+        return $this->subject($this->subj)->markdown('emails.action.server-shutdown')
             ->with('instance', $this->instance)
             ->with('username', $this->username)
             ->with('instance_id', $this->instance_id)
