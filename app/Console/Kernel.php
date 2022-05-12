@@ -28,8 +28,8 @@ class Kernel extends ConsoleKernel
         //          ->hourly();
         //$schedule->command('backup:clean')->daily()->at('01:00');
         $schedule->command('backup:run')->daily()->at('05:00');
-        // $schedule->command('command:archiveBuild')->daily()->at('04:00');
-        $schedule->command('command:actionhistories')->twiceDaily(1, 13);
+        $schedule->command('command:archiveBuild')->daily()->at('04:00');
+        $schedule->command('command:actionhistories')->everyThirtyMinutes();
         $schedule->command('command:populateRN')->twiceDaily(1, 13);
         // $schedule->command('command:generateSystemStats')->weekdays()->twiceDaily(1, 13);
         $schedule->command('command:getDBSize')->twiceDaily(2, 14);
@@ -44,7 +44,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__ . '/Commands');
+        $this->load(__DIR__.'/Commands');
 
         require base_path('routes/console.php');
     }

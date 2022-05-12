@@ -63,10 +63,12 @@ class Product_versionController extends AppBaseController
 
         $strip_pvn = preg_replace("/[^0-9]/","",$input['product_ver_number']);
         $strip_pbn = preg_replace("/[^0-9]/","",$input['product_build_numer']);
-        $pv_id = $strip_pvn.$strip_pbn;
+        $old_pvid = $strip_pvn.$strip_pbn;
+        $pv_id = $strip_pvn."_".$strip_pbn;
 
         // Generating pv_id by merging numbers of product_Ver_number and product_build_number
         $input['pv_id'] = $pv_id;
+        $input['old_pvid'] = $old_pvid;
 
         // dd($pv_id);
 

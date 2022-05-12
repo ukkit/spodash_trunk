@@ -55,16 +55,10 @@
                     $build = $old_release_data->product_ver_number." ".$old_release_data->product_build_numer;
                     $build .= " <i class=\"fas fa-long-arrow-alt-right\" title=\"upgraded to\"></i> ".$new_release_data->product_build_numer;
                 } elseif(empty($actionHistory->old_build_id) && !empty($actionHistory->old_pai_build_id)) { // pai old build id present but no spo build id
-                    try {
-                        $old_release_data = $actionHistory->return_pai_versions_by_id($actionHistory->old_pai_build_id);
-                        $new_release_data = $actionHistory->return_pai_versions_by_id($actionHistory->new_pai_build_id);
-                        $build = $old_release_data->pai_version." ".$old_release_data->pai_build;
-                        $build .= " <i class=\"fas fa-long-arrow-alt-right\" title=\"upgraded to\"></i> ".$new_release_data->pai_build;
-                    } catch (\Throwable $th) {
-                        $old_release_data = NULL;
-                        $new_release_data = NULL;
-                        Log::error('Missing value for pv_id for Action History ID '.$actionHistory->id);
-                    }
+                    $old_release_data = $actionHistory->return_pai_versions_by_id($actionHistory->old_pai_build_id);
+                    $new_release_data = $actionHistory->return_pai_versions_by_id($actionHistory->new_pai_build_id);
+                    $build = $old_release_data->pai_version." ".$old_release_data->pai_build;
+                    $build .= " <i class=\"fas fa-long-arrow-alt-right\" title=\"upgraded to\"></i> ".$new_release_data->pai_build;
                 } else { //both are present
                     $old_spo_release_data = $actionHistory->return_product_versions_by_id($actionHistory->old_build_id);
                     $new_spo_release_data = $actionHistory->return_product_versions_by_id($actionHistory->new_build_id);

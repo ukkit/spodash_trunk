@@ -55,6 +55,7 @@ class Instance_detailRepository extends BaseRepository
         'instance_install_path',
         'instance_shared_dir',
         'instance_jira',
+        'escm_type',
         'tomcat_service_name',
         'ap_service_name',
         'instance_web_min_heap_size',

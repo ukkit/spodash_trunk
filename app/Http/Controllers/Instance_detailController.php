@@ -19,7 +19,7 @@ use App\Models\Team;
 use App\Models\Intellicus_detail;
 use App\Models\Ml_detail;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
+use Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -303,7 +303,6 @@ class Instance_detailController extends AppBaseController
         }
 
         if ($do_action == "Y") {
-            $jenkins_action = $action;
             switch ($action) {
                 case "SPO_upgrade":
                     list($latest_build, $current_build, $old_build_id, $new_build_id) = $this->build_numbers($instanceDetail, "SPO");
@@ -312,21 +311,25 @@ class Instance_detailController extends AppBaseController
                     $mail_data['latest_build'] = $latest_build;
                     $mail_data['current_build'] = $current_build;
                     $email = new BuildStarted($mail_data);
+                    $jenkins_action = $action;
                     Log::info('Build update trigerred for Instance ID ' . $instanceDetail->id . ' from ' . $current_build . ' to ' . $latest_build . ' by ' . $username);
                     break;
                 case "ShutDownAppServer":
                     $mail_data['subject'] = "Shutdown AppServer Triggered";
                     $email = new ServerShutdown($mail_data);
+                    $jenkins_action = $action;
                     Log::info('Shutdown AppServer Triggered for Instance ID ' . $instanceDetail->id . ' by ' . $username);
                     break;
                 case "StartAppServer":
                     $mail_data['subject'] = "Start AppServer Triggered";
                     $email = new ServerStarted($mail_data);
+                    $jenkins_action = $action;
                     Log::info('Start AppServer Triggered for Instance ID ' . $instanceDetail->id . ' by ' . $username);
                     break;
                 case "Restart":
                     $mail_data['subject'] = "Restart AppServer Triggered";
                     $email = new ServerRestarted($mail_data);
+                    $jenkins_action = $action;
                     Log::info('Restart AppServer Triggered for Instance ID ' . $instanceDetail->id . ' by ' . $username);
                     break;
                 case "PAI_upgrade":
@@ -335,6 +338,7 @@ class Instance_detailController extends AppBaseController
                     $mail_data['latest_build'] = $latest_build;
                     $mail_data['current_build'] = $current_build;
                     $email = new BuildStarted($mail_data);
+                    $jenkins_action = $action;
                     Log::info('PAI upgrade trigerred for Instance ID ' . $instanceDetail->id . ' from ' . $current_build . ' to ' . $latest_build . ' by ' . $username);
                     break;
                 case "SF_upgrade":
@@ -344,7 +348,7 @@ class Instance_detailController extends AppBaseController
                     $mail_data['latest_build'] = $latest_build;
                     $mail_data['current_build'] = $current_build;
                     $email = new BuildStarted($mail_data);
-                    $jenkins_action = "PAI_upgrade"; // This is done because target in jenkins for Snowflake upgrade is same as PAI upgrade
+                    $jenkins_action = "PAI_upgrade"; //This is done as action for PAI and Snowflake are same in jenkins
                     Log::info('Snowflake upgrade trigerred for Instance ID ' . $instanceDetail->id . ' from ' . $current_build . ' to ' . $latest_build . ' by ' . $username);
                     break;
                 case "SPM_SF_upgrade":
@@ -357,7 +361,6 @@ class Instance_detailController extends AppBaseController
                     $mail_data['latest_build_sf'] = $latest_build_sf;
                     $mail_data['current_build_sf'] = $current_build_sf;
                     $email = new BuildStarted($mail_data);
-                    $jenkins_action = "BuildUpdate"; // This is done because target in jenkins for SPM + SF upgrade is same as PAI + SPM upgrade
 
                     Log::info('SPM and SF build update trigerred for Instance ID ' . $instanceDetail->id . ' by ' . $username . '. This will upgrade SPM Build from ' . $current_build_spo . ' to ' . $latest_build_spo . ' and Snowflake Build from ' . $current_build_sf . ' to ' . $latest_build_sf);
                     break;
@@ -373,7 +376,6 @@ class Instance_detailController extends AppBaseController
                     $mail_data['latest_build_pai'] = $latest_build_pai;
                     $mail_data['current_build_pai'] = $current_build_pai;
                     $email = new BuildStarted($mail_data);
-                    $jenkins_action = "BuildUpdate";
 
                     Log::info('SPM and PAI build update trigerred for Instance ID ' . $instanceDetail->id . ' by ' . $username . '. This will upgrade SPM Build from ' . $current_build_spo . ' to ' . $latest_build_spo . ' and PAI Build from ' . $current_build_pai . ' to ' . $latest_build_pai);
                     break;
@@ -385,9 +387,10 @@ class Instance_detailController extends AppBaseController
                 $urlcheck = url_test($instanceDetail->jenkins_url);
                 if (!$urlcheck) {
                     log::error('Jenkins URL ' . $instanceDetail->jenkins_url . ' is not online, please check');
-                    Flash::error('Jenkins URL for ID ' . $instanceDetail->id . ' is not online, hence ' . $jenkins_action . ' will not be executed');
+                    Flash::error('Jenkins URL for ID ' . $instanceDetail->id . ' is not online, hence ' . $action . ' will not be executed');
 
-                    $mailto = $spo_incredibles;
+                    // $mailto = $spo_incredibles;
+                    $mailto = 'ntikku@ptc.com';
                     $mail_data['subject'] = "Jenkins URL is not online for ID " . $instanceDetail->id;
                     $error_email = "Y";
                 } else {
@@ -403,22 +406,24 @@ class Instance_detailController extends AppBaseController
                             ->insert(['unique_id' => $uuid, 'users_id' => $user_details->id, 'instance_details_id' => $id, 'jenkins_build_id' => 0, 'action' => $action, 'start_time' => now(), 'status' => 'In Progress', 'old_pai_build_id' => $old_build_id, 'new_pai_build_id' => $new_build_id, 'created_at' => now()]);
                     } elseif ($action == "SF_upgrade") {
                         DB::table('action_histories')
-                            ->insert(['unique_id' => $uuid, 'users_id' => $user_details->id, 'instance_details_id' => $id, 'jenkins_build_id' => 0, 'action' => $action, 'start_time' => now(), 'status' => 'In Progress', 'old_pai_build_id' => $old_build_id, 'new_pai_build_id' => $new_build_id, 'created_at' => now()]);
-                    } elseif ($action == "SPM_PAI_upgrade") {
+                            ->insert(['unique_id' => $uuid, 'users_id' => $user_details->id, 'instance_details_id' => $id, 'jenkins_build_id' => 0, 'action' => $action, 'start_time' => now(), 'status' => 'In Progress', 'old_sf_build_id' => $old_build_id, 'new_sf_build_id' => $new_build_id, 'created_at' => now()]);
+                    } elseif (($action == "SPM_PAI_upgrade" || $action == "BuildUpdate")) {
                         DB::table('action_histories')->insert(['unique_id' => $uuid, 'users_id' => $user_details->id, 'instance_details_id' => $id, 'jenkins_build_id' => 0, 'action' => $action, 'start_time' => now(), 'status' => 'In Progress', 'old_build_id' => $old_build_id_spo, 'new_build_id' => $new_build_id_spo, 'old_pai_build_id' => $old_build_id_pai, 'new_pai_build_id' => $new_build_id_pai, 'created_at' => now()]);
                     } elseif ($action == "SPM_SF_upgrade") {
-                        DB::table('action_histories')->insert(['unique_id' => $uuid, 'users_id' => $user_details->id, 'instance_details_id' => $id, 'jenkins_build_id' => 0, 'action' => $action, 'start_time' => now(), 'status' => 'In Progress', 'old_build_id' => $old_build_id_spo, 'new_build_id' => $new_build_id_spo, 'old_pai_build_id' => $old_build_id_sf, 'new_pai_build_id' => $new_build_id_sf, 'created_at' => now()]);
+                        DB::table('action_histories')->insert(['unique_id' => $uuid, 'users_id' => $user_details->id, 'instance_details_id' => $id, 'jenkins_build_id' => 0, 'action' => $action, 'start_time' => now(), 'status' => 'In Progress', 'old_build_id' => $old_build_id_spo, 'new_build_id' => $new_build_id_spo, 'old_sf_build_id' => $old_build_id_sf, 'new_sf_build_id' => $new_build_id_sf, 'created_at' => now()]);
                     } else {
                         DB::table('action_histories')
                             ->insert(['unique_id' => $uuid, 'users_id' => $user_details->id, 'instance_details_id' => $id, 'jenkins_build_id' => 0, 'action' => $action, 'start_time' => now(), 'status' => 'In Progress', 'created_at' => now()]);
                     }
 
-                    $url = $instanceDetail->jenkins_url . 'buildWithParameters?uuid=' . $uuid . '\&target=' . $jenkins_action;
+                    $url = $instanceDetail->jenkins_url . 'buildWithParameters?uuid=' . $uuid . '\&target=' . $action;
                     Log::debug('Defined URL - ' . $url);
 
                     try {
                         Log::info('Running exec for action - ' . $action);
                         exec('curl -X POST -u' . $instanceDetail->jenkins_uname . ':' . $instanceDetail->jenkins_token . ' ' . $url);
+                        Log::info('curl -X POST -u' . $instanceDetail->jenkins_uname . ':' . $instanceDetail->jenkins_token . ' ' . $url);
+                        Log::info('Completed exec for action - ' . $action);
                     } catch (\Throwable $th) {
                         Log::error('Action execution failed, details ' . $th);
                         $error_email = "Y";
@@ -452,7 +457,7 @@ class Instance_detailController extends AppBaseController
                 // $urlcheck = False;
                 if (!$urlcheck) {
                     log::error('Jenkins URL ' . $instanceDetail->jenkins_url . ' is not online, please notify SPO-Incredibles');
-                    Flash::error('Jenkins URL for ID ' . $instanceDetail->id . ' is not online, hence ' . $jenkins_action . ' will not be executed');
+                    Flash::error('Jenkins URL for ID ' . $instanceDetail->id . ' is not online, hence ' . $action . ' will not be executed');
                 } else {
                     log::info('Jenkins URL ' . $instanceDetail->jenkins_url . ' is online');
                     Log::info('Updating instance_details table, making running_jenkins_job to Y and instance_is_active to N ');
@@ -477,7 +482,7 @@ class Instance_detailController extends AppBaseController
                             ->insert(['unique_id' => $uuid, 'users_id' => $user_details->id, 'instance_details_id' => $id, 'jenkins_build_id' => 0, 'action' => $action, 'start_time' => now(), 'status' => 'In Progress', 'created_at' => now()]);
                     }
 
-                    $url = $instanceDetail->jenkins_url . 'buildWithParameters?uuid=' . $uuid . '\&target=' . $jenkins_action;
+                    $url = $instanceDetail->jenkins_url . 'buildWithParameters?uuid=' . $uuid . '\&target=' . $action;
                     Log::info('Defined URL - ' . $url);
 
                     Log::info('Running exec for action - ' . $action);

@@ -139,6 +139,13 @@
                         $hidden_figures .= "ML ";
                         $hidden_figures .= "Machine Learning ";
                     }
+                    if($instanceDetail->escm_type == "Production") {
+                        $icon_list .= " <i class=\"fab fa-product-hunt\" title=\"ESCM-Production\"></i> ";
+                        $hidden_figures .= "ESCM-Production ";
+                    } elseif($instanceDetail->escm_type == "Sandbox") {
+                        $icon_list .= " <i class=\"fas fa-box\" title=\"ESCM-Sandbox\"></i> ";
+                        $hidden_figures .= "ESCM-Sandbox ";
+                    }
 
 
                     //  SETTING UP $user_has_rights VARIABLE
