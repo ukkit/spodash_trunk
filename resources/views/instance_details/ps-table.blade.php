@@ -140,10 +140,12 @@ $CX=1;
                 $hidden_figures .= "Machine Learning ";
             }
             if($instanceDetail->escm_type == "Production") {
-                $icon_list .= " <i class=\"fab fa-product-hunt\" title=\"ESCM-Production\"></i> ";
+                // $icon_list .= " <i class=\"fab fa-product-hunt\" title=\"ESCM-Production\"></i> ";
+                $icon_list .= "<span class=\"escm_prod small\">ESCM-Prod</span> ";
                 $hidden_figures .= "ESCM-Production ";
             } elseif($instanceDetail->escm_type == "Sandbox") {
-                $icon_list .= " <i class=\"fas fa-box\" title=\"ESCM-Sandbox\"></i> ";
+                // $icon_list .= " <i class=\"fas fa-box\" title=\"ESCM-Sandbox\"></i> ";
+                $icon_list .= "<span class=\"escm_sandbox small\">ESCM-Sandbox</span> ";
                 $hidden_figures .= "ESCM-Sandbox ";
             }
 

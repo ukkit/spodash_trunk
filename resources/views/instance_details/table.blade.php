@@ -1,8 +1,5 @@
     <?php
         $CX=1;
-        // $filename = "instances_" . date('YmdHis') . ".csv";
-        // // $f = fopen($filename, 'w');
-        // $f = fopen('php://output', 'w');
     ?>
 
     <table class="table table-responsive table-condensed table-striped" id="instanceDetails-table">
@@ -140,16 +137,18 @@
                         $icon_list .= " <i class=\"fas fa-stethoscope\" title=\"CFT - $instanceDetail->check_fail_count\"></i> ";
                         $hidden_figures .= "CFT ";
                     }
-                    if(!empty($instanceDetail->ml_details_id)) {
-                        $icon_list .= " <i class=\"fab fa-leanpub\" title=\"ML Configured\"></i> ";
-                        $hidden_figures .= "ML ";
-                        $hidden_figures .= "Machine Learning ";
-                    }
+                    // if(!empty($instanceDetail->ml_details_id)) {
+                    //     $icon_list .= " <i class=\"fab fa-leanpub\" title=\"ML Configured\"></i> ";
+                    //     $hidden_figures .= "ML ";
+                    //     $hidden_figures .= "Machine Learning ";
+                    // }
                     if($instanceDetail->escm_type == "Production") {
-                        $icon_list .= " <i class=\"fab fa-product-hunt\" title=\"ESCM-Production\"></i> ";
+                        // $icon_list .= " <i class=\"fab fa-product-hunt\" title=\"ESCM-Production\"></i> ";
+                        $icon_list .= "<span class=\"escm_prod small\">ESCM-Prod</span> ";
                         $hidden_figures .= "ESCM-Production ";
                     } elseif($instanceDetail->escm_type == "Sandbox") {
-                        $icon_list .= " <i class=\"fas fa-box\" title=\"ESCM-Sandbox\"></i> ";
+                        // $icon_list .= " <i class=\"fas fa-box\" title=\"ESCM-Sandbox\"></i> ";
+                        $icon_list .= "<span class=\"escm_sandbox small\">ESCM-Sandbox</span> ";
                         $hidden_figures .= "ESCM-Sandbox ";
                     }
 
