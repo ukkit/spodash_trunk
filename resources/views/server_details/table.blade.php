@@ -165,7 +165,7 @@
             @endhasanyrole
             <td class="hidden">{!! $serverDetail->server_note !!}</td>
             @hasanyrole('advance|admin|superadmin')
-                <td class="text-center">{!! $serverDetail->server_user !!}/{!! $serverDetail->server_password !!}/td>
+                <td class="text-center">{!! $serverDetail->server_user !!}/{!! $serverDetail->server_password !!} </td>
                 <td>{!! $serverDetail->server_owner !!}</td>
                 <td class="text-center">{!! $has_dba !!}</td>
                 @if($serverDetail->server_is_active == "Y")
