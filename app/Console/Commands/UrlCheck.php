@@ -21,27 +21,29 @@ class UrlCheck extends Command
         parent::__construct();
     }
 
-    private function get_http_response_code($theURL) {
+    private function get_http_response_code($theURL)
+    {
         $headers = get_headers($theURL);
         return substr($headers[0], 9, 3);
     }
 
-    private function url_test( $url ) {
+    private function url_test($url)
+    {
         $timeout = 15; // INCREASED THIS TO 15 FROM 10
         $ch = curl_init();
-        curl_setopt ( $ch, CURLOPT_URL, $url );
-        curl_setopt ( $ch, CURLOPT_RETURNTRANSFER, 1 );
-        curl_setopt ( $ch, CURLOPT_TIMEOUT, $timeout );
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
         $http_respond = curl_exec($ch);
-        $http_respond = trim( strip_tags( $http_respond ) );
-        $http_code = curl_getinfo( $ch, CURLINFO_HTTP_CODE );
-        if ( ( $http_code == "200" ) || ( $http_code == "302" ) ) {
+        $http_respond = trim(strip_tags($http_respond));
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        if (($http_code == "200") || ($http_code == "302")) {
             return "PASS";
         } else {
             // you can return $http_code here if necessary or wanted
             return "FAIL";
         }
-        curl_close( $ch );
+        curl_close($ch);
     }
 
     public function handle()
@@ -67,7 +69,7 @@ class UrlCheck extends Command
 
         if (!empty($instance_data)) {
             if ($id == "all") {
-                foreach($instance_data as $inst) {
+                foreach ($instance_data as $inst) {
                     $return = $this->check_instance($inst);
                 }
             } else {
@@ -76,7 +78,7 @@ class UrlCheck extends Command
         }
 
         if (!empty($intellicus_data)) {
-            if($id == "all") {
+            if ($id == "all") {
                 foreach ($intellicus_data as $intell) {
                     $return = $this->check_intellicus($intell);
                 }
@@ -86,16 +88,17 @@ class UrlCheck extends Command
         }
     }
 
-    private function instance_data($id) {
+    private function instance_data($id)
+    {
         if ($id == "all") {
             try {
-                $data = DB::table('instance_details')->where('instance_is_active','Y')->whereNull('deleted_at')->get();
+                $data = DB::table('instance_details')->where('instance_is_active', 'Y')->whereNull('deleted_at')->get();
             } catch (\Throwable $th) {
                 $data = null;
             }
         } else {
             try {
-                $data = DB::table('instance_details')->where('id', $id)->where('instance_is_active','Y')->whereNull('deleted_at')->first();
+                $data = DB::table('instance_details')->where('id', $id)->where('instance_is_active', 'Y')->whereNull('deleted_at')->first();
             } catch (\Throwable $th) {
                 $data = null;
             }
@@ -103,7 +106,8 @@ class UrlCheck extends Command
         return $data;
     }
 
-    private function intellicus_data($id) {
+    private function intellicus_data($id)
+    {
         // echo "Inside intellicus_Dats with ID".$id."\n";
         if ($id == "all") {
             try {
@@ -113,7 +117,7 @@ class UrlCheck extends Command
             }
         } else {
             try {
-                $data = DB::table('intellicus_details')->where('id', $id)->where('is_active',"Y")->whereNull('deleted_at')->first();
+                $data = DB::table('intellicus_details')->where('id', $id)->where('is_active', "Y")->whereNull('deleted_at')->first();
             } catch (\Throwable $th) {
                 $data = null;
             }
@@ -121,22 +125,23 @@ class UrlCheck extends Command
         return $data;
     }
 
-    private function check_instance($record) {
+    private function check_instance($record)
+    {
 
         try {
             $server = DB::table('server_details')->where('id', $record->server_details_id)->first();
         } catch (\Throwable $th) {
-            Log::error('Unable to find server details for instance ID '.$record->id);
+            Log::error('Unable to find server details for instance ID ' . $record->id);
             $server = null;
         }
 
-        if(!empty($server)) {
+        if (!empty($server)) {
             if ($record->is_https == "Y") {
                 $http_tag = "https";
             } else {
                 $http_tag = "http";
             }
-            $_url = $http_tag."://" . $server->server_ip .":".$record->instance_tomcat_port ."/WebUI/";
+            $_url = $http_tag . "://" . $server->server_ip . ":" . $record->instance_tomcat_port . "/WebUI/";
             $generated = filter_var($_url, FILTER_SANITIZE_URL);
 
             $check = $this->url_test($generated);
@@ -148,7 +153,7 @@ class UrlCheck extends Command
                 $response_code = 0;
             }
 
-            echo "INS ID: ".$record->id." | RC: ".$response_code;
+            echo "INS ID: " . $record->id . " | RC: " . $response_code;
 
             try {
                 $fail_count_from_db = $record->check_fail_count;
@@ -157,26 +162,27 @@ class UrlCheck extends Command
             }
 
             if ($check == "FAIL") {
-                if($build_update->running_jenkins_job == "Y") {
-                    Log::info("Found running_jenkins_job as Y for instance id ".$record->id." hence not adding to Failure list");
+                if ($build_update->running_jenkins_job == "Y") {
+                    Log::info("Found running_jenkins_job as Y for instance id " . $record->id . " hence not adding to Failure list");
                 } else {
-                    $this->add_failure($record->id,'INS', $fail_count_from_db, $generated);
+                    $this->add_failure($record->id, 'INS', $fail_count_from_db, $generated);
                     echo " « FAIL | " . $generated . "\n";
                 }
             } else {
-                $this->remove_failure($record->id,'INS');
+                $this->remove_failure($record->id, 'INS');
                 echo " » PASS \n";
             }
         }
         return $check;
     }
 
-    private function check_intellicus($record) {
+    private function check_intellicus($record)
+    {
 
         try {
             $server = DB::table('server_details')->where('id', $record->server_details_id)->first();
         } catch (\Throwable $th) {
-            Log::error('Unable to find server details for intellicus ID '.$record->id);
+            Log::error('Unable to find server details for intellicus ID ' . $record->id);
             $server = null;
         }
 
@@ -186,8 +192,8 @@ class UrlCheck extends Command
             $fail_count_from_db = 0;
         }
 
-        if(!empty($server)) {
-            $generated = "http://".$server->server_ip.":".$record->intellicus_port."/intellicus";
+        if (!empty($server)) {
+            $generated = "http://" . $server->server_ip . ":" . $record->intellicus_port . "/intellicus";
             $check = $this->url_test($generated);
 
             try {
@@ -196,7 +202,7 @@ class UrlCheck extends Command
                 $response_code = 0;
             }
 
-            echo "INT ID: ".$record->id ." | RC: ".$response_code;
+            echo "INT ID: " . $record->id . " | RC: " . $response_code;
 
             if ($check == "FAIL") {
                 $this->add_failure($record->id, "INT", $fail_count_from_db, $generated);
@@ -209,24 +215,25 @@ class UrlCheck extends Command
         return $check;
     }
 
-    private function add_failure($id, $type, $fail_count_from_db, $generated) {
+    private function add_failure($id, $type, $fail_count_from_db, $generated)
+    {
         // First check if record exists for ID and TYPE
         $instance_id = null;
         $intellicus_id = null;
         $updated_at = now();
-        $mail_data = array('id_number'=>null, 'type'=>null, 'failcount'=>null, 'url'=>null , 'at_time'=>$updated_at, 'subject'=>Null);
+        $mail_data = array('id_number' => null, 'type' => null, 'failcount' => null, 'url' => null, 'at_time' => $updated_at, 'subject' => Null);
 
         try {
             if ($type == "INS") {
                 $record = DB::table('url_checks')->where('instance_details_id', $id)->first();
                 $instance_id = $id;
                 $mail_type = "Instance";
-                $mail_data['subject'] = "URL check failed for Instance ID $id";
+                $mail_data['subject'] = "SPO-Dashboard: URL check failed for Instance ID $id";
             } else {
                 $record = DB::table('url_checks')->where('intellicus_details_id', $id)->first();
                 $intellicus_id = $id;
                 $mail_type = "Intellicus";
-                $mail_data['subject'] = "URL check failed for Intellicus ID $id";
+                $mail_data['subject'] = "SPO-Dashboard: URL check failed for Intellicus ID $id";
             }
         } catch (\Throwable $th) {
             // echo $th;
@@ -240,7 +247,7 @@ class UrlCheck extends Command
                     ['instance_details_id' => $instance_id, 'intellicus_details_id' => $intellicus_id, 'fail_count' => 1, 'created_at' => $updated_at],
                 ]);
             } catch (\Throwable $th) {
-                echo "Unable to add Record for instance_id ".$instance_id." or intellicus_id ".$intellicus_id;
+                echo "Unable to add Record for instance_id " . $instance_id . " or intellicus_id " . $intellicus_id;
             }
             $mail_data = null;
         } else {
@@ -248,11 +255,11 @@ class UrlCheck extends Command
             $fail_count = $record->fail_count;
 
             // If record exists then increment the fail_count by 1
-            $fail_count ++;
+            $fail_count++;
             DB::table('url_checks')->where('id', $record->id)->update(['fail_count' => $fail_count, 'updated_at' => $updated_at]);
             echo " | FC: " . $fail_count . " | FC_DB: " . $fail_count_from_db;
 
-            if ( $fail_count_from_db > 0 && $fail_count >= $fail_count_from_db ) { // IF FAIL_COUNT FROM DB IS 0 (ZERO) THEN DONT SEND EMAIL
+            if ($fail_count_from_db > 0 && $fail_count >= $fail_count_from_db) { // IF FAIL_COUNT FROM DB IS 0 (ZERO) THEN DONT SEND EMAIL
                 $mail_data['id_number'] = $id;
                 $mail_data['type'] = $mail_type;
                 $mail_data['failcount'] = $fail_count;
@@ -261,11 +268,10 @@ class UrlCheck extends Command
             } else {
                 $mail_data = null;
             }
-
         }
 
         // dd($mail_data);
-        if(!empty($mail_data)) {
+        if (!empty($mail_data)) {
             try {
                 echo " EMAIL ";
                 $mail_sent = "Y";
@@ -287,7 +293,8 @@ class UrlCheck extends Command
         }
     }
 
-    private function remove_failure($id, $type) {
+    private function remove_failure($id, $type)
+    {
         // As URL is active, we will check if old failure record exists for ID & TYPE
         // IF they exists then make fail_count = 0 and email_sent_date is set to null
         $instance_id = null;
@@ -304,9 +311,9 @@ class UrlCheck extends Command
             $record = null;
         }
 
-        if(!empty($record)) {
+        if (!empty($record)) {
             if ($record->fail_count > 0) {
-                Log::debug("Setting fail_count to ZERO for url_checks ID ".$record->id);
+                Log::debug("Setting fail_count to ZERO for url_checks ID " . $record->id);
                 DB::table('url_checks')->where('id', $record->id)->update(['fail_count' => 0, 'email_sent_date' => null, 'updated_at' => $updated_at]);
             }
         }
