@@ -140,7 +140,18 @@
                         $icon_list .= " <i class=\"fas fa-stethoscope\" title=\"CFT - $instanceDetail->check_fail_count\"></i> ";
                         $hidden_figures .= "CFT ";
                     }
-
+                    if(!empty($instanceDetail->ml_details_id)) {
+                        $icon_list .= " <i class=\"fab fa-leanpub\" title=\"ML Configured\"></i> ";
+                        $hidden_figures .= "ML ";
+                        $hidden_figures .= "Machine Learning ";
+                    }
+                    if($instanceDetail->escm_type == "Production") {
+                        $icon_list .= " <i class=\"fab fa-product-hunt\" title=\"ESCM-Production\"></i> ";
+                        $hidden_figures .= "ESCM-Production ";
+                    } elseif($instanceDetail->escm_type == "Sandbox") {
+                        $icon_list .= " <i class=\"fas fa-box\" title=\"ESCM-Sandbox\"></i> ";
+                        $hidden_figures .= "ESCM-Sandbox ";
+                    }
 
 
                     //  SETTING UP $user_has_rights VARIABLE

@@ -44,6 +44,15 @@ class Pai_buildController extends AppBaseController
     {
         $input = $request->all();
 
+        $strip_pvn = preg_replace("/[^0-9]/","",$input['pai_version']);
+        $strip_pbn = preg_replace("/[^0-9]/","",$input['pai_build']);
+        $old_pvid = $strip_pvn.$strip_pbn;
+        $pv_id = $strip_pvn."_".$strip_pbn;
+
+        // Generating pv_id by merging numbers of pai_version and pai_build
+        $input['pv_id'] = $pv_id;
+        $input['old_pvid'] = $old_pvid;
+
         $paiBuild = $this->paiBuildRepository->create($input);
 
         Flash::success('Pai Build saved successfully.');

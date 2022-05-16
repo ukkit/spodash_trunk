@@ -42,7 +42,7 @@ class UrlFailed extends Mailable
     {
         // return $this->view('view.name');
         $failed_hours = ($this->failcount * 30) / 60; //Getting hours since URL is down
-        return $this->from('SPO-Dashboard@ptc.com')->subject($this->subject)->markdown('emails.action.url-check-failed')
+        return $this->subject($this->subject)->markdown('emails.action.url-check-failed')
             ->with('id_number', $this->id_number)
             ->with('type', $this->type)
             ->with('failed_hours', $failed_hours)
