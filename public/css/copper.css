@@ -257,11 +257,11 @@ a.navbar-brand,
 
 .foundation {
     /* display: block; */
-    color: #790c0c !important;
-    background-color: #76eec6;
+    color: #12023D !important;
+    background-color: #CED4C1;
     text-transform: lowercase;
     padding: 1px 3px;
-    border: 1px solid #666363;
+    border: 1px solid #12023D;
     border-radius: 3px;
 }
 
@@ -272,6 +272,26 @@ a.navbar-brand,
     text-transform: lowercase;
     padding: 1px 3px;
     border: 1px solid #666363;
+    border-radius: 3px;
+}
+
+.escm_prod {
+    /* display: block; */
+    color: #250D65 !important;
+    background-color: #C4EF5E;
+    text-transform: lowercase;
+    padding: 1px 3px;
+    border: 1px solid #250D65;
+    border-radius: 3px;
+}
+
+.escm_sandbox {
+    /* display: block; */
+    color: #1C0658 !important;
+    background-color: #E1ECC6;
+    text-transform: lowercase;
+    padding: 1px 3px;
+    border: 1px solid #1C0658;
     border-radius: 3px;
 }
 
