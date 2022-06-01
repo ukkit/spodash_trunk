@@ -291,7 +291,7 @@
                             if (($user_has_rights && $user->can('upgrade_instanceDetails'))) {
                                 if($instanceDetail->show_jenkins_build == "Y") {
                                     if($instanceDetail->jenkins_url == "") {
-                                        $spm_build_display .= "<i class=\"fas fa-unlink\" title=\"Jenkins URL missing\"></i>";
+                                        $spm_build_display .= " <i class=\"fas fa-unlink\" title=\"Jenkins URL missing\"></i>";
                                     } else {
                                         if($instanceDetail->running_jenkins_job=='Y') {
                                             $spm_build_display .= " <i class=\"fas fa-sync fa-spin\" title=\"Job in Progress\"></i>";
@@ -317,7 +317,7 @@
                         }
                     }
 
-                    // GENERATING SNOWFLAKE BUILD NUMBER DETAILS
+                    // GENERATING SNOWFLAKE & PAI BUILD NUMBER DETAILS
                     $sf_pv_id = $instanceDetail->sf_pv_id;
                     $pai_pv_id = $instanceDetail->pai_pv_id;
                     if (!isNullOrEmpty($sf_pv_id)) {
@@ -445,11 +445,12 @@
                     if ($do_continue) {
                         if (($user_has_rights && $user->can('upgrade_instanceDetails'))) {
                             if($instanceDetail->show_jenkins_build == "Y") {
+                                // $paisf_build_display .= " ".$instanceDetail->jenkins_url;
                                 if($instanceDetail->jenkins_url == "") {
                                     $paisf_build_display .= "<i class=\"fas fa-unlink\" title=\"Jenkins URL missing\"></i>";
                                 } else {
                                     if($instanceDetail->running_jenkins_job=='Y') {
-                                        $paisf_build_display .= "<i class=\"fas fa-unlink\" title=\"Jenkins URL missing\"></i>";
+                                        // $paisf_build_display .= "<i class=\"fas fa-unlink\" title=\"Jenkins URL missing\"></i>";
                                     } elseif($instanceDetail->running_jenkins_job=='N' && $instanceDetail->instance_is_active == "Y") {
                                         $show_paisf_upgrade_btn = True;
                                     }
