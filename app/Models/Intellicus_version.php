@@ -4,64 +4,14 @@ namespace App\Models;
 
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use DB;
 
-/**
- * @SWG\Definition(
- *      definition="Intellicus_version",
- *      required={"intellicus_version"},
- *      @SWG\Property(
- *          property="id",
- *          description="id",
- *          type="integer",
- *          format="int32"
- *      ),
- *      @SWG\Property(
- *          property="intellicus_version",
- *          description="intellicus_version",
- *          type="string"
- *      ),
- *      @SWG\Property(
- *          property="intellicus_patch",
- *          description="intellicus_patch",
- *          type="string"
- *      ),
- *      @SWG\Property(
- *          property="release_date",
- *          description="release_date",
- *          type="string",
- *          format="date"
- *      ),
- *      @SWG\Property(
- *          property="is_active",
- *          description="is_active",
- *          type="string"
- *      ),
- *      @SWG\Property(
- *          property="created_at",
- *          description="created_at",
- *          type="string",
- *          format="date-time"
- *      ),
- *      @SWG\Property(
- *          property="updated_at",
- *          description="updated_at",
- *          type="string",
- *          format="date-time"
- *      ),
- *      @SWG\Property(
- *          property="deleted_at",
- *          description="deleted_at",
- *          type="string",
- *          format="date-time"
- *      )
- * )
- */
 class Intellicus_version extends Model
 {
     use SoftDeletes;
 
     public $table = 'intellicus_versions';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -106,4 +56,12 @@ class Intellicus_version extends Model
     {
         return $this->hasMany(\App\Models\IntellicusDetail::class, 'intellicus_versions_id');
     }
+
+    public function get_intellicus_details_by_id($id)
+    {
+        $value = DB::table('intellicus_details')->where('intellicus_versions_id', $id)->whereNull('deleted_at')->get();
+        return $value;
+    }
+
+    // public function
 }

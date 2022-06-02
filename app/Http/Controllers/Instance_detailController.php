@@ -361,6 +361,7 @@ class Instance_detailController extends AppBaseController
                     $mail_data['latest_build_sf'] = $latest_build_sf;
                     $mail_data['current_build_sf'] = $current_build_sf;
                     $email = new BuildStarted($mail_data);
+                    $jenkins_action = "BuildUpdate"; //Same action as sm_pai_upgrade
 
                     Log::info('SPM and SF build update trigerred for Instance ID ' . $instanceDetail->id . ' by ' . $username . '. This will upgrade SPM Build from ' . $current_build_spo . ' to ' . $latest_build_spo . ' and Snowflake Build from ' . $current_build_sf . ' to ' . $latest_build_sf);
                     break;
@@ -376,6 +377,7 @@ class Instance_detailController extends AppBaseController
                     $mail_data['latest_build_pai'] = $latest_build_pai;
                     $mail_data['current_build_pai'] = $current_build_pai;
                     $email = new BuildStarted($mail_data);
+                    $jenkins_action = "BuildUpdate";
 
                     Log::info('SPM and PAI build update trigerred for Instance ID ' . $instanceDetail->id . ' by ' . $username . '. This will upgrade SPM Build from ' . $current_build_spo . ' to ' . $latest_build_spo . ' and PAI Build from ' . $current_build_pai . ' to ' . $latest_build_pai);
                     break;
@@ -416,7 +418,7 @@ class Instance_detailController extends AppBaseController
                             ->insert(['unique_id' => $uuid, 'users_id' => $user_details->id, 'instance_details_id' => $id, 'jenkins_build_id' => 0, 'action' => $action, 'start_time' => now(), 'status' => 'In Progress', 'created_at' => now()]);
                     }
 
-                    $url = $instanceDetail->jenkins_url . 'buildWithParameters?uuid=' . $uuid . '\&target=' . $action;
+                    $url = $instanceDetail->jenkins_url . 'buildWithParameters?uuid=' . $uuid . '\&target=' . $jenkins_action;
                     Log::debug('Defined URL - ' . $url);
 
                     try {
@@ -482,7 +484,7 @@ class Instance_detailController extends AppBaseController
                             ->insert(['unique_id' => $uuid, 'users_id' => $user_details->id, 'instance_details_id' => $id, 'jenkins_build_id' => 0, 'action' => $action, 'start_time' => now(), 'status' => 'In Progress', 'created_at' => now()]);
                     }
 
-                    $url = $instanceDetail->jenkins_url . 'buildWithParameters?uuid=' . $uuid . '\&target=' . $action;
+                    $url = $instanceDetail->jenkins_url . 'buildWithParameters?uuid=' . $uuid . '\&target=' . $jenkins_action;
                     Log::info('Defined URL - ' . $url);
 
                     Log::info('Running exec for action - ' . $action);

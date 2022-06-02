@@ -257,6 +257,8 @@ $(document).ready(function () {
 
 $(document).ready(function () {
     $('#intellicusVersions-table').DataTable({
-
+        "ordering": false,
+        "iDisplayLength": 25,
+        "lengthMenu": [25, 50, 75, 100]
     });
 });
