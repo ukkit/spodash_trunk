@@ -595,7 +595,7 @@
                     $action_hist_record = $instanceDetail->return_action_history_details($instanceDetail->id);
                     $status_icon = "";
                     $show_warning = Null;
-                    $status_td = "<td>";
+                    $acthist_status_td = "<td>";
 
                     if (empty($action_hist_record))
                     {
@@ -639,7 +639,7 @@
                             } else {
                                 $action_histories .= "Mismatch Error<br>";
                             }
-                            $status_td = "<td class=\"status_warning\">";
+                            $acthist_status_td = "<td class=\"status_warning\">";
                         } elseif (($status == "Successful") && ($instanceDetail->running_jenkins_job == "Y" )) {
                             $action_histories .= "<br><i class=\"fas fa-exclamation-triangle fa-sm\" title=\"Status Mismatch\"></i> ";
                             if ($show_warning) {
@@ -647,23 +647,27 @@
                             } else {
                                 $action_histories .= "Mismatch Error<br>";
                             }
-                            $status_td = "<td class=\"status_warning\">";
+                            $acthist_status_td = "<td class=\"status_warning\">";
                         } elseif (($status == "Successful") && ($instanceDetail->running_jenkins_job == "N" )) {
                             $action_histories .= " <i class=\"far fa-check-circle fa-sm\" title=\"Successfull\"></i><br>";
                             $action_histories .= "<i class=\"fas fa-clock fa-sm\" title=\"Time\"></i> ".trim($action_hist_record->end_time,'[]"')."<br>";
                         } elseif ($status == "Failed") {
                             $action_histories .= "<i class=\"far fa-times-circle fa-sm\" title=\"Failed\"></i><br>";
                             $action_histories .= "<i class=\"fas fa-clock fa-sm\" title=\"Time\"></i> ".trim($action_hist_record->end_time,'[]"')."<br>";
-                            $status_td = "<td class=\"status_failed\">";
+                            $acthist_status_td = "<td class=\"status_failed\">";
                         } elseif ($status == "Scheduler")  {
                             // $action_histories .= "<br><i class=\"fas fa-exclamation-triangle fa-sm\" title=\"Status Mismatch\"></i> ";
                             $action_histories .= "<br><i class=\"fas fa-clock fa-sm\" title=\"Time\"></i> ".trim($action_hist_record->end_time,'[]"')."<br>";
-                            $status_td = "<td class=\"status_warning\">";
+                            $acthist_status_td = "<td class=\"status_warning\">";
                         }
 
                         $action_histories .= "<i class=\"fas fa-user fa-sm\" title=\"User\"></i> ".$username->name;
                         $action_histories .= "</small>";
                     }
+                    if ($instanceDetail->instance_is_active == "N") {
+                        $acthist_status_td = "<td>";
+                    }
+
 
                     // IN-USE MESSAGE
                     if ($instanceDetail->in_use == "Y") {
@@ -788,7 +792,7 @@
                     <td class="hidden">{!! $instanceDetail->jdk_type !!}</td> <!-- td-block HIDDEN JDK DETAILS -->
                     <td>{!! $ap_heapsize !!} {!! $web_heapsize !!}</td> <!-- td-block HEAP SIZES -->
                     <td> {!! $team_name !!} </td> <!-- td-block TEAM NAMES -->
-                    {!! $status_td !!}  <!-- start-td-block ACTION HISTORY -->
+                    {!! $acthist_status_td !!}  <!-- start-td-block ACTION HISTORY -->
                     {!! $action_histories !!}
                     </td> <!-- end-td-block ACTION HISTORY -->
 
