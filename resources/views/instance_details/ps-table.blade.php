@@ -34,12 +34,14 @@ $CX=1;
             <th class="text-center icon_column"><i class="fas fa-heartbeat" title="Instance is Active"></i></th>
             <th class="text-center icon_column"><i class="fas fa-tachometer-alt" title="Show on Dashboard"></i></th>
         @endhasanyrole
-        @canany('restart_instanceDetails','edit_instanceDetails')
-            <th class="text-center icon_column"><i class="fas fa-tools" title="Actions"></i></th>
-        @endcanany
-        @can('delete_instanceDetails')
-            <th class="text-center icon_column"><i class="fas fa-trash" title="Delete Instance"></i></th>
+        @can('restart_instanceDetails')
+            <th class="text-center icon_column"><i class="fas fa-tools" title="User Actions"></i></th>
         @endcan
+        {{-- @canany('delete_instanceDetails','edit_instanceDetails') --}}
+        @hasanyrole('advance|admin|superadmin')
+            <th class="text-center icon_column"><i class="fas fa-user-cog" title="Admin Actions"></i></th>
+        @endhasanyrole
+        {{-- @endcanany --}}
     </tr>
 </thead>
 <tbody>
