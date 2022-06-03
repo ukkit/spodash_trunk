@@ -184,22 +184,21 @@
                     <i class="far fa-times-circle" title="NO"></i>
                 @endif
                     </td>
-
+                @can('edit_serverDetails')
                 <td>
-                    @can('edit_serverDetails')
-                        {!! Form::open(['class'=>'inline','route' => ['serverDetails.edit', $serverDetail->id], 'method' => 'get']) !!}
-                        {!! Form::button('<i class="fas fa-pencil-alt" title="Edit"></i>', ['type' => 'submit', 'class' => 'btn btn-group-xs btn-edit btn-xs']) !!}
-                        {!! Form::close() !!}
-                    @endcan
+                    {!! Form::open(['class'=>'inline','route' => ['serverDetails.edit', $serverDetail->id], 'method' => 'get']) !!}
+                    {!! Form::button('<i class="fas fa-pencil-alt" title="Edit"></i>', ['type' => 'submit', 'class' => 'btn btn-group-xs btn-edit btn-xs']) !!}
+                    {!! Form::close() !!}
                 </td>
+                @endcan
+                @can('delete_serverDetails')
                 <td>
-                    @can('delete_serverDetails')
-                        {!! Form::open(['class'=>'inline','route' => ['serverDetails.destroy', $serverDetail->id], 'method' => 'delete']) !!}
-                        {!! Form::button('<i class="fas fa-trash" title="Delete"></i>', ['type' => 'submit', 'class' => 'btn btn-group-xs btn-danger btn-xs', 'onclick' => "return confirm('Are you sure you want to delete this server details? This will also delete Database & Instance details for this Server!')"]) !!}
-                        {{-- {!! Form::button('<i class="fas fa-trash" title="Delete"></i>', ['type' => 'submit', 'class' => 'btn btn-group-xs btn-danger btn-xs', 'onclick' => "return confirm('Are you sure you want to delete this server details? This will also delete Database & Instance details for this Server!')"]) !!} --}}
-                        {!! Form::close() !!}
-                    @endcan
+                    {!! Form::open(['class'=>'inline','route' => ['serverDetails.destroy', $serverDetail->id], 'method' => 'delete']) !!}
+                    {!! Form::button('<i class="fas fa-trash" title="Delete"></i>', ['type' => 'submit', 'class' => 'btn btn-group-xs btn-danger btn-xs', 'onclick' => "return confirm('Are you sure you want to delete this server details? This will also delete Database & Instance details for this Server!')"]) !!}
+                    {{-- {!! Form::button('<i class="fas fa-trash" title="Delete"></i>', ['type' => 'submit', 'class' => 'btn btn-group-xs btn-danger btn-xs', 'onclick' => "return confirm('Are you sure you want to delete this server details? This will also delete Database & Instance details for this Server!')"]) !!} --}}
+                    {!! Form::close() !!}
                 </td>
+                @endcan
 
             @endhasanyrole
         </tr>
