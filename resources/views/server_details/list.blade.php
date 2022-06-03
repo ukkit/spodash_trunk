@@ -132,19 +132,19 @@ $mlcount = count($mldetails);
                                 @if (is_null($db_size))
                                 <td></td>
                                 @else
-                                <td class="text-right">{{ number_format($db_size) }} M</td>
+                                <td class="text-right">{{ number_format($db_size) }} G</td>
                                 @endif
                                 @if (is_null($db_temp_size))
                                 <td></td>
                                 @else
-                                <td class="text-right">{{ number_format($db_temp_size) }} M</td>
+                                <td class="text-right">{{ number_format($db_temp_size) }} G</td>
                                 @endif
                                 <td class="text-right">{{ $tblspc_name }}</td>
                                 @if (is_null($tblspc_used))
                                 <td></td>
                                 @else
                                 <td class="text-right">
-                                    {{ number_format($tblspc_used) }} M/{{ $tblspc_used_percent }}
+                                    {{ number_format($tblspc_used) }} G/{{ $tblspc_used_percent }}
                                 </td>
                                 @endif
                                 <td class="text-right">{{ $temp_tblspc_name }}</td>
@@ -152,7 +152,7 @@ $mlcount = count($mldetails);
                                 <td></td>
                                 @else
                                 <td class="text-right">
-                                    {{ number_format($temp_tblspc_used) }} M/{{ $temp_tblspc_used_percent }}
+                                    {{ number_format($temp_tblspc_used) }} G/{{ $temp_tblspc_used_percent }}
                                 </td>
                                 @endif
                                 <td class="text-right">{{ $db_creation_date }}</td>

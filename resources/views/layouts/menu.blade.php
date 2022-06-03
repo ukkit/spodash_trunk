@@ -71,19 +71,19 @@
             <ul class="dropdown-menu" role="menu">
 
                 <li class="{{ Request::is('productVersions*') ? 'active' : '' }}">
-                    <a href="{!! route('productVersions.index') !!}"><i class="far fa-code-branch fa-lg"></i><span>SPM Builds</span></a>
+                    <a href="{!! route('productVersions.index') !!}"><i class="fas fa-code-branch fa-lg"></i><span>SPM Builds</span></a>
                 </li>
 
                 <li class="{{ Request::is('paiBuilds*') ? 'active' : '' }}">
-                    <a href="{{ route('paiBuilds.index') }}"><i class="far fa-code-branch fa-lg"></i><span>PAI Builds</span></a>
+                    <a href="{{ route('paiBuilds.index') }}"><i class="fas fa-code-branch fa-lg"></i><span>PAI Builds</span></a>
                 </li>
 
                 <li class="{{ Request::is('sfBuilds*') ? 'active' : '' }}">
-                    <a href="{{ route('sfBuilds.index') }}"><i class="far fa-code-branch fa-lg"></i><span>Snowflake Builds</span></a>
+                    <a href="{{ route('sfBuilds.index') }}"><i class="fas fa-code-branch fa-lg"></i><span>Snowflake Builds</span></a>
                 </li>
 
                 <li class="{{ Request::is('intellicusVersions*') ? 'active' : '' }}">
-                    <a href="{{ route('intellicusVersions.index') }}"><i class="far fa-code-branch fa-lg"></i><span>Intellicus Versions</span></a>
+                    <a href="{{ route('intellicusVersions.index') }}"><i class="fas fa-code-branch fa-lg"></i><span>Intellicus Versions</span></a>
                 </li>
             </ul>
         </li>

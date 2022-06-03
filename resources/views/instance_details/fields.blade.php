@@ -543,6 +543,19 @@ $escm_type_array = array("Production","Sandbox");
             </div>
         </div>
 
+        {{-- PAI Advance configured --}}
+        <div class="form-group col-sm-2">
+            {!! Form::label('pai_foundation', 'PAI Foundation Configured?') !!}
+            <div class="form-control disabled">
+                <label class="radio-inline">
+                    <input type="radio" name="pai_foundation" value="Y" checked> Yes
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="pai_foundation" value= "N" @if($record->pai_foundation == "N")  checked @endif> No
+                </label>
+            </div>
+        </div>
+
        {{-- Enable instance in use field --}}
         <div class="form-group col-sm-2">
             {!! Form::label('in_use', 'Instance in use for demo?') !!}

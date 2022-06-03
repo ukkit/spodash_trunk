@@ -12,7 +12,7 @@
                 <th>End Time</th>
                 <th>Status</th>
                 @can('edit_actionHistories')
-                <th class="text-center"><i class="fas fa-tools" title="Actions"></i></th>
+                <th class="text-center icon_column"><i class="fas fa-tools" title="Actions"></i></th>
                 @endcan
             </tr>
         </thead>
@@ -136,7 +136,7 @@
                     <td class="text-center">
                         <div class="btn-group">
                             {!! Form::open(['class'=>'inline','route' => ['actionHistories.edit', $actionHistory->id], 'method' => 'get']) !!}
-                            {!! Form::button('<i class="fas fa-pencil-alt" title="Edit"></i>', ['type' => 'submit', 'class' => 'btn btn-info btn-xs']) !!}
+                            {!! Form::button('<i class="fas fa-pencil-alt" title="Edit"></i>', ['type' => 'submit', 'class' => 'btn btn-edit btn-xs']) !!}
                             {!! Form::close() !!}
                         @if(!$hasEndTime)
                             @role('superadmin')

@@ -1,8 +1,5 @@
     <?php
         $CX=1;
-        // $filename = "instances_" . date('YmdHis') . ".csv";
-        // // $f = fopen($filename, 'w');
-        // $f = fopen('php://output', 'w');
     ?>
 
     <table class="table table-responsive table-condensed table-striped" id="instanceDetails-table">
@@ -15,30 +12,29 @@
                 @endhasanyrole
                 <th class="hidden">Product</th>
                 <th class="text-center column_10pct">Customer</th>
-                <th class="text-center column_5pct">Build</th>
+                <th class="text-center column_6pct">Build</th>
                 <th class="hidden">Intellicus</th>
                 <th class="text-center column_7pct">Login</th>
                 <th class="details_column">App Details</th>
                 <th class="details_column">DB Details</th>
                 <th class="hidden">JDK Type</th>
-                {{-- <th class="text-center">AP Heapsize</th>
-                <th class="text-center">Web HeapSize</th> --}}
                 <th class="column_6pct">Heapsize (MB)</th>
+                {{-- <th class="">Heapsize (MB)</th> --}}
                 <th class="column_6pct">Used By</th>
                 <th class="column_10pct">User Actions</th>
                 <th class="hidden">Switches</th> <!-- DEFINING SNOWFLAKE OR CONTRAST OR OTHER SWITCHES -->
                 <th class="hidden">Notes</th>
                 @hasanyrole('advance|admin|superadmin')
-                    <th class="text-center icon_column"><i class="fas fa-user-cog" title="Tomcat/Autopilot Service Name defined"></i></th>
+                    <th class="text-center width_15px"><i class="fas fa-cog" title="Tomcat/Autopilot Service Name defined"></i></th>
                     {{-- <th class="text-center"><i class="fab fa-jira" title="JIRA Number(s)"></i></th> --}}
-                    <th class="text-center icon_column"><i class="fas fa-heartbeat" title="Instance is Active"></i></th>
-                    <th class="text-center icon_column"><i class="fas fa-tachometer-alt" title="Show on Dashboard"></i></th>
+                    <th class="text-center width_15px"><i class="fas fa-heartbeat" title="Instance is Active"></i></th>
+                    <th class="text-center width_15px"><i class="fas fa-tachometer-alt" title="Show on Dashboard"></i></th>
                 @endhasanyrole
                 @canany('restart_instanceDetails','edit_instanceDetails')
-                    <th class="text-center icon_column"><i class="fas fa-tools" title="Actions"></i></th>
+                    <th class="text-center icon_column"><i class="fas fa-tools" title="User Actions"></i></th>
                 @endcanany
                 @can('delete_instanceDetails')
-                    <th class="text-center icon_column"><i class="fas fa-trash" title="Delete Instance"></i></th>
+                    <th class="text-center icon_column"><i class="fas fa-user-cog" title="Admin Actions"></i></th>
                 @endcan
             </tr>
         </thead>
@@ -58,7 +54,7 @@
                     $has_snowflake = False;
                     $has_pai = False;
                     $spm_build_display = "";
-                    $paisf_build_display = "";
+                    $paisf_build_display = "<div class=\"paisf_build_display\">";
                     $user = Auth::user();
                     $do_continue = True;
                     $show_spm_upgrade_btn = False;
@@ -67,9 +63,6 @@
                     $some_text = "";
                     $sf_pv_id = null;
                     $pai_pv_id = null;
-                    $action_name = null;
-                    $update_text = null;
-                    $title_text = null;
                     $both_action_name = null;
                     $both_update_text = null;
                     $both_title_text = null;
@@ -86,7 +79,10 @@
                     }
                     $generated_log_dir = "\\\\" . $server_ip . "\\" . $instanceDetail->instance_shared_dir;
 
+                    // Get product short name
+                    $product_short_name = $instanceDetail->product_names_by_id->product_short_name;
 
+                    // Check if PAI repository is defined, this will be used to sow pai-oracle
                     try {
                         $pai_type = strtolower($instanceDetail->return_db_details($instanceDetail->pai_details_id,'repository_type'));
                     } catch (\Throwable $th) {
@@ -117,6 +113,10 @@
                         // $icon_list .= " <i class=\"far fa-snowflake\" title=\"Snowflake Configured\"></i> ";
                         $icon_list .= "<span class=\"snow small\">snowflake</span> ";
                         $hidden_figures .= "Snowflake ";
+                    } elseif (!empty($instanceDetail->ml_details_id)) {
+                        $icon_list .= "<span class=\"foundation small\">Machine-Learning</span> ";
+                        $hidden_figures .= "ML ";
+                        $hidden_figures .= "Machine Learning ";
                     } else {
                         if(($pai_type == "pai" && $pai_db_type == "oracle")) {
                             $icon_list .= "<span class=\"grey small\">PAI-Oracle</span> ";
@@ -124,6 +124,9 @@
                         } elseif(($pai_type == "pai" && $pai_db_type == "hadoop")) {
                             $icon_list .= "<span class=\"grey small\">PAI-Hadoop</span> ";
                             $hidden_figures .= "Hadoop ";
+                        } elseif ($instanceDetail->pai_foundation == "Y") {
+                            $icon_list .= "<span class=\"foundation small\">PAI-Foundation</span> ";
+                            $hidden_figures .= "PAI-Foundation ";
                         }
                     }
                     if($instanceDetail->is_contrast_configured == "Y") {
@@ -134,16 +137,18 @@
                         $icon_list .= " <i class=\"fas fa-stethoscope\" title=\"CFT - $instanceDetail->check_fail_count\"></i> ";
                         $hidden_figures .= "CFT ";
                     }
-                    if(!empty($instanceDetail->ml_details_id)) {
-                        $icon_list .= " <i class=\"fab fa-leanpub\" title=\"ML Configured\"></i> ";
-                        $hidden_figures .= "ML ";
-                        $hidden_figures .= "Machine Learning ";
-                    }
+                    // if(!empty($instanceDetail->ml_details_id)) {
+                    //     $icon_list .= " <i class=\"fab fa-leanpub\" title=\"ML Configured\"></i> ";
+                    //     $hidden_figures .= "ML ";
+                    //     $hidden_figures .= "Machine Learning ";
+                    // }
                     if($instanceDetail->escm_type == "Production") {
-                        $icon_list .= " <i class=\"fab fa-product-hunt\" title=\"ESCM-Production\"></i> ";
+                        // $icon_list .= " <i class=\"fab fa-product-hunt\" title=\"ESCM-Production\"></i> ";
+                        $icon_list .= "<span class=\"escm_prod small\">ESCM-Prod</span> ";
                         $hidden_figures .= "ESCM-Production ";
                     } elseif($instanceDetail->escm_type == "Sandbox") {
-                        $icon_list .= " <i class=\"fas fa-box\" title=\"ESCM-Sandbox\"></i> ";
+                        // $icon_list .= " <i class=\"fas fa-box\" title=\"ESCM-Sandbox\"></i> ";
+                        $icon_list .= "<span class=\"escm_sandbox small\">ESCM-Sandbox</span> ";
                         $hidden_figures .= "ESCM-Sandbox ";
                     }
 
@@ -205,17 +210,24 @@
                         $app_btn_type = "btn-disabled";
                         $intell_btn_type = "btn-disabled";
                         $ml_btn_type = "btn-disabled";
+                    } elseif ($instanceDetail->in_use == "Y") {
+                        $app_btn_type = "btn-instance-inuse";
+                        $intell_btn_type = "btn-intellicus-inuse";
+                        $ml_btn_type = "btn-ml-inuse";
                     } else {
                         $app_btn_type = "btn-instance";
                         $intell_btn_type = "btn-intellicus";
                         $ml_btn_type = "btn-ml";
                     }
+
                     if($instanceDetail->is_https == "Y") {
                         $http_tag = "https";
-                        $link_icon = "<button type=\"button\" class=\"btn $app_btn_type btn-xs xsmall\" title=\"$generated_app_userpass\"><i class=\"fas fa-lock fs-sm\" ></i> ".$instanceDetail->product_names_by_id->product_short_name."</button>";
+                        $http_icon = "<button type=\"button\" class=\"btn $app_btn_type btn-xs xsmall\" title=\"$generated_app_userpass\"> ".strtoupper($product_short_name)."</button>";
+                        // $http_icon = "<button type=\"button\" class=\"btn $app_btn_type btn-xs xsmall\" title=\"$generated_app_userpass\"><i class=\"fas fa-lock fs-sm\" ></i> ".strtoupper($product_short_name)."</button>";
                     } else {
                         $http_tag = "http";
-                        $link_icon = "<button type=\"button\" class=\"btn $app_btn_type btn-xs xsmall\" title=\"$generated_app_userpass\"><i class=\"fas fa-lock-open fa-sm\" ></i> ".$instanceDetail->product_names_by_id->product_short_name."</button>";
+                        $http_icon = "<button type=\"button\" class=\"btn $app_btn_type btn-xs xsmall\" title=\"$generated_app_userpass\"> ".strtoupper($product_short_name)."</button>";
+                        // $http_icon = "<button type=\"button\" class=\"btn $app_btn_type btn-xs xsmall\" title=\"$generated_app_userpass\"><i class=\"fas fa-lock-open fa-sm\" ></i> ".strtoupper($product_short_name)."</button>";
                     }
 
                     if ($for_everyone)  {
@@ -228,13 +240,18 @@
                         $generated_app_userpass = "";
                     }
 
+                    $spmspp_btn = "";
                     if (is_null($server_name)) {
-                        $generated_url = null;
+                        $spmspp_btn .= "<i class=\"fas fa-exclamation-triangle\"></i>";
                     } else {
                         $generated_url = $http_tag."://" . $server_name .":".$instanceDetail->instance_tomcat_port ."/WebUI/";
+                        $gen_title = "";
                         if ($show_userpass) {
                             $generated_url .= "?txtUsername=".$instanceDetail->instance_login."&txtPassword=".$instanceDetail->instance_pwd;
+                            $gen_title = "Username/Password: ".$instanceDetail->instance_login."/ ".$instanceDetail->instance_pwd;
                         }
+                        $spmspp_btn .= "<a href=\"". $generated_url ."\" title=\"".$generated_app_userpass."\" target=\"_blank\">";
+                        $spmspp_btn .= "<button type=\"button\" class=\"btn $app_btn_type btn-xs xsmall\" title=\"".$gen_title."\">".strtoupper($product_short_name)."</button></a>";
                     }
 
                     // SPM BUILD AND RELEASE NUMBERS
@@ -263,7 +280,7 @@
                     }
 
                     if (!empty($current_spm_release)) {
-                        $spm_build_display .= $current_spm_release ." ". $current_spm_build;
+                        $spm_build_display .= $current_spm_release ." <strong>". $current_spm_build."</strong>";
                         if($is_spm_rel_build == "Y") {
                             if (Auth::check() && $user->hasanyrole('advance|admin|superadmin')) {
                                 $spm_build_display .= "<a href=\"".route('productVersions.show', [$spm_rl_build_id])."\"> <i class=\"fas fa-crown fa-xs\" title=\"Release Build\"></i></a>";
@@ -274,7 +291,7 @@
                             if (($user_has_rights && $user->can('upgrade_instanceDetails'))) {
                                 if($instanceDetail->show_jenkins_build == "Y") {
                                     if($instanceDetail->jenkins_url == "") {
-                                        $spm_build_display .= "<i class=\"fas fa-unlink\" title=\"Jenkins URL missing\"></i>";
+                                        $spm_build_display .= " <i class=\"fas fa-unlink\" title=\"Jenkins URL missing\"></i>";
                                     } else {
                                         if($instanceDetail->running_jenkins_job=='Y') {
                                             $spm_build_display .= " <i class=\"fas fa-sync fa-spin\" title=\"Job in Progress\"></i>";
@@ -300,10 +317,9 @@
                         }
                     }
 
-                    // GENERATING SNOWFLAKE BUILD NUMBER DETAILS
+                    // GENERATING SNOWFLAKE & PAI BUILD NUMBER DETAILS
                     $sf_pv_id = $instanceDetail->sf_pv_id;
                     $pai_pv_id = $instanceDetail->pai_pv_id;
-                    // dd($sf_pv_id, $pai_pv_id);
                     if (!isNullOrEmpty($sf_pv_id)) {
                         try {
                             $sf_build = $instanceDetail->sf_builds_by_pvid($sf_pv_id);
@@ -331,9 +347,7 @@
                             $sf_title_text = null;
                             $is_sf_rel_build = "N";
                         }
-                    }
-
-                    if (!isNullOrEmpty($pai_pv_id)) {
+                    } elseif (!isNullOrEmpty($pai_pv_id)) {
                         try {
                             $pai_build = $instanceDetail->pai_versions_by_pvid($pai_pv_id);
                             $current_pai_release = $pai_build->pai_version;
@@ -347,6 +361,7 @@
 
                             $pai_update_text = "<i class=\"fas fa-level-up-alt\" title=\"Upgrade to PAI ". $current_pai_release ." Build ". $newest_pai_build ."\"></i> ".$newest_pai_build;
                             $pai_title_text = "Upgrade PAI to ".$current_pai_release . " Build ".$newest_pai_build;
+                            $has_snowflake = False;
                             $has_pai = True;
                         } catch (\Throwable $th) {
                             Log::error("[$instanceDetail->id] Error getting data for  PAI_PV_ID " . $pai_pv_id, [$th]);
@@ -362,14 +377,16 @@
                     }
 
                     // PAI/SNOWFLAKE UPGRADE DETAILS HERE
+
                     if ($has_snowflake) {
-                        $paisf_build_display .= "<br>".$current_sf_release." ".$current_sf_build;
+                        // $paisf_build_display .= "<br>".$current_sf_release." <strong>".$current_sf_build."</strong>";
+                        $paisf_build_display .= $current_sf_release." <strong>".$current_sf_build."</strong>";
                         if ($is_sf_rel_build == "Y") {
                             $paisf_build_display .= " <i class=\"fas fa-crown fa-xs\" title=\"Release Build\"></i>";
                             $do_continue = False;
                             $show_both_upgrade_btn = False;
                         } else {
-                            $paisf_build_display .= "<br>";
+                            // $paisf_build_display .= "<br>";
                             if (strtotime($newest_sf_date) > strtotime($current_sf_date)) {
                                 $action_name = "SF_upgrade";
                                 $update_text = $sf_update_text;
@@ -388,17 +405,18 @@
                             }
                         }
                     } elseif ($has_pai) { // SHOW PAI DETAILS
-                        if (isNullOrEmpty($current_pai_release)) {
+                        if (empty($current_pai_release)) {
                             $do_continue = False;
                             $show_both_upgrade_btn = False;
                         } else {
-                            $paisf_build_display .= "<br>".$current_pai_release." ".$current_pai_build;
+                            // $paisf_build_display .= "<br>".$current_pai_release." <strong>".$current_pai_build."</strong>";
+                            $paisf_build_display .= $current_pai_release." <strong>".$current_pai_build."</strong>";
                             if ($is_pai_rel_build == "Y") {
                                 $paisf_build_display .= " <i class=\"fas fa-crown fa-xs\" title=\"Release Build\"></i><br>";
                                 $do_continue = False;
                                 $show_both_upgrade_btn = False;
                             } else {
-                                $paisf_build_display .= "<br>";
+                                // $paisf_build_display .= "<br>";
                                 if (strtotime($newest_pai_date) > strtotime($current_pai_date)) {
                                     $action_name = "PAI_upgrade";
                                     $onclick = "return confirm";
@@ -423,17 +441,16 @@
                         $do_continue = False;
                     }
 
-                    // dd($show_both_upgrade_btn);
-
                     // dd($paisf_build_display);
                     if ($do_continue) {
                         if (($user_has_rights && $user->can('upgrade_instanceDetails'))) {
                             if($instanceDetail->show_jenkins_build == "Y") {
+                                // $paisf_build_display .= " ".$instanceDetail->jenkins_url;
                                 if($instanceDetail->jenkins_url == "") {
                                     $paisf_build_display .= "<i class=\"fas fa-unlink\" title=\"Jenkins URL missing\"></i>";
                                 } else {
                                     if($instanceDetail->running_jenkins_job=='Y') {
-                                        $paisf_build_display .= "<i class=\"fas fa-unlink\" title=\"Jenkins URL missing\"></i>";
+                                        // $paisf_build_display .= "<i class=\"fas fa-unlink\" title=\"Jenkins URL missing\"></i>";
                                     } elseif($instanceDetail->running_jenkins_job=='N' && $instanceDetail->instance_is_active == "Y") {
                                         $show_paisf_upgrade_btn = True;
                                     }
@@ -449,6 +466,8 @@
                             }
                         }
                     }
+
+                    $paisf_build_display .= "</div>";
 
                     // DB SERVER DETAILS
                     try {
@@ -531,7 +550,7 @@
                             // dd($intserv);
                             $intell_url = "http://".$intelli_server.":".$instanceDetail->intellicus_details_by_id->intellicus_port."/intellicus";
 
-                            $intellicus = "<br><a href=\"".$intell_url."\" target=\"_blank\">";
+                            $intellicus = "<a href=\"".$intell_url."\" target=\"_blank\">";
 
                             $button = $string = str_replace(' ', '', $intell_ver);
                             if (! empty($intell_patch)){
@@ -540,16 +559,16 @@
                             }
 
                             $intell_is_https = $instanceDetail->intellicus_details_by_id->is_https;
-                            if ($intell_is_https == "Y") {
-                                $intell_icon = "<i class=\"fas fa-lock fa-sm\" ></i>";
-                            } else {
-                                $intell_icon = "<i class=\"fas fa-lock-open fa-sm\" ></i>";
-                            }
+                            // if ($intell_is_https == "Y") {
+                            //     $intell_icon = "<i class=\"fas fa-lock fa-sm\" ></i>";
+                            // } else {
+                            //     $intell_icon = "<i class=\"fas fa-lock-open fa-sm\" ></i>";
+                            // }
 
                             if (Auth::user() && ($user_has_rights)) {
-                                $intellicus .= "<button type=\"button\" class=\"btn $intell_btn_type btn-xs xsmall\" title=\"Intellicus User/Pass: $intell_userpass\">$intell_icon $button</button></a>";
+                                $intellicus .= "<button type=\"button\" class=\"btn $intell_btn_type btn-xs xsmall\" title=\"Intellicus User/Pass: $intell_userpass\"> $button</button></a>";
                             } else {
-                                $intellicus .= "<button type=\"button\" class=\"btn $intell_btn_type btn-xs xsmall\" >$intell_icon $button</button></a>";
+                                $intellicus .= "<button type=\"button\" class=\"btn $intell_btn_type btn-xs xsmall\" > $button</button></a>";
                             }
 
                             $intellicus_version = "Intellicus ".$intell_ver." ".$intell_patch;
@@ -576,7 +595,7 @@
                     $action_hist_record = $instanceDetail->return_action_history_details($instanceDetail->id);
                     $status_icon = "";
                     $show_warning = Null;
-                    $status_td = "<td>";
+                    $acthist_status_td = "<td>";
 
                     if (empty($action_hist_record))
                     {
@@ -611,7 +630,7 @@
                         if (($status == "In Progress") && ($instanceDetail->running_jenkins_job == "Y" )) {
                             // if status is in progress and running_jenkins_job is y then it's shown as in progress
                             $action_histories .= "<i class=\"fas fa-sync fa-spin fa-sm\" title=\"Job in Progress\"></i><br>";
-                            $action_histories .= "<i class=\"fas fa-clock fa-sm\" title=\"Start Time\"></i> ".trim($action_hist_record->start_time,'[]"')." IST<br>";
+                            $action_histories .= "<i class=\"fas fa-clock fa-sm\" title=\"Start Time\"></i> ".trim($action_hist_record->start_time,'[]"')."<br>";
                         } elseif (($status == "In Progress") && ($instanceDetail->running_jenkins_job == "N" )) {
                             // if status is in progress and running_jenkins_job is n then it's shown as in progress but an exclamation mark is also shown as it means there is some problem
                             $action_histories .= "<br><i class=\"fas fa-exclamation-triangle fa-sm\" title=\"Status Mismatch\"></i> ";
@@ -620,7 +639,7 @@
                             } else {
                                 $action_histories .= "Mismatch Error<br>";
                             }
-                            $status_td = "<td class=\"status_warning\">";
+                            $acthist_status_td = "<td class=\"status_warning\">";
                         } elseif (($status == "Successful") && ($instanceDetail->running_jenkins_job == "Y" )) {
                             $action_histories .= "<br><i class=\"fas fa-exclamation-triangle fa-sm\" title=\"Status Mismatch\"></i> ";
                             if ($show_warning) {
@@ -628,22 +647,31 @@
                             } else {
                                 $action_histories .= "Mismatch Error<br>";
                             }
-                            $status_td = "<td class=\"status_warning\">";
+                            $acthist_status_td = "<td class=\"status_warning\">";
                         } elseif (($status == "Successful") && ($instanceDetail->running_jenkins_job == "N" )) {
                             $action_histories .= " <i class=\"far fa-check-circle fa-sm\" title=\"Successfull\"></i><br>";
-                            $action_histories .= "<i class=\"fas fa-clock fa-sm\" title=\"Time\"></i> ".trim($action_hist_record->end_time,'[]"')." IST<br>";
+                            $action_histories .= "<i class=\"fas fa-clock fa-sm\" title=\"Time\"></i> ".trim($action_hist_record->end_time,'[]"')."<br>";
                         } elseif ($status == "Failed") {
                             $action_histories .= "<i class=\"far fa-times-circle fa-sm\" title=\"Failed\"></i><br>";
-                            $action_histories .= "<i class=\"fas fa-clock fa-sm\" title=\"Time\"></i> ".trim($action_hist_record->end_time,'[]"')." IST<br>";
-                            $status_td = "<td class=\"status_failed\">";
+                            $action_histories .= "<i class=\"fas fa-clock fa-sm\" title=\"Time\"></i> ".trim($action_hist_record->end_time,'[]"')."<br>";
+                            $acthist_status_td = "<td class=\"status_failed\">";
                         } elseif ($status == "Scheduler")  {
                             // $action_histories .= "<br><i class=\"fas fa-exclamation-triangle fa-sm\" title=\"Status Mismatch\"></i> ";
-                            $action_histories .= "<br><i class=\"fas fa-clock fa-sm\" title=\"Time\"></i> ".trim($action_hist_record->end_time,'[]"')." IST<br>";
-                            $status_td = "<td class=\"status_warning\">";
+                            $action_histories .= "<br><i class=\"fas fa-clock fa-sm\" title=\"Time\"></i> ".trim($action_hist_record->end_time,'[]"')."<br>";
+                            $acthist_status_td = "<td class=\"status_warning\">";
                         }
 
                         $action_histories .= "<i class=\"fas fa-user fa-sm\" title=\"User\"></i> ".$username->name;
                         $action_histories .= "</small>";
+                    }
+                    if ($instanceDetail->instance_is_active == "N") {
+                        $acthist_status_td = "<td>";
+                    }
+
+
+                    // IN-USE MESSAGE
+                    if ($instanceDetail->in_use == "Y") {
+                        list($first_half, $second_half) = splitString($instanceDetail->in_use_msg);
                     }
 
                 ?>
@@ -665,16 +693,19 @@
                 @if (!$show_on_site)
                 {{-- Dont do anything --}}
                 @else
-                    @if ($instanceDetail->in_use == "Y")
-                        <tr class="inuse"> <!-- TR INUSE START -->
-                    @elseif ($instanceDetail->instance_is_active == "N")
+
+                    @if ($instanceDetail->instance_is_active == "N")
                         @hasanyrole('advance|admin|superadmin')
                             <tr> <!-- TR START -->
                         @else
                             <tr class="disabled"> <!-- TR DISABLED START -->
                         @endhasanyrole
                     @else
-                        <tr> <!-- TR START -->
+                        @if ($instanceDetail->in_use == "Y")
+                            <tr class="inuse"> <!-- TR INUSE START -->
+                        @else
+                            <tr> <!-- TR START -->
+                        @endif
                     @endif
 
                     @hasanyrole('advance|admin|superadmin')
@@ -686,7 +717,7 @@
                         @endphp
                     @endhasanyrole
                     <td class="hidden"> <!-- start-td-block HIDDEN PRODUCT NAME -->
-                        {!! $instanceDetail->product_names_by_id->product_short_name !!}
+                        {!! strtoupper($product_short_name) !!}
                     </td> <!-- end-td-block HIDDEN PRODUCT NAME -->
 
                     <td class="text-center"> <!-- start-td-block INSTANCE NAME LINK -->
@@ -720,8 +751,7 @@
                             {!! Form::close() !!}
                         @endif
 
-
-                        @if ($show_both_upgrade_btn)
+                        @if($show_both_upgrade_btn)
                             {!! Form::open(['route' => ['instance.runjob','id' => $instanceDetail->id, 'action'=>$both_action_name], 'method' => 'post']) !!}
                             @csrf
                             @if ($has_snowflake)
@@ -737,34 +767,32 @@
                     <td class="hidden">{{ $intellicus_version }}</td> <!-- td-block HIDDEN INTELLICUS VERSION -->
 
                     <td class="text-center"> <!-- start-td-block URL BUTTONS-->
-                        @if(is_null($generated_url))
+                        {{-- @if(is_null($generated_url))
                             <i class="fas fa-exclamation-triangle"></i>
                         @else
                             <a href="{!! $generated_url !!}" title="{!! $generated_app_userpass !!}" target="_blank">{!! $link_icon !!}</a>
-                        @endif
-
+                        @endif --}}
+                        <small>{!! $spmspp_btn !!}</small>
                         <small>{!! $intellicus !!}</small>
                         <small>{!! $ml_details !!}</small>
                     </td> <!-- end-td-block URL BUTTONS -->
 
                     <td> <!-- start-td-block APPLICATION SERVER DETAILS -->
-                        @if ($instanceDetail->in_use == "Y")
-                            <div style="color:blue;font-size:20px;font-weight:bold">Instance is in Use
-                                {!! $instanceDetail->in_use_msg ?? '' !!}
-                            </div>
-                        @endif
                         {!! $appDetails !!}
+                        @if ($instanceDetail->in_use == "Y")
+                        <div class="for-demo text-right">
+                            {!! strtoupper($instanceDetail->in_use_msg) ?? '' !!}
+                            {{-- {{ strtoupper($first_half) }} --}}
+                        </div>
+                        @endif
                     </td> <!-- end-td-block APPLICATION SERVER DETAILS -->
                     <td> <!-- start-td-block DATABASE SERVER DETAILS -->
-                        @if ($instanceDetail->in_use == "Y")
-                            <div style="color:blue;font-size:20px;font-weight:bold">!! Dont Use It !!</div>
-                        @endif
                         {!! $dbDetails !!}
                     </td> <!-- end-td-block DATABASE SERVER DETAILS -->
                     <td class="hidden">{!! $instanceDetail->jdk_type !!}</td> <!-- td-block HIDDEN JDK DETAILS -->
                     <td>{!! $ap_heapsize !!} {!! $web_heapsize !!}</td> <!-- td-block HEAP SIZES -->
                     <td> {!! $team_name !!} </td> <!-- td-block TEAM NAMES -->
-                    {!! $status_td !!}  <!-- start-td-block ACTION HISTORY -->
+                    {!! $acthist_status_td !!}  <!-- start-td-block ACTION HISTORY -->
                     {!! $action_histories !!}
                     </td> <!-- end-td-block ACTION HISTORY -->
 
@@ -800,12 +828,6 @@
                     <td class="text-center"> <!-- start-td-block ACTION ICONS -->
                         @if ($user_has_rights)
                             <div class="btn-group-vertical">
-                                @can('edit_instanceDetails')
-                                    {!! Form::open(['route' => ['instanceDetails.edit', $instanceDetail->id], 'method' => 'get']) !!}
-                                    {!! Form::button('<i class="fas fa-pencil-alt" title="Edit"></i>', ['type' => 'submit', 'class' => 'btn btn-info btn-xs']) !!}
-                                    {!! Form::close() !!}
-                                @endcan
-
                                 @if ($instanceDetail->running_jenkins_job == "Y")
                                 {{--If Jenkins URL is not present don't show start/stop button--}}
                                 @else
@@ -814,13 +836,13 @@
                                         {{-- If instance is not active, then show button to start the instance --}}
                                             @can('start_instanceDetails')
                                                 {!! Form::open(['route' => ['instance.runjob','id' => $instanceDetail->id, 'action'=>'StartAppServer'], 'method' => 'post']) !!}
-                                                {!! Form::button('<i class="far fa-play-circle" title="Start Instance"></i>', ['type' => 'submit', 'class' => 'btn btn-success btn-xs', 'onclick' => "return confirm('You want to START the instance?')"])  !!}
+                                                {!! Form::button('<i class="far fa-play-circle" title="Start Instance"></i>', ['type' => 'submit', 'class' => 'btn btn-start btn-xs', 'onclick' => "return confirm('You want to START the instance?')"])  !!}
                                                 {!! Form::close() !!}
                                             @endcan
                                             @if($instanceDetail->instance_is_active == "Y")
                                                 @can('stop_instanceDetails')
                                                     {!! Form::open(['route' => ['instance.runjob','id' => $instanceDetail->id, 'action'=>'ShutDownAppServer'], 'method' => 'post']) !!}
-                                                    {!! Form::button('<i class="far fa-stop-circle" title="Stop Instance"></i>', ['type' => 'submit', 'class' => 'btn btn-warning btn-xs', 'onclick' => "return confirm('You want to STOP the instance?')"]) !!}
+                                                    {!! Form::button('<i class="far fa-stop-circle" title="Stop Instance"></i>', ['type' => 'submit', 'class' => 'btn btn-stop btn-xs', 'onclick' => "return confirm('You want to STOP the instance?')"]) !!}
                                                     {!! Form::close() !!}
                                                 @endcan
                                             @endif
@@ -828,7 +850,7 @@
                                         {{-- If instance is active, then show button to stop the instance --}}
                                             @can('stop_instanceDetails')
                                                 {!! Form::open(['route' => ['instance.runjob','id' => $instanceDetail->id, 'action'=>'ShutDownAppServer'], 'method' => 'post']) !!}
-                                                {!! Form::button('<i class="far fa-stop-circle" title="Stop Instance"></i>', ['type' => 'submit', 'class' => 'btn btn-warning btn-xs', 'onclick' => "return confirm('You want to STOP the instance?')"]) !!}
+                                                {!! Form::button('<i class="far fa-stop-circle" title="Stop Instance"></i>', ['type' => 'submit', 'class' => 'btn btn-stop btn-xs', 'onclick' => "return confirm('You want to STOP the instance?')"]) !!}
                                                 {!! Form::close() !!}
                                             @endcan
                                             @can('restart_instanceDetails')
@@ -836,7 +858,7 @@
                                             {{-- If any jenkins job is already running then don't show button to restart instance --}}
                                             {{-- @else--}}
                                                 {!! Form::open(['route' => ['instance.runjob','id' => $instanceDetail->id, 'action'=>'Restart'], 'method' => 'post']) !!}
-                                                {!! Form::button('<i class="fas fa-sync" title="Restart Instance"></i>', ['type' => 'submit', 'class' => 'btn btn-info btn-xs', 'onclick' => "return confirm('You want to RESTART the instance?')"  ]) !!}
+                                                {!! Form::button('<i class="fas fa-sync" title="Restart Instance"></i>', ['type' => 'submit', 'class' => 'btn btn-restart btn-xs', 'onclick' => "return confirm('You want to RESTART the instance?')"  ]) !!}
                                                 {!! Form::close() !!}
                                             {{-- @endif--}}
                                             @endcan
@@ -844,35 +866,28 @@
                                                 {{-- If instance is not active, then show button to start the instance --}}
                                                 @can('start_instanceDetails')
                                                     {!! Form::open(['route' => ['instance.runjob','id' => $instanceDetail->id, 'action'=>'StartAppServer'], 'method' => 'post']) !!}
-                                                    {!! Form::button('<i class="far fa-play-circle" title="Start Instance"></i>', ['type' => 'submit', 'class' => 'btn btn-success btn-xs', 'onclick' => "return confirm('You want to START the instance?')"])  !!}
+                                                    {!! Form::button('<i class="far fa-play-circle" title="Start Instance"></i>', ['type' => 'submit', 'class' => 'btn btn-start btn-xs', 'onclick' => "return confirm('You want to START the instance?')"])  !!}
                                                     {!! Form::close() !!}
                                                 @endcan
                                             @endif
                                         @endif
-                                        {{-- @can('delete_instanceDetails')
-                                            {!! Form::open(['route' => ['instanceDetails.destroy', $instanceDetail->id], 'method' => 'delete']) !!}
-                                            {!! Form::button('<i class="fas fa-trash" title="Delete"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure you want to delete this instance details?')"]) !!}
-                                            {!! Form::close() !!}
-                                        @endcan
-                                    @else
-                                        @can('delete_instanceDetails')
-                                            {!! Form::open(['route' => ['instanceDetails.destroy', $instanceDetail->id], 'method' => 'delete']) !!}
-                                            {!! Form::button('<i class="fas fa-trash" title="Delete"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure you want to delete this instance details?')"]) !!}
-                                            {!! Form::close() !!}
-                                        @endcan --}}
                                     @endif
                                 @endif
                             </div>
                         @endif
                     </td> <!-- end-td-block ACTION ICONS -->
                     @endcanany
-                    @can('delete_instanceDetails')
+                    @canany('edit_instanceDetails','delete_instanceDetails')
                     <td class="text-center">
+                        {!! Form::open(['route' => ['instanceDetails.edit', $instanceDetail->id], 'method' => 'get']) !!}
+                        {!! Form::button('<i class="fas fa-pencil-alt" title="Edit"></i>', ['type' => 'submit', 'class' => 'btn btn-edit btn-xs']) !!}
+                        {!! Form::close() !!}
+
                         {!! Form::open(['route' => ['instanceDetails.destroy', $instanceDetail->id], 'method' => 'delete']) !!}
-                        {!! Form::button('<i class="fas fa-trash-alt" title="Delete"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure you want to delete this instance details?')"]) !!}
+                        {!! Form::button('<i class="fas fa-trash-alt" title="Delete"></i>', ['type' => 'submit', 'class' => 'btn btn-delete btn-xs', 'onclick' => "return confirm('Are you sure you want to delete this instance details?')"]) !!}
                         {!! Form::close() !!}
                     </td>
-                    @endcan
+                    @endcanany
 
                 </td>  <!-- TR END -->
                 @endif <!-- $show_on_site -->

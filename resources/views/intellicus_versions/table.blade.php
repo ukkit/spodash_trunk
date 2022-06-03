@@ -6,10 +6,10 @@
                 <th>Patch Number</th>
                 <th>Release Date</th>
                 <th>Release Is Active</th>
+                <th>Count</th>
                 @canany('edit_databaseDetails','delete_databaseDetails')
                     <th class="text-center action_column"><i class="fas fa-tools" title="Actions"></i></th>
                 @endcanany
-                {{-- <th colspan="3">Action</th> --}}
             </tr>
         </thead>
         <tbody>
@@ -17,7 +17,14 @@
             <tr>
                 <td>{{ $intellicusVersion->intellicus_version }}</td>
                 <td>{{ $intellicusVersion->intellicus_patch }}</td>
-                <td>{{ $intellicusVersion->release_date }}</td>
+                <td>
+                    @if (is_null($intellicusVersion->release_date))
+                    {{-- Don't display anything --}}
+                    @else
+                    {{ date('m/d/Y', strtotime($intellicusVersion->release_date)) }}
+                    @endif
+
+                </td>
                 <td>
                     @if ($intellicusVersion->is_active == "N")
                         NO
@@ -25,6 +32,15 @@
                         YES
                     @endif
                     {{-- {{ $intellicusVersion->is_active }} --}}
+                </td>
+                <td>
+                    @php
+                        $result = $intellicusVersion->get_intellicus_details_by_id($intellicusVersion->id);
+                        $count = (count($result));
+                        if ($count > 0 ) {
+                            echo $count;
+                        }
+                    @endphp
                 </td>
                 @canany('edit_databaseDetails','delete_databaseDetails')
                 <td class="text-center">

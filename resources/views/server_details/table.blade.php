@@ -39,15 +39,17 @@
             @endhasanyrole
             <th class="hidden">Note</th>
             @hasanyrole('advance|admin|superadmin')
-                <th class="text-center"><i class="fas fa-users" title="Owners"></i></th>
-                <th class="text-center icon_column""><i class="fas fa-user-md" title="DBA Details Record exists"></i></th>
-                <th class="text-center icon_column"><i class="fas fa-heartbeat" title="Server is Active"></i></th>
-                <th class="text-center icon_column"><i class="fas fa-tachometer-alt" title="Show on Dashboard"></i></th>
                 <th class="text-center"><i class="fas fa-user-tie" title="User & Password"></i></th>
-                {{-- <th class="text-center"><i class="fas fa-key" title="Password"></i></th> --}}
-                @canany('edit_serverDetails','delete_serverDetails')
-                    <th class="text-center action_column"><i class="fas fa-tools" title="Actions"></i></th>
-                @endcanany
+                <th class="text-center"><i class="fas fa-users" title="Owners"></i></th>
+                <th class="text-center width_15px""><i class="fas fa-user-md" title="DBA Details Record exists"></i></th>
+                <th class="text-center width_15px"><i class="fas fa-heartbeat" title="Server is Active"></i></th>
+                <th class="text-center width_15px"><i class="fas fa-tachometer-alt" title="Show on Dashboard"></i></th>
+                @can('edit_serverDetails')
+                    <th class="text-center icon_column"><i class="fas fa-pencil-alt" title="Edit"></i></th>
+                @endcan
+                @can('delete_serverDetails')
+                    <th class="text-center icon_column"><i class="fas fa-tools" title="Actions"></i></th>
+                @endcan
             @endhasanyrole
 
         </tr>
@@ -163,6 +165,7 @@
             @endhasanyrole
             <td class="hidden">{!! $serverDetail->server_note !!}</td>
             @hasanyrole('advance|admin|superadmin')
+                <td class="text-center">{!! $serverDetail->server_user !!}/{!! $serverDetail->server_password !!} </td>
                 <td>{!! $serverDetail->server_owner !!}</td>
                 <td class="text-center">{!! $has_dba !!}</td>
                 @if($serverDetail->server_is_active == "Y")
@@ -182,25 +185,21 @@
                 @endif
                     </td>
 
-                <td class="text-center"><small>{!! $serverDetail->server_user !!}/{!! $serverDetail->server_password !!}</small></td>
-                {{-- <td class="text-center"><small>{!! $serverDetail->server_password !!}</small></td> --}}
-                @canany('edit_serverDetails','delete_serverDetails')
-                    <td class="text-center">
-                        <div class="btn-group" role="group" aria-label="...">
-                            @can('edit_serverDetails')
-                                {!! Form::open(['class'=>'inline','route' => ['serverDetails.edit', $serverDetail->id], 'method' => 'get']) !!}
-                                {!! Form::button('<i class="fas fa-pencil-alt" title="Edit"></i>', ['type' => 'submit', 'class' => 'btn btn-group-xs btn-info btn-xs']) !!}
-                                {!! Form::close() !!}
-                            @endcan
-                            @can('delete_serverDetails')
-                                {!! Form::open(['class'=>'inline','route' => ['serverDetails.destroy', $serverDetail->id], 'method' => 'delete']) !!}
-                                {!! Form::button('<i class="fas fa-trash" title="Delete"></i>', ['type' => 'submit', 'class' => 'btn btn-group-xs btn-danger btn-xs', 'onclick' => "return confirm('Are you sure you want to delete this server details? This will also delete Database & Instance details for this Server!')"]) !!}
-                                {{-- {!! Form::button('<i class="fas fa-trash" title="Delete"></i>', ['type' => 'submit', 'class' => 'btn btn-group-xs btn-danger btn-xs', 'onclick' => "return confirm('Are you sure you want to delete this server details? This will also delete Database & Instance details for this Server!')"]) !!} --}}
-                                {!! Form::close() !!}
-                            @endcan
-                        </div>
-                    </td>
-                @endcanany
+                <td>
+                    @can('edit_serverDetails')
+                        {!! Form::open(['class'=>'inline','route' => ['serverDetails.edit', $serverDetail->id], 'method' => 'get']) !!}
+                        {!! Form::button('<i class="fas fa-pencil-alt" title="Edit"></i>', ['type' => 'submit', 'class' => 'btn btn-group-xs btn-edit btn-xs']) !!}
+                        {!! Form::close() !!}
+                    @endcan
+                </td>
+                <td>
+                    @can('delete_serverDetails')
+                        {!! Form::open(['class'=>'inline','route' => ['serverDetails.destroy', $serverDetail->id], 'method' => 'delete']) !!}
+                        {!! Form::button('<i class="fas fa-trash" title="Delete"></i>', ['type' => 'submit', 'class' => 'btn btn-group-xs btn-danger btn-xs', 'onclick' => "return confirm('Are you sure you want to delete this server details? This will also delete Database & Instance details for this Server!')"]) !!}
+                        {{-- {!! Form::button('<i class="fas fa-trash" title="Delete"></i>', ['type' => 'submit', 'class' => 'btn btn-group-xs btn-danger btn-xs', 'onclick' => "return confirm('Are you sure you want to delete this server details? This will also delete Database & Instance details for this Server!')"]) !!} --}}
+                        {!! Form::close() !!}
+                    @endcan
+                </td>
 
             @endhasanyrole
         </tr>
