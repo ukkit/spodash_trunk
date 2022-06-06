@@ -307,7 +307,7 @@ class Instance_detailController extends AppBaseController
                 case "SPO_upgrade":
                     list($latest_build, $current_build, $old_build_id, $new_build_id) = $this->build_numbers($instanceDetail, "SPO");
 
-                    $mail_data['subject'] = "Build Updated Triggered";
+                    $mail_data['subject'] = "SPO-Dashboard: SPM/SPP build upgrade triggered";
                     $mail_data['latest_build'] = $latest_build;
                     $mail_data['current_build'] = $current_build;
                     $email = new BuildStarted($mail_data);
@@ -315,26 +315,26 @@ class Instance_detailController extends AppBaseController
                     Log::info('Build update trigerred for Instance ID ' . $instanceDetail->id . ' from ' . $current_build . ' to ' . $latest_build . ' by ' . $username);
                     break;
                 case "ShutDownAppServer":
-                    $mail_data['subject'] = "Shutdown AppServer Triggered";
+                    $mail_data['subject'] = "SPO-Dashboard: AppServer Shutdown triggered";
                     $email = new ServerShutdown($mail_data);
                     $jenkins_action = $action;
                     Log::info('Shutdown AppServer Triggered for Instance ID ' . $instanceDetail->id . ' by ' . $username);
                     break;
                 case "StartAppServer":
-                    $mail_data['subject'] = "Start AppServer Triggered";
+                    $mail_data['subject'] = "SPO-Dashboard: AppServer Start triggered";
                     $email = new ServerStarted($mail_data);
                     $jenkins_action = $action;
                     Log::info('Start AppServer Triggered for Instance ID ' . $instanceDetail->id . ' by ' . $username);
                     break;
                 case "Restart":
-                    $mail_data['subject'] = "Restart AppServer Triggered";
+                    $mail_data['subject'] = "SPO-Dashboard: Restart AppServer triggered";
                     $email = new ServerRestarted($mail_data);
                     $jenkins_action = $action;
                     Log::info('Restart AppServer Triggered for Instance ID ' . $instanceDetail->id . ' by ' . $username);
                     break;
                 case "PAI_upgrade":
                     list($latest_build, $current_build, $old_build_id, $new_build_id) = $this->build_numbers($instanceDetail, "PAI");
-                    $mail_data['subject'] = "PAI upgrade Triggered";
+                    $mail_data['subject'] = "SPO-Dashboard: PAI build upgrade triggered";
                     $mail_data['latest_build'] = $latest_build;
                     $mail_data['current_build'] = $current_build;
                     $email = new BuildStarted($mail_data);
@@ -344,7 +344,7 @@ class Instance_detailController extends AppBaseController
                 case "SF_upgrade":
                     list($latest_build, $current_build, $old_build_id, $new_build_id) = $this->build_numbers($instanceDetail, "SF");
                     // dd($latest_build, $current_build, $old_build_id, $new_build_id);
-                    $mail_data['subject'] = "Snowflake upgrade Triggered";
+                    $mail_data['subject'] = "SPO-Dashboard: Snowflake build upgrade triggered";
                     $mail_data['latest_build'] = $latest_build;
                     $mail_data['current_build'] = $current_build;
                     $email = new BuildStarted($mail_data);
@@ -355,12 +355,13 @@ class Instance_detailController extends AppBaseController
                     list($latest_build_spo, $current_build_spo, $old_build_id_spo, $new_build_id_spo) = $this->build_numbers($instanceDetail, "SPO");
                     list($latest_build_sf, $current_build_sf, $old_build_id_sf, $new_build_id_sf) = $this->build_numbers($instanceDetail, "SF");
 
-                    $mail_data['subject'] = "Build Updated Triggered";
+                    $mail_data['subject'] = "SPO-Dashboard: SPM and Snowflake build ugrade triggered";
                     $mail_data['latest_build_spo'] = $latest_build_spo;
                     $mail_data['current_build_spo'] = $current_build_spo;
                     $mail_data['latest_build_sf'] = $latest_build_sf;
                     $mail_data['current_build_sf'] = $current_build_sf;
                     $email = new BuildStarted($mail_data);
+                    $jenkins_action = "BuildUpdate"; //Same action as sm_pai_upgrade
 
                     Log::info('SPM and SF build update trigerred for Instance ID ' . $instanceDetail->id . ' by ' . $username . '. This will upgrade SPM Build from ' . $current_build_spo . ' to ' . $latest_build_spo . ' and Snowflake Build from ' . $current_build_sf . ' to ' . $latest_build_sf);
                     break;
@@ -370,12 +371,13 @@ class Instance_detailController extends AppBaseController
                     list($latest_build_spo, $current_build_spo, $old_build_id_spo, $new_build_id_spo) = $this->build_numbers($instanceDetail, "SPO");
                     list($latest_build_pai, $current_build_pai, $old_build_id_pai, $new_build_id_pai) = $this->build_numbers($instanceDetail, "PAI");
 
-                    $mail_data['subject'] = "Build Updated Triggered";
+                    $mail_data['subject'] = "SPO-Dashboard: SPM and PAI build upgrade triggered";
                     $mail_data['latest_build_spo'] = $latest_build_spo;
                     $mail_data['current_build_spo'] = $current_build_spo;
                     $mail_data['latest_build_pai'] = $latest_build_pai;
                     $mail_data['current_build_pai'] = $current_build_pai;
                     $email = new BuildStarted($mail_data);
+                    $jenkins_action = "BuildUpdate";
 
                     Log::info('SPM and PAI build update trigerred for Instance ID ' . $instanceDetail->id . ' by ' . $username . '. This will upgrade SPM Build from ' . $current_build_spo . ' to ' . $latest_build_spo . ' and PAI Build from ' . $current_build_pai . ' to ' . $latest_build_pai);
                     break;
@@ -391,7 +393,7 @@ class Instance_detailController extends AppBaseController
 
                     // $mailto = $spo_incredibles;
                     $mailto = 'ntikku@ptc.com';
-                    $mail_data['subject'] = "Jenkins URL is not online for ID " . $instanceDetail->id;
+                    $mail_data['subject'] = "SPO-Dashboard: Jenkins URL is not online for ID " . $instanceDetail->id;
                     $error_email = "Y";
                 } else {
                     Log::debug('Updating instance_details table, making running_jenkins_job to Y and instance_is_active to N for Instance Details ID ' . $id);
@@ -416,7 +418,7 @@ class Instance_detailController extends AppBaseController
                             ->insert(['unique_id' => $uuid, 'users_id' => $user_details->id, 'instance_details_id' => $id, 'jenkins_build_id' => 0, 'action' => $action, 'start_time' => now(), 'status' => 'In Progress', 'created_at' => now()]);
                     }
 
-                    $url = $instanceDetail->jenkins_url . 'buildWithParameters?uuid=' . $uuid . '\&target=' . $action;
+                    $url = $instanceDetail->jenkins_url . 'buildWithParameters?uuid=' . $uuid . '\&target=' . $jenkins_action;
                     Log::debug('Defined URL - ' . $url);
 
                     try {
@@ -482,7 +484,7 @@ class Instance_detailController extends AppBaseController
                             ->insert(['unique_id' => $uuid, 'users_id' => $user_details->id, 'instance_details_id' => $id, 'jenkins_build_id' => 0, 'action' => $action, 'start_time' => now(), 'status' => 'In Progress', 'created_at' => now()]);
                     }
 
-                    $url = $instanceDetail->jenkins_url . 'buildWithParameters?uuid=' . $uuid . '\&target=' . $action;
+                    $url = $instanceDetail->jenkins_url . 'buildWithParameters?uuid=' . $uuid . '\&target=' . $jenkins_action;
                     Log::info('Defined URL - ' . $url);
 
                     Log::info('Running exec for action - ' . $action);

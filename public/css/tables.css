@@ -6,7 +6,8 @@ table {
     /* font-family: 'Noto Sans JP', sans-serif; */
     /* font-family: 'Roboto', sans-serif; */
     /* font-family: Arial, Helvetica, sans-serif; */
-    font-family: "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    /* font-family: "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif; */
+    font-family: 'Source Code Pro', monospace;
     font-size: 11px;
 }
 
@@ -42,8 +43,11 @@ table>thead>tr {
     width: 2%;
 }
 
+.width_15px{
+    width: 15px !important;
+}
 .icon_column {
-    width: 18px !important;
+    width: 25px !important;
 }
 
 .column_3pct {
@@ -135,7 +139,7 @@ table>thead>tr {
 
 .table>tbody>tr.disabled a {
     color: currentColor;
-    display: inline-block;
+    /* display: inline-block; */
     /* For IE11/ MS Edge bug */
     pointer-events: none;
     text-decoration: none;
@@ -147,31 +151,32 @@ table>thead>tr {
     opacity: 1;
 }
 
+.table>tbody>tr.status_failed {
+    background-color: #F8B8B2;
+    color: #250D65;
+}
+
 .table>tbody>tr.inuse {
     cursor: progress;
-    background-color: #fab565;
-    /* color: darkgrey; */
-    /* opacity: 1; */
+    background-color: #E9F5AF;
+    color: #112A46;
 }
 
 .table>tbody>tr.inuse a {
     color: currentColor;
-    display: inline-block;
-    /* For IE11/ MS Edge bug */
-    /* pointer-events: none; */
+    /* display: inline-block; */
     text-decoration: none;
 }
 
-.table>tbody>tr>td.inuse {
+/* .table>tbody>tr>td.inuse {
     cursor: progress;
-    background-color: #fab565;
-    /* color: darkgrey; */
-    /* opacity: 1; */
-}
+    background-color: #E9F5AF;
+    color: #112A46
+} */
 
 .table>tbody>tr>td.status_failed {
     /* cursor: not-allowed; */
-    background-color: #dd4b39;
+    background-color: #9E2B2B;
     color: #ffffff;
     opacity: 1;
 }
@@ -186,13 +191,13 @@ table>thead>tr {
 .table>tbody>tr>td.status_warning {
     /* cursor: not-allowed; */
     background-color: #f0ad4e;
-    color: #ffffff;
+    color: #151313;
     opacity: 1;
 }
 
 .table>tbody>tr>td.status_warning a {
     /* cursor: not-allowed; */
-    color: #ffffff;
+    color: #151313;
     text-decoration: underline;
     /* opacity: 1; */
 }

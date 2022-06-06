@@ -34,12 +34,14 @@ $CX=1;
             <th class="text-center icon_column"><i class="fas fa-heartbeat" title="Instance is Active"></i></th>
             <th class="text-center icon_column"><i class="fas fa-tachometer-alt" title="Show on Dashboard"></i></th>
         @endhasanyrole
-        @canany('restart_instanceDetails','edit_instanceDetails')
-            <th class="text-center icon_column"><i class="fas fa-tools" title="Actions"></i></th>
-        @endcanany
-        @can('delete_instanceDetails')
-            <th class="text-center icon_column"><i class="fas fa-trash" title="Delete Instance"></i></th>
+        @can('restart_instanceDetails')
+            <th class="text-center icon_column"><i class="fas fa-tools" title="User Actions"></i></th>
         @endcan
+        {{-- @canany('delete_instanceDetails','edit_instanceDetails') --}}
+        @hasanyrole('advance|admin|superadmin')
+            <th class="text-center icon_column"><i class="fas fa-user-cog" title="Admin Actions"></i></th>
+        @endhasanyrole
+        {{-- @endcanany --}}
     </tr>
 </thead>
 <tbody>
@@ -140,10 +142,12 @@ $CX=1;
                 $hidden_figures .= "Machine Learning ";
             }
             if($instanceDetail->escm_type == "Production") {
-                $icon_list .= " <i class=\"fab fa-product-hunt\" title=\"ESCM-Production\"></i> ";
+                // $icon_list .= " <i class=\"fab fa-product-hunt\" title=\"ESCM-Production\"></i> ";
+                $icon_list .= "<span class=\"escm_prod small\">ESCM-Prod</span> ";
                 $hidden_figures .= "ESCM-Production ";
             } elseif($instanceDetail->escm_type == "Sandbox") {
-                $icon_list .= " <i class=\"fas fa-box\" title=\"ESCM-Sandbox\"></i> ";
+                // $icon_list .= " <i class=\"fas fa-box\" title=\"ESCM-Sandbox\"></i> ";
+                $icon_list .= "<span class=\"escm_sandbox small\">ESCM-Sandbox</span> ";
                 $hidden_figures .= "ESCM-Sandbox ";
             }
 

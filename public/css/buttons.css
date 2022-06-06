@@ -4,8 +4,11 @@
 }
 
 .btn-disabled {
+    display: block;
+    width: 100%;
     background-color: #eeeeee;
     opacity: 1;
+    margin-top: 2px;
 }
 
 .btn100px {
@@ -40,10 +43,14 @@
 
 /* Blue colro scheme for Instance button */
 .btn-instance {
+    display: block;
+    width: 100%;
     background-color: #2E76CF !important;
     color: #ffffff;
     border-color: #173b67;
+    margin-top: 2px;
 }
+
 
 .btn-instance:hover {
     background-color: #173b67 !important;
@@ -53,10 +60,14 @@
 
 /* Turquoise Color Scheme for ML buttons */
 .btn-ml {
-    background-color: #5585b5 !important;
+    display: block;
+    width: 100%;
+    background-color: #B7D3EF !important;
     color: #000;
     border-color: #79c2d0;
+    margin-top: 2px;
 }
+
 
 .btn-ml:hover {
     background-color: #79c2d0 !important;
@@ -66,9 +77,12 @@
 
 /* Yellowish color scheme for ML buttons */
 .btn-intellicus {
+    display: block;
+    width: 100%;
     background-color: #97cba9 !important;
     color: #000;
     border-color: #668ba4;
+    margin-top: 2px;
 }
 
 .btn-intellicus:hover {
@@ -76,9 +90,104 @@
     color: #000;
     border-color: #668ba4;
 }
-/* .btn {
-    /* padding: 2px;
-    font-size: x-small;
-    padding: 1px 3px;
-    line-height: 1.3;
-} */
+
+.btn-instance-inuse {
+    display: block;
+    width: 100%;
+    background-color: #2E76CF !important;
+    color: #ffffff;
+    border-color: #173b67;
+    margin-top: 2px;
+    opacity: 70%;
+}
+
+.btn-ml-inuse {
+    display: block;
+    width: 100%;
+    background-color: #B7D3EF !important;
+    color: #000;
+    border-color: #79c2d0;
+    margin-top: 2px;
+    opacity: 70%;
+}
+
+.btn-intellicus-inuse {
+    display: block;
+    width: 100%;
+    background-color: #97cba9 !important;
+    color: #000;
+    border-color: #668ba4;
+    margin-top: 2px;
+    opacity: 70%;
+}
+
+.btn-edit {
+    display: block;
+    width: 100%;
+    background-color: #142E54 !important;
+    color: #FFFFFF;
+    margin-top: 1px;
+    margin-bottom: 1px;
+}
+
+.btn-edit:hover {
+    background-color: #A7967E !important;
+    color: #FFFFFF;
+}
+
+.btn-start {
+    display: block;
+    width: 100%;
+    background-color: #F4DB78 !important;
+    color: #000000;
+    margin-top: 1px;
+    margin-bottom: 1px;
+}
+
+.btn-start:hover {
+    background-color: #A33A47 !important;
+    color: #FFFFFF;
+}
+
+.btn-stop {
+    display: block;
+    width: 100%;
+    background-color: #FAB301 !important;
+    color: #FFFFFF;
+    margin-top: 1px;
+    margin-bottom: 1px;
+}
+
+.btn-stop:hover {
+    background-color: #373538 !important;
+    color: #FFFFFF;
+}
+
+.btn-restart {
+    display: block;
+    width: 100%;
+    background-color: #3097BF !important;
+    color: #FFFFFF;
+    margin-top: 1px;
+    margin-bottom: 1px;
+}
+
+.btn-restart:hover {
+    background-color: #B4B4B4 !important;
+    color: #FFFFFF;
+}
+
+.btn-delete {
+    display: block;
+    width: 100%;
+    background-color: #EA4136 !important;
+    color: #FFFFFF;
+    margin-top: 1px;
+    margin-bottom: 1px;
+}
+
+.btn-delete:hover {
+    background-color: #B4B4B4 !important;
+    color: #FFFFFF;
+}
+

@@ -323,12 +323,18 @@ try {
                     }
                     $fullname = $instanceDetail->get_username_by_id(trim($records->users_id,'[]"'))->name;
                     $firstname = explode(" ", $fullname)[0];
+                    if ($records->status == "Failed") {
+                        echo "<tr class=\"status_failed\">";
+                    } else {
+                        echo "<tr>";
+                    }
                     @endphp
-                        <tr>
+                        {{-- <tr> --}}
+                            <td class="width_15px">{!! $status_icon !!} </td>
                             <td><i class="fas fa-bolt fa-sm" title="Action Performanced"></i> {!! $action_text !!}</td>
                             <td><i class="fas fa-user fa-sm" title="User"></i> {!! $firstname !!}</td>
                             <td>{!! $showtime !!} IST</td>
-                            <td>{!! $status_icon !!} {!! $records->status !!}</td>
+
                         </tr>
                     @php
                     $X++;
