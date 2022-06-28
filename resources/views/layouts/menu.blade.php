@@ -11,6 +11,10 @@
     <a href="{!! route('serverDetails.index') !!}" title="List all Server"><i class="fas fa-server fa-fw fa-lg"></i></a>
 </li>
 
+a<li class="{{ Request::is('intellicusDetails*') ? 'active' : '' }}">
+    <a href="{{ route('intellicusDetails.index') }}" title="Intellicus Details"><i class="fas fa-info-circle fa-fw fa-lg"></i></a>
+</li>
+
 @if(Auth::check())
 
     @hasrole('superadmin')
@@ -33,11 +37,6 @@
                 <li class="{{ Request::is('databaseDetails*') ? 'active' : '' }}">
                     <a href="{!! route('databaseDetails.index') !!}"><i class="fas fa-table"></i><span>Database Details</span></a>
                 </li>
-
-                <li class="{{ Request::is('intellicusDetails*') ? 'active' : '' }}">
-                    <a href="{{ route('intellicusDetails.index') }}"><i class="fas fa-info-circle"></i><span>Intellicus Details</span></a>
-                </li>
-
 
                 <li class="{{ Request::is('dbaDetails*') ? 'active' : '' }}">
                     <a href="{{ route('dbaDetails.index') }}">
