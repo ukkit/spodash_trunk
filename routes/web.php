@@ -22,10 +22,10 @@ Route::get('/home', function () {
     return redirect('/instanceDetails');
 });
 
-Route::group(['middleware'=>'auth'], function(){
+Route::group(['middleware' => 'auth'], function () {
 
-    Route::resource('serverDetails', 'Server_detailController')->except(['index','show']);
-    Route::resource('instanceDetails', 'Instance_detailController')->except(['index','show']);
+    Route::resource('serverDetails', 'Server_detailController')->except(['index', 'show']);
+    Route::resource('instanceDetails', 'Instance_detailController')->except(['index', 'show']);
 
     Route::post('instanceDetails/runjob/{id}/{action}', 'Instance_detailController@runjob')->name('instance.runjob');
 
@@ -47,11 +47,11 @@ Route::group(['middleware'=>'auth'], function(){
     Route::resource('intellicusDetails', 'Intellicus_detailController');
     Route::resource('intellicusVersions', 'Intellicus_versionController');
 
-    Route::get('/changePassword','Auth\ChangePasswordController@showChangePasswordForm');
-    Route::post('/changePassword','Auth\ChangePasswordController@changePassword')->name('changePassword');
+    Route::get('/changePassword', 'Auth\ChangePasswordController@showChangePasswordForm');
+    Route::post('/changePassword', 'Auth\ChangePasswordController@changePassword')->name('changePassword');
     Route::resource('teams', 'TeamController');
 
-    Route::resource('releaseMilestones', 'Release_milestoneController')->except(['index','show']);
+    Route::resource('releaseMilestones', 'Release_milestoneController')->except(['index', 'show']);
 
     Route::resource('ambariDetails', 'Ambari_detailController');
 
@@ -74,7 +74,7 @@ Route::group(['middleware'=>'auth'], function(){
 });
 
 
-Route::get('/logout', function(){
+Route::get('/logout', function () {
     Auth::logout();
     Session::flush();
 
@@ -83,6 +83,8 @@ Route::get('/logout', function(){
 })->name('user.logout');
 
 //Routes accessible when logged out
+
+Route::get('/intellicusDetails', 'Intellicus_detailController@index')->name('intellicusDetails.index');
 
 Route::get('/serverDetails', 'Server_detailController@index')->name('serverDetails.index');
 Route::get('/serverDetails/{id}', 'Server_detailController@show')->name('serverDetails.show');

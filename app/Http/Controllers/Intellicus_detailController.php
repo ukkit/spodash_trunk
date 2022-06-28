@@ -37,7 +37,7 @@ class Intellicus_detailController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $intellicusDetails = $this->intellicusDetailRepository->all();
+        $intellicusDetails = $this->intellicusDetailRepository->orderBy('updated_at', 'desc')->all();
 
         return view('intellicus_details.index')
             ->with('intellicusDetails', $intellicusDetails);
@@ -54,18 +54,18 @@ class Intellicus_detailController extends AppBaseController
         $iv_arr['intellicus_version'] = DB::table('intellicus_versions')->whereNull('deleted_at')->get();
         // $dd_arr['db_detail'] = DB::table('database_details')->where('repository_type', 'Intellicus')->whereNull('deleted_at')->get();
         $dd_arr['db_detail'] = DB::table('database_details')
-                                ->join('server_details', 'server_details.id', 'database_details.server_details_id')
-                                ->where('database_details.repository_type', 'Intellicus')
-                                ->whereNull('database_details.deleted_at')
-                                ->select('database_details.id', 'server_details.server_name', 'server_details.server_ip', 'database_details.db_user', 'database_details.db_sid')
-                                ->get();
+            ->join('server_details', 'server_details.id', 'database_details.server_details_id')
+            ->where('database_details.repository_type', 'Intellicus')
+            ->whereNull('database_details.deleted_at')
+            ->select('database_details.id', 'server_details.server_name', 'server_details.server_ip', 'database_details.db_user', 'database_details.db_sid')
+            ->get();
 
         return view('intellicus_details.create')
-        ->with($sd_arr)
-        ->with($iv_arr)
-        ->with($dd_arr)
-        ->with('show_is_active', false)
-        ->with('this_is_edit', false);
+            ->with($sd_arr)
+            ->with($iv_arr)
+            ->with($dd_arr)
+            ->with('show_is_active', false)
+            ->with('this_is_edit', false);
     }
 
     /**
@@ -122,11 +122,11 @@ class Intellicus_detailController extends AppBaseController
         $rec_arr['record'] = DB::table('intellicus_details')->where('id', $id)->get()->first();
         // $dd_arr['db_detail'] = DB::table('database_details')->where('is_intellicus_repository', 'Y')->whereNull('deleted_at')->get();
         $dd_arr['db_detail'] = DB::table('database_details')
-                                ->join('server_details', 'server_details.id', 'database_details.server_details_id')
-                                ->where('database_details.repository_type', 'Intellicus')
-                                ->whereNull('database_details.deleted_at')
-                                ->select('database_details.id', 'server_details.server_name', 'server_details.server_ip', 'database_details.db_user', 'database_details.db_sid')
-                                ->get();
+            ->join('server_details', 'server_details.id', 'database_details.server_details_id')
+            ->where('database_details.repository_type', 'Intellicus')
+            ->whereNull('database_details.deleted_at')
+            ->select('database_details.id', 'server_details.server_name', 'server_details.server_ip', 'database_details.db_user', 'database_details.db_sid')
+            ->get();
 
         if (empty($intellicusDetail)) {
             Flash::error('Intellicus Detail not found');
@@ -135,13 +135,13 @@ class Intellicus_detailController extends AppBaseController
         }
 
         return view('intellicus_details.edit')
-        ->with($sd_arr)
-        ->with($iv_arr)
-        ->with($rec_arr)
-        ->with($dd_arr)
-        ->with('show_is_active', true)
-        ->with('this_is_edit', true)
-        ->with('intellicusDetail', $intellicusDetail);
+            ->with($sd_arr)
+            ->with($iv_arr)
+            ->with($rec_arr)
+            ->with($dd_arr)
+            ->with('show_is_active', true)
+            ->with('this_is_edit', true)
+            ->with('intellicusDetail', $intellicusDetail);
     }
 
     /**

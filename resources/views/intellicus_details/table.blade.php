@@ -1,5 +1,7 @@
 
-
+<?php
+$CX=1;
+?>
     <table class="table table-responsive table-condensed table-striped" id="intellicusDetails-table">
         <thead>
             <tr>
@@ -12,17 +14,19 @@
                 <th class="name_column">Name</th>
                 <th class="name_column">Server Name</th>
                 <th class="hidden">IP Address</th>
-                <th class="column_6pct">Version</th>
-                <th>Repository</th>
+                <th class="column_7pct">Version</th>
+                <th class="column_7pct">Repository</th>
                 <th class="text-center column_5pct">Memory</th>
                 <th class="text-center column_5pct">Port</th>
-                <th class="text-center column_5pct">URL</th>
+                {{-- <th class="text-center column_5pct">URL</th> --}}
                 {{-- <th class="column_5pct">Login</th> --}}
-                <th class="column_5pct">Password</th>
+                @if(Auth::check())
+                <th class="column_5pct">Login/Pwd</th>
+                @endif
                 <th>Intellicus Install Path</th>
                 <th class="hidden">Hidden Figures</th>
-                <th class="text-center id_column">CFT</th>
                 @can('edit_databaseDetails')
+                    <th class="text-center id_column">CFT</th>
                     <th class="text-center icon_column"><i class="fas fa-pencil-alt" title="Actions"></i></th>
                 @endcan
                 @can('delete_databaseDetails')
@@ -79,11 +83,6 @@
                     $X1 = explode('Patch', $intell_patch);
                     $int_version .= "p".trim($X1[1]);
                 }
-                // if (($int_ver_return[0]->intellicus_patch) != null) {
-                //     $patch_exp = explode("Patch", $int_ver_return[0]->intellicus_patch);
-                //     $int_version .= " P".$patch_exp[0];
-                // }
-                // $int_version .=  " ".$int_ver_return[0]->intellicus_patch;
             }
 
             if($intellicusDetail->is_https == "Y") {
@@ -94,9 +93,15 @@
                 $link_icon = "<i class=\"fas fa-lock-open fs-sm\" ></i> ".$int_version;
             }
             $inturl = $http_tag."://" .$server_ip.":".$intellicusDetail->intellicus_port."/Intellicus";
+            // $urlcheck = url_test($inturl);
+            // if ($urlcheck) {
+            //     $intellicus = "<a href=\"".$inturl."\" target=\"_blank\"> $link_icon </a>";
+            // } else {
+            //     $intellicus = "<a href=\"".$inturl."\" target=\"_blank\"> <i class=\"fas fa-unlink\"></i> </a>";
+            // }
             $intellicus = "<a href=\"".$inturl."\" target=\"_blank\"> $link_icon </a>";
 
-            $CX = 1;
+
         @endphp
             @if($intellicusDetail->is_active == "Y")
             <tr>
@@ -126,31 +131,36 @@
                 <td class="text-center">{{ $intellicusDetail->intellicus_port }}</td>
                 {{-- <td class="text-center"> {!! $intellicus !!}</td> --}}
 
-                <td>{{ $intellicusDetail->intellicus_login }}</td>
-                <td>{{ $intellicusDetail->intellicus_pwd }}</td>
+                {{-- <td>{{ $intellicusDetail->intellicus_login }}</td> --}}
+                @if(Auth::check())
+                <td>{{ $intellicusDetail->intellicus_login }}/{{ $intellicusDetail->intellicus_pwd }}</td>
+                @endif
                 <td>{{ $intellicusDetail->intellicus_install_path }}</td>
                 <td class="hidden">{{ $hidden_figures }}</td>
+
+                @can('edit_databaseDetails')
                 <td class="text-center">{{ $intellicusDetail->check_fail_count }}</td>
 
                 <td class="text-center">
                     <div class="btn-group" role="group" aria-label="...">
-                        @can('edit_databaseDetails')
-                            {!! Form::open(['class'=>'inline','route' => ['intellicusDetails.edit', $intellicusDetail->id], 'method' => 'get']) !!}
-                            {!! Form::button('<i class="fas fa-pencil-alt" title="Edit"></i>', ['type' => 'submit', 'class' => 'btn btn-edit btn-xs']) !!}
-                            {!! Form::close() !!}
-                        @endcan
+                        {!! Form::open(['class'=>'inline','route' => ['intellicusDetails.edit', $intellicusDetail->id], 'method' => 'get']) !!}
+                        {!! Form::button('<i class="fas fa-pencil-alt" title="Edit"></i>', ['type' => 'submit', 'class' => 'btn btn-edit btn-xs']) !!}
+                        {!! Form::close() !!}
                     </div>
                 </td>
+                @endcan
+
+                @can('delete_databaseDetails')
                 <td class="text-center">
                     <div class="btn-group" role="group" aria-label="...">
-                        @can('delete_databaseDetails')
-                            {!! Form::open(['class'=>'inline','route' => ['intellicusDetails.destroy', $intellicusDetail->id], 'method' => 'delete']) !!}
-                            {!! Form::button('<i class="fas fa-trash" title="Delete"></i>', ['type' => 'submit', 'class' => 'btn btn-delete btn-xs', 'onclick' => "return confirm('Are you sure you want to DELETE this Intellicus details?')"]) !!}
-                            {!! Form::close() !!}
-                        @endcan
+                        {!! Form::open(['class'=>'inline','route' => ['intellicusDetails.destroy', $intellicusDetail->id], 'method' => 'delete']) !!}
+                        {!! Form::button('<i class="fas fa-trash" title="Delete"></i>', ['type' => 'submit', 'class' => 'btn btn-delete btn-xs', 'onclick' => "return confirm('Are you sure you want to DELETE this Intellicus details?')"]) !!}
+                        {!! Form::close() !!}
                     </div>
                 </td>
+                @endcan
             </tr>
+
         @endforeach
         </tbody>
     </table>
