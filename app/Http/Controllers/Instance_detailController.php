@@ -46,7 +46,8 @@ class Instance_detailController extends AppBaseController
         Log::debug('inside Instance_detailContoller.index');
         $this->instanceDetailRepository->pushCriteria(new RequestCriteria($request));
 
-        $instanceDetails = $this->instanceDetailRepository->By('updatordered_at', 'desc')->all();
+
+        $instanceDetails = $this->instanceDetailRepository->orderBy('updated_at', 'desc')->all();
         return view('instance_details.index')->with('instanceDetails', $instanceDetails);
     }
 
