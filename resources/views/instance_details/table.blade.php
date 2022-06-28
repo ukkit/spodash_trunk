@@ -550,9 +550,9 @@
                             $intserv = $instanceDetail->intellicus_details_by_id->server_details_id;
                             $intelli_server = $instanceDetail->return_server_details_by_id(($instanceDetail->intellicus_details_by_id->server_details_id),'server_ip')->get('0');
                             // dd($intserv);
-                            $intell_url = "http://".$intelli_server.":".$instanceDetail->intellicus_details_by_id->intellicus_port."/intellicus";
 
-                            $intellicus = "<a href=\"".$intell_url."\" target=\"_blank\">";
+
+
 
                             $button = $string = str_replace(' ', '', $intell_ver);
                             if (! empty($intell_patch)){
@@ -561,11 +561,15 @@
                             }
 
                             $intell_is_https = $instanceDetail->intellicus_details_by_id->is_https;
-                            // if ($intell_is_https == "Y") {
-                            //     $intell_icon = "<i class=\"fas fa-lock fa-sm\" ></i>";
-                            // } else {
-                            //     $intell_icon = "<i class=\"fas fa-lock-open fa-sm\" ></i>";
-                            // }
+                            if ($intell_is_https == "Y") {
+                                $intell_icon = "<i class=\"fas fa-lock fa-sm\" ></i>";
+                                $intell_url = "https://".$intelli_server.":".$instanceDetail->intellicus_details_by_id->intellicus_port."/intellicus";
+                            } else {
+                                $intell_icon = "<i class=\"fas fa-lock-open fa-sm\" ></i>";
+                                $intell_url = "http://".$intelli_server.":".$instanceDetail->intellicus_details_by_id->intellicus_port."/intellicus";
+                            }
+
+                            $intellicus = "<a href=\"".$intell_url."\" target=\"_blank\">";
 
                             if (Auth::user() && ($user_has_rights)) {
                                 $intellicus .= "<button type=\"button\" class=\"btn $intell_btn_type btn-xs xsmall\" title=\"Intellicus User/Pass: $intell_userpass\"> $button</button></a>";
