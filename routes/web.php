@@ -84,7 +84,7 @@ Route::get('/logout', function () {
 
 //Routes accessible when logged out
 
-Route::get('/intellicusDetails', 'Intellicus_detailController@index')->name('intellicusDetails.index');
+// Route::get('/intellicusDetails', 'Intellicus_detailController@index')->name('intellicusDetails.index');
 
 Route::get('/serverDetails', 'Server_detailController@index')->name('serverDetails.index');
 Route::get('/serverDetails/{id}', 'Server_detailController@show')->name('serverDetails.show');
@@ -95,10 +95,10 @@ Route::get('/instanceDetails', 'Instance_detailController@index')->name('instanc
 
 Route::get('/instanceDetails/{id}', 'Instance_detailController@show')->name('instanceDetails.show');
 
-Route::get('/sprintCalendars', 'Sprint_calendarController@index')->name('sprintCalendars.index');
+// Route::get('/sprintCalendars', 'Sprint_calendarController@index')->name('sprintCalendars.index');
 
-Route::get('/releaseMilestones', 'Release_milestoneController@index')->name('releaseMilestones.index');
-Route::get('/releaseMilestones/{id}', 'Release_milestoneController@show')->name('releaseMilestones.show');
+// Route::get('/releaseMilestones', 'Release_milestoneController@index')->name('releaseMilestones.index');
+// Route::get('/releaseMilestones/{id}', 'Release_milestoneController@show')->name('releaseMilestones.show');
 
 Route::get('/reset_password', 'Auth\ResetPasswordController@reset')->name('reset.password');
 

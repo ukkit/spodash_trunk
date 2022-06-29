@@ -127,6 +127,14 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
+    $('#mlDetails-table').DataTable({
+        "ordering": false,
+        "iDisplayLength": 25,
+        "lengthMenu": [25, 50, 75, 100]
+    });
+});
+
+$(document).ready(function () {
     $('#actionHistories-table').DataTable({
         "ordering": false,
         "stateSave": true,
@@ -248,10 +256,11 @@ $(document).ready(function () {
 
 $(document).ready(function () {
     $('#intellicusDetails-table').DataTable({
-        "lengthMenu": [
-            [30, 60, -1],
-            [30, 60, "All"]
-        ]
+        "ordering": false,
+        "stateSave": true,
+        "stateDuration": -1,
+        "iDisplayLength": 25,
+        "lengthMenu": [25, 50, 75, 100]
     });
 });
 
