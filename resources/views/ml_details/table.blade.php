@@ -9,6 +9,7 @@
             @endhasanyrole
             <th  class="name_column">Name</th>
             <th  class="name_column">Server Name</th>
+            <th>ML Build</th>
             <th class="text-left column_3pct">Port</th>
             <th  class="column_8pct">Login/PWD</th>
             {{-- <th>Password</th> --}}
@@ -40,6 +41,15 @@
                 $intellicus_name = Null;
             }
 
+            try {
+                $ml_build = $mlDetail->mlBuilds->ml_version . " " . $mlDetail->mlBuilds->ml_build;
+                if ($mlDetail->mlBuilds->is_release_build == "Y") {
+                    $ml_build .= " <i class=\"fas fa-crown fa-xs\" title=\"Release Build\"></i>";
+                }
+            } catch (\Throwable $th) {
+                $ml_build = Null;
+            }
+
             $URL = "http://".$server_ip.":".$mlDetail->zeppelin_port."/";
             $server_url = route('serverDetails.show', [$mlDetail->server_details_id]);
             $CX++;
@@ -53,6 +63,7 @@
                 @endhasanyrole
                 <td><a href="{{ $URL }}" target="_blank"> <strong>{{ strtoupper($mlDetail->ml_name) }} </strong></a></td>
                 <td><a href="{{ $server_url }}" target="_blank"> {{strtoupper($server_name) }} </a></td>
+                <td> {!! $ml_build !!} </td>
                 <td>{{ $mlDetail->zeppelin_port }}</td>
                 <td>{{ $mlDetail->zeppelin_user }}/{{ $mlDetail->zeppelin_pwd }}</td>
                 {{-- <td></td> --}}

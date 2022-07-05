@@ -65,6 +65,10 @@
                     <a href="{{ route('sfBuilds.index') }}"><i class="fas fa-code-branch fa-lg"></i><span>Snowflake Builds</span></a>
                 </li>
 
+                <li class="{{ Request::is('mlBuilds*') ? 'active' : '' }}">
+                    <a href="{{ route('mlBuilds.index') }}"><i class="fas fa-code-branch fa-lg"></i><span>ML Versions</span></a>
+                </li>
+
                 <li class="{{ Request::is('intellicusVersions*') ? 'active' : '' }}">
                     <a href="{{ route('intellicusVersions.index') }}"><i class="fas fa-code-branch fa-lg"></i><span>Intellicus Versions</span></a>
                 </li>
@@ -102,9 +106,9 @@
                     <a href="{{ route('ambariDetails.index') }}"><i class="fab fa-amilia"></i><span>Ambari Details</span></a>
                 </li>
 
-                <li class="{{ Request::is('sprintCalendars*') ? 'active' : '' }}">
+                {{-- <li class="{{ Request::is('sprintCalendars*') ? 'active' : '' }}">
                     <a href="{!! route('sprintCalendars.index') !!}"><i class="fas fa-calendar"></i><span>Spirint Calendar</span></a>
-                </li>
+                </li> --}}
 
             </ul>
         </li>
@@ -116,11 +120,11 @@
         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fas fa-atom fa-lg"></i></i><span class="caret"></span></a>
         <ul class="dropdown-menu" role="menu">
 
-            <li class="{{ Request::is('releaseMilestones*') ? 'active' : '' }}">
+            {{-- <li class="{{ Request::is('releaseMilestones*') ? 'active' : '' }}">
                 <a href="{{ route('releaseMilestones.index') }}"><i class="fas fa-archway"></i>
                     <span>Release Milestones</span>
                 </a>
-            </li>
+            </li> --}}
 
             <li class="{{ Request::is('tablespaceDetails*') ? 'active' : '' }}">
                 <a href="{{ route('tablespaceDetails.index') }}"><i class="fas fa-table"></i>
