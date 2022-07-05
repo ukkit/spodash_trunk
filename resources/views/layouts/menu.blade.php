@@ -11,9 +11,6 @@
     <a href="{!! route('serverDetails.index') !!}" title="List all Server"><i class="fas fa-server fa-fw fa-lg"></i></a>
 </li>
 
-a<li class="{{ Request::is('intellicusDetails*') ? 'active' : '' }}">
-    <a href="{{ route('intellicusDetails.index') }}" title="Intellicus Details"><i class="fas fa-info-circle fa-fw fa-lg"></i></a>
-</li>
 
 @if(Auth::check())
 
@@ -26,44 +23,31 @@ a<li class="{{ Request::is('intellicusDetails*') ? 'active' : '' }}">
         <a href="{!! route('actionHistories.index') !!}"><i class="fas fa-history fa-fw fa-lg" Title="Action History"></i></a>
     </li>
 
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fas fa-tools fa-lg"></i><span class="caret"></span></a>
+        <ul class="dropdown-menu" role="menu">
+            <li class="{{ Request::is('databaseDetails*') ? 'active' : '' }}">
+                <a href="{!! route('databaseDetails.index') !!}"><i class="fas fa-table"></i><span>Database Details</span></a>
+            </li>
+
+            <li class="{{ Request::is('intellicusDetails*') ? 'active' : '' }}">
+                <a href="{{ route('intellicusDetails.index') }}"><i class="fas fa-info-circle"></i><span>Intellicus Details</span></a>
+            </li>
+
+
+            <li class="{{ Request::is('mlDetails*') ? 'active' : '' }}">
+                <a href="{{ route('mlDetails.index') }}">
+                    <i class="fab fa-leanpub"></i><span>Machine Learning</span>
+                </a>
+            </li>
+
+        </ul>
+    </li>
+
     @hasanyrole('advance|admin|superadmin')
         {{-- <li class="{{ Request::is('actionHistories*') ? 'active' : '' }}">
             <a href="{!! route('actionHistories.index') !!}"><i class="fas fa-history fa-fw fa-lg" Title="Action History"></i></a>
         </li> --}}
-
-        <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fas fa-tools fa-lg"></i><span class="caret"></span></a>
-            <ul class="dropdown-menu" role="menu">
-                <li class="{{ Request::is('databaseDetails*') ? 'active' : '' }}">
-                    <a href="{!! route('databaseDetails.index') !!}"><i class="fas fa-table"></i><span>Database Details</span></a>
-                </li>
-
-                <li class="{{ Request::is('dbaDetails*') ? 'active' : '' }}">
-                    <a href="{{ route('dbaDetails.index') }}">
-                        <i class="fas fa-user-ninja"></i><span>DBA Details</span>
-                    </a>
-                </li>
-
-                <li class="{{ Request::is('mlDetails*') ? 'active' : '' }}">
-                    <a href="{{ route('mlDetails.index') }}">
-                        <i class="fab fa-leanpub"></i><span>Machine Learning</span>
-                    </a>
-                </li>
-
-                {{-- <li class="{{ Request::is('*search=PAI') ? 'active' : '' }}">
-                    <a href="{{ route('databaseDetails.index') }}/?search=PAI"><i class="fas fa-snowflake"></i><span>PAI Details</span></a>
-                </li> --}}
-
-                <li class="{{ Request::is('ambariDetails*') ? 'active' : '' }}">
-                    <a href="{{ route('ambariDetails.index') }}"><i class="fab fa-amilia"></i><span>Ambari Details</span></a>
-                </li>
-
-                <li class="{{ Request::is('sprintCalendars*') ? 'active' : '' }}">
-                    <a href="{!! route('sprintCalendars.index') !!}"><i class="fas fa-calendar"></i><span>Spirint Calendar</span></a>
-                </li>
-
-            </ul>
-        </li>
 
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fas fa-code-branch fa-lg"></i><span class="caret"></span></a>
@@ -84,6 +68,7 @@ a<li class="{{ Request::is('intellicusDetails*') ? 'active' : '' }}">
                 <li class="{{ Request::is('intellicusVersions*') ? 'active' : '' }}">
                     <a href="{{ route('intellicusVersions.index') }}"><i class="fas fa-code-branch fa-lg"></i><span>Intellicus Versions</span></a>
                 </li>
+
             </ul>
         </li>
 
@@ -106,6 +91,21 @@ a<li class="{{ Request::is('intellicusDetails*') ? 'active' : '' }}">
                 <li class="{{ Request::is('productNames*') ? 'active' : '' }}">
                     <a href="{!! route('productNames.index') !!}"><i class="fab fa-product-hunt"></i><span> Product Names</span></a>
                 </li>
+
+                <li class="{{ Request::is('dbaDetails*') ? 'active' : '' }}">
+                    <a href="{{ route('dbaDetails.index') }}">
+                        <i class="fas fa-user-ninja"></i><span>DBA Details</span>
+                    </a>
+                </li>
+
+                <li class="{{ Request::is('ambariDetails*') ? 'active' : '' }}">
+                    <a href="{{ route('ambariDetails.index') }}"><i class="fab fa-amilia"></i><span>Ambari Details</span></a>
+                </li>
+
+                <li class="{{ Request::is('sprintCalendars*') ? 'active' : '' }}">
+                    <a href="{!! route('sprintCalendars.index') !!}"><i class="fas fa-calendar"></i><span>Spirint Calendar</span></a>
+                </li>
+
             </ul>
         </li>
 

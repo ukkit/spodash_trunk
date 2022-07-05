@@ -34,10 +34,12 @@
                     <th class="text-center icon_column"><i class="fas fa-tools" title="User Actions"></i></th>
                 @endcan
                 {{-- @canany('delete_instanceDetails','edit_instanceDetails') --}}
-                @hasanyrole('advance|admin|superadmin')
+                @canany('edit_instanceDetails','delete_instanceDetails')
+                    {{-- <th class="text-center icon_column"><i class="fas fa-trash" title="User Actions"></i></th> --}}
+                {{-- @hasanyrole('advance|admin|superadmin') --}}
                     <th class="text-center icon_column"><i class="fas fa-user-cog" title="Admin Actions"></i></th>
-                @endhasanyrole
-                {{-- @endcanany --}}
+                {{-- @endhasanyrole --}}
+                @endcanany
             </tr>
         </thead>
         <tbody>
@@ -885,13 +887,16 @@
                     @endcanany
                     @canany('edit_instanceDetails','delete_instanceDetails')
                     <td class="text-center">
-                        {!! Form::open(['route' => ['instanceDetails.edit', $instanceDetail->id], 'method' => 'get']) !!}
-                        {!! Form::button('<i class="fas fa-pencil-alt" title="Edit"></i>', ['type' => 'submit', 'class' => 'btn btn-edit btn-xs']) !!}
-                        {!! Form::close() !!}
-
-                        {!! Form::open(['route' => ['instanceDetails.destroy', $instanceDetail->id], 'method' => 'delete']) !!}
-                        {!! Form::button('<i class="fas fa-trash-alt" title="Delete"></i>', ['type' => 'submit', 'class' => 'btn btn-delete btn-xs', 'onclick' => "return confirm('Are you sure you want to delete this instance details?')"]) !!}
-                        {!! Form::close() !!}
+                        @can('edit_instanceDetails')
+                            {!! Form::open(['route' => ['instanceDetails.edit', $instanceDetail->id], 'method' => 'get']) !!}
+                            {!! Form::button('<i class="fas fa-pencil-alt" title="Edit"></i>', ['type' => 'submit', 'class' => 'btn btn-edit btn-xs']) !!}
+                            {!! Form::close() !!}
+                        @endcan
+                        @can('delete_instanceDetails')
+                            {!! Form::open(['route' => ['instanceDetails.destroy', $instanceDetail->id], 'method' => 'delete']) !!}
+                            {!! Form::button('<i class="fas fa-trash-alt" title="Delete"></i>', ['type' => 'submit', 'class' => 'btn btn-delete btn-xs', 'onclick' => "return confirm('Are you sure you want to delete this instance details?')"]) !!}
+                            {!! Form::close() !!}
+                        @endcan
                     </td>
                     @endcanany
 
