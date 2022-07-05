@@ -71,6 +71,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('paiBuilds', 'Pai_buildController');
 
     Route::resource('sfBuilds', 'Sf_buildController');
+
+    Route::resource('mlBuilds', 'Ml_buildController');
 });
 
 

@@ -27,6 +27,7 @@ class Ml_detail extends Model
         'instance_details_id',
         'intellicus_details_id',
         'database_details_id',
+        'ml_builds_id',
         'ml_name',
         'zeppelin_port',
         'zeppelin_user',
@@ -46,6 +47,7 @@ class Ml_detail extends Model
         'instance_details_id' => 'integer',
         'intellicus_details_id' => 'integer',
         'database_details_id' => 'integer',
+        'ml_builds_id' => 'integer',
         'ml_name' => 'string',
         'zeppelin_port' => 'integer',
         'zeppelin_user' => 'string',
@@ -94,6 +96,13 @@ class Ml_detail extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
+    public function mlBuilds()
+    {
+        return $this->belongsTo(\App\Models\Ml_build::class, 'ml_builds_id');
+    }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     **/
     public function serverDetails()
     {
         return $this->belongsTo(\App\Models\Server_detail::class, 'server_details_id');
@@ -113,11 +122,17 @@ class Ml_detail extends Model
         return $this->hasMany(\App\Models\InstanceDetail::class, 'ml_details_id');
     }
 
-    public function return_intellicus_version_details($id,$return_what)
+    public function return_intellicus_version_details($id, $return_what)
     {
-    $value = DB::table('intellicus_versions')->where('id', $id)->get();
+        $value = DB::table('intellicus_versions')->where('id', $id)->get();
         return $value->pluck($return_what);
         // return $value;
+    }
+
+    public function returnMLBuild($id)
+    {
+        $value = DB::table('ml_builds')->where('id', $id)->get();
+        return $value;
     }
 
     public function getZeppelinPwdAttribute($value)
@@ -133,5 +148,4 @@ class Ml_detail extends Model
     {
         $this->attributes['zeppelin_pwd'] = Crypt::encryptString($value);
     }
-
 }

@@ -1,13 +1,13 @@
 <div class="row">
 
     <!-- Ml Name Field -->
-    <div class="form-group col-sm-4">
+    <div class="form-group col-sm-3">
         {!! Form::label('ml_name', 'Name:') !!}
         {!! Form::text('ml_name', null, ['class' => 'form-control']) !!}
     </div>
 
     <!-- Server Details Id Field -->
-    <div class="form-group col-sm-4">
+    <div class="form-group col-sm-3">
         {!! Form::label('server_details_id', 'Server:') !!}
         <select name="server_details_id" class="form-control select-server-name">
             <option value="">Select .... </option>
@@ -23,7 +23,7 @@
 
     <!-- Intellicus Details Id Field -->
 
-    <div class="form-group col-sm-4">
+    <div class="form-group col-sm-3">
         {!! Form::label('intellicus_details_id  ', 'Intellicus:') !!}
         <!-- {!! Form::number('intellicus_details_id', null, ['class' => 'form-control']) !!} -->
         <select name="intellicus_details_id" class="form-control select-app-server">
@@ -45,6 +45,29 @@
                 <option value="{{ $ida->id }}" @if($ida->id==$record->intellicus_details_id) selected='selected' @endif >{{ $ida->intellicus_name }} ({{ $server_name }}/{{ $server_ip }}:{{ ($ida->intellicus_port) }} ) ver {{ $intell_ver }} {{ $intell_patch }} {{ $http_icon }}</option>
                 @else
                     <option value="{{ $ida->id }}">{{ $ida->intellicus_name }} ({{ $server_name }}/{{ $server_ip }}:{{ ($ida->intellicus_port) }} ) ver {{ $intell_ver }} {{ $intell_patch }}  {{ $http_icon }}</option>
+                @endif
+            @endforeach
+        </select>
+    </div>
+
+    <!-- ML Versions Id Field -->
+    <div class="form-group col-sm-3">
+        {!! Form::label('ml_builds_id', 'ML Build:') !!}
+        <select name="ml_builds_id" class="form-control select-version">
+            <option value="">Select .... </option>
+            @foreach($ml_build as $prv)
+                @if($this_is_edit)
+                    @if($prv->is_release_build == "Y")
+                        <option value="{{ $prv->id }}" @if($prv->id==$record->ml_builds_id) selected='selected' @endif >{{ $prv->ml_version }} Build {{ $prv->ml_build }} #</option>
+                    @else
+                        <option value="{{ $prv->id }}" @if($prv->id==$record->ml_builds_id) selected='selected' @endif >{{ $prv->ml_version }} Build {{ $prv->ml_build }}</option>
+                    @endif
+                @else
+                    @if($prv->is_release_build == "Y")
+                        <option value="{{ $prv->id }}">{{ $prv->ml_version }} Build {{ $prv->ml_build }} #</option>
+                    @else
+                        <option value="{{ $prv->ml_details_id }}">{{ $prv->ml_version }} Build {{ $prv->ml_build }}</option>
+                    @endif
                 @endif
             @endforeach
         </select>

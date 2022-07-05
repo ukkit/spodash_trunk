@@ -10,7 +10,7 @@ use InfyOm\Generator\Common\BaseRepository;
  * Class Ml_detailRepository
  * @package App\Repositories
  * @version November 29, 2021, 10:54 am IST
-*/
+ */
 
 class Ml_detailRepository extends BaseRepository
 {
@@ -22,6 +22,7 @@ class Ml_detailRepository extends BaseRepository
         'instance_details_id',
         'intellicus_details_id',
         'database_details_id',
+        'ml_builds_id',
         'ml_name',
         'zeppelin_port',
         'zeppelin_user',
