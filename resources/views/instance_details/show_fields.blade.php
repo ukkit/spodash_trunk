@@ -27,10 +27,6 @@ try {
     $spm_build_number = $spm_version->product_build_numer;
     $is_rel_build = $spm_version->is_release_build;
 
-    // $release_number = $instanceDetail->return_product_versions_by_pvid($instanceDetail->pv_id,"product_ver_number");
-    // $build_number = $instanceDetail->return_product_versions_by_pvid($instanceDetail->pv_id,"product_build_numer");
-    // $is_rel_build = $instanceDetail->return_product_versions_by_pvid($instanceDetail->pv_id,"is_release_build");
-    // $is_rel_build = trim($is_rel_build,'[]""');
 } catch (\Throwable $th) {
     $release_number = null;
     $build_number = null;
@@ -38,9 +34,12 @@ try {
 }
 
 try {
-    $pai_release = $instanceDetail->pai_versions_by_pvid($instanceDetail->pai_pv_id);
-    $pai_version_number = $pai_release->pai_version;
-    $pai_build_number = $pai_release->pai_build;
+    $pai_r = $instanceDetail->pai_versions_by_pvid($instanceDetail->pai_pv_id);
+    $pai_version = $pai_r->pai_version . " Build " . $pai_r->pai_build;
+    if ($pai_r->is_release_build == "Y") {
+        $pai_version .= " <i class=\"fas fa-crown fa-xs\" title=\"Release Build\"></i>";
+    }
+
 } catch (\Throwable $th) {
     $pai_version_number = null;
     $pai_build_number = null;
@@ -155,6 +154,12 @@ if (!empty($instanceDetail->ml_details_id)) {
     $ml_port = $instanceDetail->mlDetail->zeppelin_port;
     $ml_name = $instanceDetail->mlDetail->ml_name;
     $ml_path = $instanceDetail->mlDetail->ml_install_path;
+
+    $mlb = $instanceDetail->get_ml_build($instanceDetail->mlDetail->ml_builds_id);
+    $ml_version = $mlb->ml_version . " Build " . $mlb->ml_build;
+    if ($mlb->is_release_build == "Y") {
+        $ml_version .= " <i class=\"fas fa-crown fa-xs\" title=\"Release Build\"></i>";
+    }
 }
 
 try {
@@ -254,7 +259,7 @@ try {
     <div class="col-md-4">
         <h4 class="custom-h4"><i class="fas fa-snowflake"></i></i>  PAI Details &nbsp;&nbsp;{!! $icon_list !!}</h4>
         <table class="table table-responsive table-condensed table-striped">
-            <tr><td><strong>PAI Version</strong></td><td>{{  $pai_version_number }} Build {{ $pai_build_number }}</td></tr>
+            <tr><td><strong>PAI Version</strong></td><td>{!!  $pai_version !!}</td></tr>
             <tr><td><strong>Server Name</strong></td><td><a href="{{ route('serverDetails.show', [$pai_server_id]) }}"> {{ strtoupper($pai_server) }} </a></td></tr>
             @if(!@empty($ambari_details))
             <tr><td><strong>Ambari</strong></td><td>{{  $ambari_details }}</td></tr>
@@ -277,8 +282,8 @@ try {
         <h4 class="custom-h4"><i class="fab fa-leanpub"></i></i>  Machine Learning Details </h4>
         <table class="table table-responsive table-condensed table-striped">
             <tr><td><strong>Name</strong></td><td><a href="{{ $ml_url }}" target="_blank"> {{ strtoupper($ml_name) }} </a></td></tr>
-            <tr><td><strong>Server Name</strong></td><td>{{ $ml_server_name }}</td></tr>
-            <tr><td><strong>IP Address</strong></td><td>{{ $ml_server_ip }}</td></tr>
+            <tr><td><strong>Server Name</strong></td><td>{{ $ml_server_name }} ({{ $ml_server_ip }})</td></tr>
+            <tr><td><strong>ML Version</strong></td><td>{!! $ml_version !!}</td></tr>
             <tr><td><strong>Zeppelin User</strong></td><td>{{ $ml_user }}</td></tr>
             @if($user_has_rights)
                 <tr><td><strong>Zeppelin Password</strong></td><td>{{  $ml_pass }}</td></tr>
