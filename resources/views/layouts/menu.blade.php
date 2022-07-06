@@ -116,11 +116,11 @@
         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fas fa-atom fa-lg"></i></i><span class="caret"></span></a>
         <ul class="dropdown-menu" role="menu">
 
-            <li class="{{ Request::is('releaseMilestones*') ? 'active' : '' }}">
+            {{-- <li class="{{ Request::is('releaseMilestones*') ? 'active' : '' }}">
                 <a href="{{ route('releaseMilestones.index') }}"><i class="fas fa-archway"></i>
                     <span>Release Milestones</span>
                 </a>
-            </li>
+            </li> --}}
 
             <li class="{{ Request::is('tablespaceDetails*') ? 'active' : '' }}">
                 <a href="{{ route('tablespaceDetails.index') }}"><i class="fas fa-table"></i>
