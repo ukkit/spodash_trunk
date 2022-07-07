@@ -57,7 +57,7 @@
         "files": [
             "app/Helpers/custom_functions.php",
             "app/Helpers/string_functions.php",
-            "app/Helpers/instance_permissions.php"
+            "app/Helpers/permissions.php"
          ],
         "classmap": [
             "database/seeds",

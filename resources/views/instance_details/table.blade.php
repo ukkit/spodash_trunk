@@ -887,16 +887,18 @@
                     @endcanany
                     @canany('edit_instanceDetails','delete_instanceDetails')
                     <td class="text-center">
-                        @can('edit_instanceDetails')
-                            {!! Form::open(['route' => ['instanceDetails.edit', $instanceDetail->id], 'method' => 'get']) !!}
-                            {!! Form::button('<i class="fas fa-pencil-alt" title="Edit"></i>', ['type' => 'submit', 'class' => 'btn btn-edit btn-xs']) !!}
-                            {!! Form::close() !!}
-                        @endcan
-                        @can('delete_instanceDetails')
-                            {!! Form::open(['route' => ['instanceDetails.destroy', $instanceDetail->id], 'method' => 'delete']) !!}
-                            {!! Form::button('<i class="fas fa-trash-alt" title="Delete"></i>', ['type' => 'submit', 'class' => 'btn btn-delete btn-xs', 'onclick' => "return confirm('Are you sure you want to delete this instance details?')"]) !!}
-                            {!! Form::close() !!}
-                        @endcan
+                        @if ($user_has_rights)
+                            @can('edit_instanceDetails')
+                                {!! Form::open(['route' => ['instanceDetails.edit', $instanceDetail->id], 'method' => 'get']) !!}
+                                {!! Form::button('<i class="fas fa-pencil-alt" title="Edit"></i>', ['type' => 'submit', 'class' => 'btn btn-edit btn-xs']) !!}
+                                {!! Form::close() !!}
+                            @endcan
+                            @can('delete_instanceDetails')
+                                {!! Form::open(['route' => ['instanceDetails.destroy', $instanceDetail->id], 'method' => 'delete']) !!}
+                                {!! Form::button('<i class="fas fa-trash-alt" title="Delete"></i>', ['type' => 'submit', 'class' => 'btn btn-delete btn-xs', 'onclick' => "return confirm('Are you sure you want to delete this instance details?')"]) !!}
+                                {!! Form::close() !!}
+                            @endcan
+                        @endif
                     </td>
                     @endcanany
 

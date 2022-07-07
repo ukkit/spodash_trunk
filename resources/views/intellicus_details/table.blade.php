@@ -96,14 +96,24 @@ $CX=1;
                 $link_icon = "<i class=\"fas fa-lock-open fs-sm\" ></i> ".$int_version;
             }
             $inturl = $http_tag."://" .$server_ip.":".$intellicusDetail->intellicus_port."/Intellicus";
-            // $urlcheck = url_test($inturl);
-            // if ($urlcheck) {
-            //     $intellicus = "<a href=\"".$inturl."\" target=\"_blank\"> $link_icon </a>";
-            // } else {
-            //     $intellicus = "<a href=\"".$inturl."\" target=\"_blank\"> <i class=\"fas fa-unlink\"></i> </a>";
-            // }
+
             $intellicus = "<a href=\"".$inturl."\" target=\"_blank\"> $link_icon </a>";
 
+            $user_has_rights = False;
+
+            try {
+                $uii = DB::table('instance_details')->where('intellicus_details_id', $intellicusDetail->id)->whereNull('deleted_at')->get();
+                if (count($uii) == 1) {
+                    foreach ($uii as $value) {
+                        $instance_id = $value->id;
+                    }
+                    if (checkUserRights($instance_id)) {
+                        $user_has_rights = True;
+                    }
+                }
+            } catch (\Throwable $th) {
+                Log::error($th->getMessage());
+            }
 
         @endphp
             @if($intellicusDetail->is_active == "Y")
@@ -130,7 +140,7 @@ $CX=1;
                 <td class="hidden">{{ $server_ip }}</td>
                 <td>{!! $intellicus !!}</td>
                 <td>{{ $repository }}</td>
-                <td class="text-center">{{ $intellicusDetail->intellicus_memory }} GB</td>
+                <td class="text-center">{{ $intellicusDetail->intellicus_memory }} GB </td>
                 <td class="text-center">{{ $intellicusDetail->intellicus_port }}</td>
                 {{-- <td class="text-center"> {!! $intellicus !!}</td> --}}
 
@@ -146,12 +156,15 @@ $CX=1;
                 @endhasanyrole
 
                 @can('edit_databaseDetails')
+
                 <td class="text-center">
+                    @if($user_has_rights)
                     <div class="btn-group" role="group" aria-label="...">
                         {!! Form::open(['class'=>'inline','route' => ['intellicusDetails.edit', $intellicusDetail->id], 'method' => 'get']) !!}
                         {!! Form::button('<i class="fas fa-pencil-alt" title="Edit"></i>', ['type' => 'submit', 'class' => 'btn btn-edit btn-xs']) !!}
                         {!! Form::close() !!}
                     </div>
+                    @endif
                 </td>
                 @endcan
 
