@@ -7,15 +7,20 @@
             @else
                 <th class="text-center id_column">#</th>
             @endhasanyrole
-                <th>Name</th>
-                <th>Server</th>
-                <th>User</th>
-                <th>Password</th>
-                <th>Port</th>
-                <th>Intellicus</th>
-                <th>Installed Path</th>
-                <th>Notes</th>
-                <th class="text-center">Action</th>
+            <th  class="name_column">Name</th>
+            <th  class="name_column">Server Name</th>
+            <th class="text-left column_3pct">Port</th>
+            <th  class="column_8pct">Login/PWD</th>
+            {{-- <th>Password</th> --}}
+            <th class="column_8pct">Intellicus</th>
+            <th>Installed Path</th>
+            <th>Notes</th>
+            @can('edit_databaseDetails')
+                <th class="text-center icon_column"><i class="fas fa-pencil-alt" title="Actions"></i></th> {{-- 16. Actions --}}
+            @endcan
+            @can('delete_databaseDetails')
+                <th class="text-center icon_column"><i class="fas as fa-trash" title="Actions"></i></th> {{-- 16. Actions --}}
+            @endcan
             </tr>
         </thead>
         <tbody>
@@ -48,30 +53,28 @@
                 @endhasanyrole
                 <td><a href="{{ $URL }}" target="_blank"> <strong>{{ strtoupper($mlDetail->ml_name) }} </strong></a></td>
                 <td><a href="{{ $server_url }}" target="_blank"> {{strtoupper($server_name) }} </a></td>
-                <td>{{ $mlDetail->zeppelin_user }}</td>
-                <td>{{ $mlDetail->zeppelin_pwd }}</td>
                 <td>{{ $mlDetail->zeppelin_port }}</td>
+                <td>{{ $mlDetail->zeppelin_user }}/{{ $mlDetail->zeppelin_pwd }}</td>
+                {{-- <td></td> --}}
+
                 <td>{{ $intellicus_name }}</td>
                 <td>{{ $mlDetail->installed_path }}</td>
                 <td>{{ $mlDetail->notes }}</td>
 
+                @can('edit_databaseDetails')
                 <td class="text-center">
-                @canany('edit_databaseDetails','delete_databaseDetails')
-
-                    <div class="btn-group" role="group" aria-label="...">
-                        @can('edit_databaseDetails')
-                            {!! Form::open(['class'=>'inline','route' => ['mlDetails.edit', $mlDetail->id], 'method' => 'get']) !!}
-                            {!! Form::button('<i class="fas fa-pencil-alt" title="Edit"></i>', ['type' => 'submit', 'class' => 'btn btn-info btn-xs']) !!}
-                            {!! Form::close() !!}
-                        @endcan
-                        @can('delete_databaseDetails')
-                            {!! Form::open(['class'=>'inline','route' => ['mlDetails.destroy', $mlDetail->id], 'method' => 'delete']) !!}
-                            {!! Form::button('<i class="fas fa-trash" title="Delete"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure you want to DELETE this Machine Learning details?')"]) !!}
-                            {!! Form::close() !!}
-                        @endcan
-                    </div>
-                @endcanany
+                    {!! Form::open(['class'=>'inline','route' => ['mlDetails.edit', $mlDetail->id], 'method' => 'get']) !!}
+                    {!! Form::button('<i class="fas fa-pencil-alt" title="Edit"></i>', ['type' => 'submit', 'class' => 'btn btn-edit btn-xs']) !!}
+                    {!! Form::close() !!}
                 </td>
+                @endcan
+                @can('delete_databaseDetails')
+                <td class="text-center">
+                    {!! Form::open(['class'=>'inline','route' => ['mlDetails.destroy', $mlDetail->id], 'method' => 'delete']) !!}
+                    {!! Form::button('<i class="fas fa-trash" title="Delete"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure you want to DELETE this Machine Learning details?')"]) !!}
+                    {!! Form::close() !!}
+                </td>
+                @endcan
 
             </tr>
         @endforeach

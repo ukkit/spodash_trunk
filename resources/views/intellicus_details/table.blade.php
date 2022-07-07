@@ -25,8 +25,11 @@ $CX=1;
                 @endif
                 <th>Intellicus Install Path</th>
                 <th class="hidden">Hidden Figures</th>
-                @can('edit_databaseDetails')
+                @hasanyrole('admin|superadmin')
                     <th class="text-center id_column">CFT</th>
+                @endhasanyrole
+
+                @can('edit_databaseDetails')
                     <th class="text-center icon_column"><i class="fas fa-pencil-alt" title="Actions"></i></th>
                 @endcan
                 @can('delete_databaseDetails')
@@ -138,9 +141,11 @@ $CX=1;
                 <td>{{ $intellicusDetail->intellicus_install_path }}</td>
                 <td class="hidden">{{ $hidden_figures }}</td>
 
-                @can('edit_databaseDetails')
+                @hasanyrole('admin|superadmin')
                 <td class="text-center">{{ $intellicusDetail->check_fail_count }}</td>
+                @endhasanyrole
 
+                @can('edit_databaseDetails')
                 <td class="text-center">
                     <div class="btn-group" role="group" aria-label="...">
                         {!! Form::open(['class'=>'inline','route' => ['intellicusDetails.edit', $intellicusDetail->id], 'method' => 'get']) !!}
