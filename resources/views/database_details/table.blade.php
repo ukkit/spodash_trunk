@@ -120,6 +120,22 @@
                     $server_ip = "";
                 }
 
+                $user_has_rights = False;
+
+                try {
+                    $uii = DB::table('instance_details')->where('database_details_id', $databaseDetail->id)->whereNull('deleted_at')->get();
+                    if (count($uii) == 1) {
+                        foreach ($uii as $value) {
+                            $instance_id = $value->id;
+                        }
+                        if (checkUserRights($instance_id)) {
+                            $user_has_rights = True;
+                        }
+                    }
+                } catch (\Throwable $th) {
+                    Log::error($th->getMessage());
+                }
+
             ?>
             @if($databaseDetail->db_is_active == "N")
                 <tr class="danger">
@@ -166,9 +182,11 @@
 
                 @can('edit_databaseDetails')
                 <td class="text-center">{{-- 16. Edit Actions --}}
-                    {!! Form::open(['class'=>'inline','route' => ['databaseDetails.edit', $databaseDetail->id], 'method' => 'get']) !!}
-                    {!! Form::button('<i class="fas fa-pencil-alt" title="Edit"></i>', ['type' => 'submit', 'class' => 'btn btn-edit btn-xs']) !!}
-                    {!! Form::close() !!}
+                    @if($user_has_rights)
+                        {!! Form::open(['class'=>'inline','route' => ['databaseDetails.edit', $databaseDetail->id], 'method' => 'get']) !!}
+                        {!! Form::button('<i class="fas fa-pencil-alt" title="Edit"></i>', ['type' => 'submit', 'class' => 'btn btn-edit btn-xs']) !!}
+                        {!! Form::close() !!}
+                    @endif
                 </td>
                 @endcan
                 @can('delete_databaseDetails')

@@ -397,6 +397,7 @@ $escm_type_array = array("Production","Sandbox");
             </div>
         </div>
 
+        @hasanyrole('advance|admin|superadmin')
         <!-- Instance Show On Site Field -->
         <div class="form-group col-sm-2">
             {!! Form::label('instance_show_on_site', 'Show on Dashboard?') !!}
@@ -409,6 +410,7 @@ $escm_type_array = array("Production","Sandbox");
                 </label>
             </div>
         </div>
+        @endhasanyrole
 
         <!-- Instance Is HTTPS Field -->
         <div class="form-group col-sm-2">
