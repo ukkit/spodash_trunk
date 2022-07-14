@@ -12,7 +12,7 @@
         "inView": false
     },
     {
-        "name": "sf_pai_version",
+        "name": "ml_version",
         "dbType": "string,20",
         "htmlType": "text",
         "validations": "required",
@@ -24,7 +24,7 @@
         "inView": true
     },
     {
-        "name": "sf_pai_build",
+        "name": "ml_build",
         "dbType": "integer,false",
         "htmlType": null,
         "validations": "required",
@@ -94,5 +94,9 @@
         "inForm": false,
         "inIndex": false,
         "inView": false
+    },
+    {
+        "type": "relation",
+        "relation": "1tm,MlDetail,ml_builds_id"
     }
 ]

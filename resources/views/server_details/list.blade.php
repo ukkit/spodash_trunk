@@ -23,9 +23,9 @@ $mlcount = count($mldetails);
                         <tr>
                             <th class="id_column">ID</th>
                             <th name="name_column">USER</th>
-                            @if(Auth::user())
+                            {{-- @if(Auth::user())
                                 <th class="name_column">PASSWORD</th>
-                            @endif
+                            @endif --}}
                             <th>SID/NAME</th>
                             <th class="text-center">PORT #</th>
                             <th class="text-right">DB SIZE</th>
@@ -125,7 +125,7 @@ $mlcount = count($mldetails);
                                 <td>{{ $dbd->id }}</td>
                                 <td>{{ $dbd->db_user }} {!! $icons !!}</td>
                                 @if(Auth::user())
-                                <td>{{ $dbd->db_pass }}</td>
+                                {{-- <td>{{ $dbd->db_pass }}</td> --}}
                                 @endif
                                 <td>{{ $dbd->db_sid }}</td>
                                 <td class="text-center">{{ $dbd->db_port }}</td>

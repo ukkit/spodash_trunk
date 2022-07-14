@@ -21,6 +21,7 @@ use App\Models\Database_detail;
 use App\Models\Server_detail;
 use App\Models\Instance_detail;
 use App\Models\Intellicus_detail;
+use App\Models\Ml_build;
 
 class Ml_detailController extends AppBaseController
 {
@@ -42,18 +43,20 @@ class Ml_detailController extends AppBaseController
     {
         Log::debug("inside Ml_detailController.create");
         $sd_arr['server_detail'] = Server_detail::where('server_details.server_is_active', 'Y')
-                                    ->whereNull('server_details.deleted_at')->get();
-        $pai_arr['pai_detail'] = Database_detail::where('repository_type','PAI')
-                                    ->where('db_is_active','Y')
-                                    ->whereNull('deleted_at')->get();
+            ->whereNull('server_details.deleted_at')->get();
+        $pai_arr['pai_detail'] = Database_detail::where('repository_type', 'PAI')
+            ->where('db_is_active', 'Y')
+            ->whereNull('deleted_at')->get();
         $id_arr['intellicus_detail'] = Intellicus_detail::whereNull('deleted_at')->get();
+        $ml_arr['ml_build'] = Ml_build::whereNull('deleted_at')->get();
 
         return view('ml_details.create')
-        ->with($sd_arr)
-        ->with($id_arr)
-        ->with($pai_arr)
-        ->with('this_is_edit', false)
-        ->with('show_is_active', false);
+            ->with($sd_arr)
+            ->with($id_arr)
+            ->with($pai_arr)
+            ->with($ml_arr)
+            ->with('this_is_edit', false)
+            ->with('show_is_active', false);
     }
 
     public function store(CreateMl_detailRequest $request)
@@ -77,11 +80,12 @@ class Ml_detailController extends AppBaseController
         $mlDetail = $this->mlDetailRepository->find($id);
 
         $sd_arr['server_detail'] = Server_detail::where('server_details.server_is_active', 'Y')
-                                    ->whereNull('server_details.deleted_at')->get();
-        $pai_arr['pai_detail'] = Database_detail::where('repository_type','PAI')
-                                    ->where('db_is_active','Y')
-                                    ->whereNull('deleted_at')->get();
+            ->whereNull('server_details.deleted_at')->get();
+        $pai_arr['pai_detail'] = Database_detail::where('repository_type', 'PAI')
+            ->where('db_is_active', 'Y')
+            ->whereNull('deleted_at')->get();
         $id_arr['intellicus_detail'] = Intellicus_detail::whereNull('deleted_at')->get();
+        $ml_arr['ml_build'] = Ml_build::whereNull('deleted_at')->get();
         $rec_arr['record'] = DB::table('ml_details')->where('id', $id)->get()->first();
 
         if (empty($mlDetail)) {
@@ -91,13 +95,14 @@ class Ml_detailController extends AppBaseController
         }
 
         return view('ml_details.edit')
-        ->with($sd_arr)
-        ->with($pai_arr)
-        ->with($id_arr)
-        ->with($rec_arr)
-        ->with('this_is_edit', true)
-        ->with('show_is_active', true)
-        ->with('mlDetail', $mlDetail);
+            ->with($sd_arr)
+            ->with($pai_arr)
+            ->with($id_arr)
+            ->with($rec_arr)
+            ->with($ml_arr)
+            ->with('this_is_edit', true)
+            ->with('show_is_active', true)
+            ->with('mlDetail', $mlDetail);
     }
 
 

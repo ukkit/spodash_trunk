@@ -4,13 +4,12 @@ namespace App\Models;
 
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Instance_detail;
 
-class Sf_build extends Model
+class Ml_build extends Model
 {
     use SoftDeletes;
 
-    public $table = 'sf_builds';
+    public $table = 'ml_builds';
 
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
@@ -21,8 +20,8 @@ class Sf_build extends Model
 
 
     public $fillable = [
-        'sf_pai_version',
-        'sf_pai_build',
+        'ml_version',
+        'ml_build',
         'pv_id',
         'is_release_build'
     ];
@@ -34,8 +33,8 @@ class Sf_build extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'sf_pai_version' => 'string',
-        'sf_pai_build' => 'integer',
+        'ml_version' => 'string',
+        'ml_build' => 'integer',
         'pv_id' => 'string',
         'is_release_build' => 'string'
     ];
@@ -46,15 +45,15 @@ class Sf_build extends Model
      * @var array
      */
     public static $rules = [
-        'sf_pai_version' => 'required',
-        'sf_pai_build' => 'required'
-        // 'pv_id' => 'required',
-        // 'is_release_build' => 'required'
+        'ml_version' => 'required',
+        'ml_build' => 'required',
     ];
 
-    public function instance_list_by_pvid($pvid)
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     **/
+    public function mlDetails()
     {
-        $value = Instance_detail::where('sf_pv_id', $pvid)->whereNull('deleted_at')->get();
-        return $value;
+        return $this->hasMany(\App\Models\MlDetail::class, 'ml_builds_id');
     }
 }

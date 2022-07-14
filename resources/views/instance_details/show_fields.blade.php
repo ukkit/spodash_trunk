@@ -155,6 +155,17 @@ if (!empty($instanceDetail->ml_details_id)) {
     $ml_port = $instanceDetail->mlDetail->zeppelin_port;
     $ml_name = $instanceDetail->mlDetail->ml_name;
     $ml_path = $instanceDetail->mlDetail->ml_install_path;
+
+    try {
+        $mlb = $instanceDetail->get_ml_build($instanceDetail->mlDetail->ml_builds_id);
+        $ml_version = $mlb->ml_version . " Build " . $mlb->ml_build;
+        if ($mlb->is_release_build == "Y") {
+            $ml_version .= " <i class=\"fas fa-crown fa-xs\" title=\"Release Build\"></i>";
+        }
+    } catch (\Throwable $th) {
+        $ml_version = "";
+    }
+
 }
 
 try {
@@ -278,7 +289,7 @@ try {
         <table class="table table-responsive table-condensed table-striped">
             <tr><td><strong>Name</strong></td><td><a href="{{ $ml_url }}" target="_blank"> {{ strtoupper($ml_name) }} </a></td></tr>
             <tr><td><strong>Server Name</strong></td><td>{{ $ml_server_name }}</td></tr>
-            <tr><td><strong>IP Address</strong></td><td>{{ $ml_server_ip }}</td></tr>
+            <tr><td><strong>ML Version</strong></td><td>{!! $ml_version !!}</td></tr>
             <tr><td><strong>Zeppelin User</strong></td><td>{{ $ml_user }}</td></tr>
             @if($user_has_rights)
                 <tr><td><strong>Zeppelin Password</strong></td><td>{{  $ml_pass }}</td></tr>
