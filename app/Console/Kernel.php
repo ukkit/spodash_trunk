@@ -29,7 +29,7 @@ class Kernel extends ConsoleKernel
         //$schedule->command('backup:clean')->daily()->at('01:00');
         $schedule->command('backup:run')->daily()->at('05:00');
         $schedule->command('command:archiveBuild')->daily()->at('04:00');
-        $schedule->command('command:actionhistories')->everyThirtyMinutes();
+        $schedule->command('command:actionhistories')->hourly();
         $schedule->command('command:populateRN')->twiceDaily(1, 13);
         // $schedule->command('command:generateSystemStats')->weekdays()->twiceDaily(1, 13);
         $schedule->command('command:getDBSize')->twiceDaily(2, 14);
