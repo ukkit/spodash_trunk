@@ -61,10 +61,10 @@ class Product_versionController extends AppBaseController
     {
         $input = $request->all();
 
-        $strip_pvn = preg_replace("/[^0-9]/","",$input['product_ver_number']);
-        $strip_pbn = preg_replace("/[^0-9]/","",$input['product_build_numer']);
-        $old_pvid = $strip_pvn.$strip_pbn;
-        $pv_id = $strip_pvn."_".$strip_pbn;
+        $strip_pvn = preg_replace("/[^0-9]/", "", $input['product_ver_number']);
+        $strip_pbn = preg_replace("/[^0-9]/", "", $input['product_build_numer']);
+        $old_pvid = $strip_pvn . $strip_pbn;
+        $pv_id = $strip_pvn . "_" . $strip_pbn;
 
         // Generating pv_id by merging numbers of product_Ver_number and product_build_number
         $input['pv_id'] = $pv_id;
@@ -119,9 +119,9 @@ class Product_versionController extends AppBaseController
         $rec_arr['record'] = DB::table('product_versions')->where('id', $id)->get()->first();
 
         return view('product_versions.edit')
-        ->with('productVersion', $productVersion)
-        ->with($rec_arr)
-        ->with('this_is_edit', true);
+            ->with('productVersion', $productVersion)
+            ->with($rec_arr)
+            ->with('this_is_edit', true);
     }
 
     /**

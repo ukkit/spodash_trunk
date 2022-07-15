@@ -69,7 +69,7 @@ class Instance_detail extends Model
         'instance_ap_max_heap_size',
         'jdk_type',
         'jdk_version',
-		'qa_intentionally_disabled',
+        'qa_intentionally_disabled',
         'in_use',
         'in_use_msg',
         'webserver_version',
@@ -134,7 +134,7 @@ class Instance_detail extends Model
         'jdk_version' => 'string',
         'in_use' => 'string',
         'in_use_msg' => 'string',
-		'qa_intentionally_disabled'=>'string',
+        'qa_intentionally_disabled' => 'string',
         'webserver_version' => 'string',
         'is_insight_enabled' => 'string',
         'is_contrast_configured' => 'string',
@@ -206,9 +206,9 @@ class Instance_detail extends Model
     public function sf_builds_by_pvid($pvid)
     {
         $value = DB::table('sf_builds')
-                        ->where('pv_id', $pvid)
-                        ->select('sf_builds.*')
-                        ->first();
+            ->where('pv_id', $pvid)
+            ->select('sf_builds.*')
+            ->first();
         return $value;
     }
 
@@ -220,44 +220,43 @@ class Instance_detail extends Model
     public function return_product_versions_by_pvid($pvid, $return_what)
     {
         $value = DB::table('product_versions')
-                        ->where('pv_id', $pvid)
-                        ->select('product_versions.*')
-                        ->get();
+            ->where('pv_id', $pvid)
+            ->select('product_versions.*')
+            ->get();
         return $value->pluck($return_what);
     }
 
     public function product_versions_by_pvid($pvid)
     {
         $value = DB::table('product_versions')
-                        ->where('pv_id', $pvid)
-                        ->select('product_versions.*')
-                        ->first();
+            ->where('pv_id', $pvid)
+            ->select('product_versions.*')
+            ->first();
         return $value;
     }
 
     public function pai_versions_by_pvid($pvid)
     {
         $value = DB::table('pai_builds')
-                        ->where('pv_id', $pvid)
-                        ->select('pai_builds.*')
-                        ->first();
+            ->where('pv_id', $pvid)
+            ->select('pai_builds.*')
+            ->first();
         return $value;
     }
 
     public function latest_sf_build_number_by_version($version)
     {
         $value = DB::table('sf_builds')
-                ->where('sf_pai_version',$version)
-                ->whereNull('deleted_at')
-                ->orderBy('created_at', 'desc')
-                ->first();
+            ->where('sf_pai_version', $version)
+            ->whereNull('deleted_at')
+            ->orderBy('created_at', 'desc')
+            ->first();
         return $value;
     }
 
     public function server_details_by_id()
     {
         return $this->belongsTo('App\Models\Server_detail', 'server_details_id');
-
     }
 
     public function product_names_by_id()
@@ -275,7 +274,7 @@ class Instance_detail extends Model
         return $this->belongsTo('App\Models\Intellicus_detail', 'intellicus_details_id');
     }
 
-    public function return_db_details($id,$return_what)
+    public function return_db_details($id, $return_what)
     {
         $value = DB::table('database_details')->select($return_what)->where('id', $id)->first();
         return $value->$return_what;
@@ -283,10 +282,10 @@ class Instance_detail extends Model
 
     public function return_db_type($id, $return_what)
     {
-    $value = DB::table('database_details')->where('database_details.id', $id)
-                ->join('database_types', 'database_details.database_types_id', '=', 'database_types.id')
-                ->select('database_types.*')
-                ->get();
+        $value = DB::table('database_details')->where('database_details.id', $id)
+            ->join('database_types', 'database_details.database_types_id', '=', 'database_types.id')
+            ->select('database_types.*')
+            ->get();
         return ($value->pluck($return_what));
     }
 
@@ -294,14 +293,14 @@ class Instance_detail extends Model
     // public function return_db_server_details($id,$return_what)
     {
         $value = DB::table('database_details')->where('database_details.id', $id)
-                ->join('server_details', 'database_details.server_details_id', '=', 'server_details.id')
-                ->select('server_details.*')
-                ->first();
+            ->join('server_details', 'database_details.server_details_id', '=', 'server_details.id')
+            ->select('server_details.*')
+            ->first();
         // return $value->pluck($return_what);
         return ($value);
     }
 
-    public function return_server_details_by_id($id,$return_what)
+    public function return_server_details_by_id($id, $return_what)
     {
         $value = DB::table('server_details')->where('id', $id)->get();
         return $value->pluck($return_what);
@@ -316,79 +315,79 @@ class Instance_detail extends Model
     public function return_os_details($id, $return_what)
     {
         $value = DB::table('server_details')->where('server_details.id', $id)
-                ->join('os_types', 'server_details.os_types_id', '=', 'os_types.id')
-                ->select('os_types.*')
-                ->get();
+            ->join('os_types', 'server_details.os_types_id', '=', 'os_types.id')
+            ->select('os_types.*')
+            ->get();
         return $value->pluck($return_what);
     }
 
     public function latest_build_number_by_version($version)
     {
         $value = DB::table('product_versions')
-                 ->where('product_ver_number',$version)
-                 ->whereNull('deleted_at')
-                 ->orderBy('created_at', 'desc')
-                 ->first();
-         return $value;
+            ->where('product_ver_number', $version)
+            ->whereNull('deleted_at')
+            ->orderBy('created_at', 'desc')
+            ->first();
+        return $value;
     }
 
     public function latest_pai_build_number_by_version($version)
     {
         $value = DB::table('pai_builds')
-                ->where('pai_version',$version)
-                ->whereNull('deleted_at')
-                ->orderBy('created_at', 'desc')
-                ->first();
+            ->where('pai_version', $version)
+            ->whereNull('deleted_at')
+            ->orderBy('created_at', 'desc')
+            ->first();
         return $value;
     }
 
-    public function return_build_creation_date($version,$build)
+    public function return_build_creation_date($version, $build)
     {
         $value = DB::table('product_versions')
-                ->select('created_at')
-                ->where('product_ver_number',$version)
-                ->where('product_build_numer', $build)
-                ->orderBy('created_at', 'desc')
-                ->first();
+            ->select('created_at')
+            ->where('product_ver_number', $version)
+            ->where('product_build_numer', $build)
+            ->orderBy('created_at', 'desc')
+            ->first();
         // $value = DB::table('product_versions')->where('product_ver_number',$version)->max('product_build_numer');
         return $value;
     }
 
-    public function return_pai_build_creation_date($version,$build)
+    public function return_pai_build_creation_date($version, $build)
     {
         $value = DB::table('pai_builds')
-                ->select('created_at')
-                ->where('pai_version',$version)
-                ->where('pai_build', $build)
-                ->orderBy('created_at', 'desc')
-                ->first();
+            ->select('created_at')
+            ->where('pai_version', $version)
+            ->where('pai_build', $build)
+            ->orderBy('created_at', 'desc')
+            ->first();
         // $value = DB::table('product_versions')->where('product_ver_number',$version)->max('product_build_numer');
         return $value;
     }
     public function get_username_by_id($id)
     {
-        $value = DB::table('users')->where('id',$id)
-                ->select('name')
-                ->first();
+        $value = DB::table('users')->where('id', $id)
+            ->select('name')
+            ->first();
         return $value;
     }
 
     public function return_action_history_details($id)
     {
         $value = DB::table('action_histories')->where('instance_details_id', $id)
-                ->select('action_histories.*')
-                ->orderBy('start_time', 'desc')
-                ->first();
+            ->select('action_histories.*')
+            ->orderBy('start_time', 'desc')
+            ->first();
         return $value;
     }
 
     public function return_all_action_history_by_id($id)
     {
         $value = DB::table('action_histories')->where('instance_details_id', $id)
-                ->select('action_histories.*')
-                ->orderBy('start_time', 'desc')
-                ->take(10)
-                ->get();
+            ->select('action_histories.*')
+            ->orderBy('start_time', 'desc')
+            ->take(10)
+            ->get();
         return $value;
     }
 
@@ -396,13 +395,13 @@ class Instance_detail extends Model
     {
         $retval = null;
         $uid = Auth::user()->id;
-        $team=DB::table('user_has_teams')->where('user_id',$uid)->get();
+        $team = DB::table('user_has_teams')->where('user_id', $uid)->get();
         $team_id = array_pluck($team, 'team_id');
         $all_team_id = DB::table('teams')->select('id')->where('team_name', 'All')->first();
         // dd($all_team_id->id);
         // $is_all_teams = DB::table('teams')->
 
-        if(Auth::user()->hasAnyRole(['advance', 'admin', 'superadmin'])) {
+        if (Auth::user()->hasAnyRole(['advance', 'admin', 'superadmin'])) {
             $retval = True;
         } else {
             $query = DB::table('instance_has_teams')->where('instance_id', $id)->where('team_id', $team_id)->count();
@@ -423,10 +422,8 @@ class Instance_detail extends Model
     {
         $instance_team_details = DB::table('instance_has_teams')->where('instance_id', $id)->get();
         $team_array = array();
-        if (count($instance_team_details) > 0)
-        {
-            foreach ($instance_team_details as $itid)
-            {
+        if (count($instance_team_details) > 0) {
+            foreach ($instance_team_details as $itid) {
                 $team_name = DB::table('teams')->where('id', $itid->team_id)->first();
                 array_push($team_array, $team_name->$return_what);
             }
@@ -434,21 +431,21 @@ class Instance_detail extends Model
         return $team_array;
     }
 
-    public function return_team_details($id) {
+    public function return_team_details($id)
+    {
         $instance_team_id = DB::table('instance_has_teams')->where('instance_id', $id)->get();
         $team_details = null;
         if (count($instance_team_id) > 0) {
-            foreach ($instance_team_id as $itid)
-            {
+            foreach ($instance_team_id as $itid) {
                 $team_details = DB::table('teams')->where('id', $itid->team_id)->first();
             }
         }
         return $team_details;
     }
 
-    public function return_intellicus_version_details($id,$return_what)
+    public function return_intellicus_version_details($id, $return_what)
     {
-    $value = DB::table('intellicus_versions')->where('id', $id)->get();
+        $value = DB::table('intellicus_versions')->where('id', $id)->get();
         return $value->pluck($return_what);
     }
 
@@ -469,4 +466,9 @@ class Instance_detail extends Model
         return $retval;
     }
 
+    public function get_ml_build($id)
+    {
+        $value = DB::table('ml_builds')->where('id', $id)->first();
+        return $value;
+    }
 }

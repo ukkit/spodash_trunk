@@ -6,6 +6,7 @@ use App\Http\Requests\CreateSf_buildRequest;
 use App\Http\Requests\UpdateSf_buildRequest;
 use App\Repositories\Sf_buildRepository;
 use App\Http\Controllers\AppBaseController;
+use App\Models\Sf_build;
 use Illuminate\Http\Request;
 use Flash;
 use Illuminate\Contracts\View\Factory;
@@ -36,7 +37,7 @@ class Sf_buildController extends AppBaseController
 
     public function create()
     {
-        return view('sf_builds.create');
+        return view('sf_builds.create')->with('this_is_edit', false);
     }
 
 
@@ -44,10 +45,10 @@ class Sf_buildController extends AppBaseController
     {
         $input = $request->all();
 
-        $strip_pvn = preg_replace("/[^0-9]/","",$input['sf_pai_version']);
-        $strip_pbn = preg_replace("/[^0-9]/","",$input['sf_pai_build']);
-        $old_pvid = $strip_pvn.$strip_pbn;
-        $pv_id = $strip_pvn."_".$strip_pbn;
+        $strip_pvn = preg_replace("/[^0-9]/", "", $input['sf_pai_version']);
+        $strip_pbn = preg_replace("/[^0-9]/", "", $input['sf_pai_build']);
+        $old_pvid = $strip_pvn . $strip_pbn;
+        $pv_id = $strip_pvn . "_" . $strip_pbn;
 
         // Generating pv_id by merging numbers of sf_pai_version and sf_pai_build
         $input['pv_id'] = $pv_id;
@@ -55,7 +56,7 @@ class Sf_buildController extends AppBaseController
 
         $sfBuild = $this->sfBuildRepository->create($input);
 
-        Flash::success('Sf Build saved successfully.');
+        Flash::success('SF Build saved successfully.');
 
         return redirect(route('sfBuilds.index'));
     }
@@ -85,7 +86,12 @@ class Sf_buildController extends AppBaseController
             return redirect(route('sfBuilds.index'));
         }
 
-        return view('sf_builds.edit')->with('sfBuild', $sfBuild);
+        $rec_arr['record'] = Sf_build::where('id', $id)->get()->first();
+
+        return view('sf_builds.edit')
+            ->with('sfBuild', $sfBuild)
+            ->with($rec_arr)
+            ->with('this_is_edit', true);
     }
 
 

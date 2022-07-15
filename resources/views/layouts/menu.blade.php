@@ -14,11 +14,6 @@
 
 @if(Auth::check())
 
-    @hasrole('superadmin')
-    {{-- @if(auth()->user()->role('superadmin') || (env('SHOW_RELEASE_MILESTONES') == True)) --}}
-
-    @endhasrole
-
     <li class="{{ Request::is('actionHistories*') ? 'active' : '' }}">
         <a href="{!! route('actionHistories.index') !!}"><i class="fas fa-history fa-fw fa-lg" Title="Action History"></i></a>
     </li>
@@ -33,7 +28,6 @@
             <li class="{{ Request::is('intellicusDetails*') ? 'active' : '' }}">
                 <a href="{{ route('intellicusDetails.index') }}"><i class="fas fa-info-circle"></i><span>Intellicus Details</span></a>
             </li>
-
 
             <li class="{{ Request::is('mlDetails*') ? 'active' : '' }}">
                 <a href="{{ route('mlDetails.index') }}">
@@ -63,6 +57,10 @@
 
                 <li class="{{ Request::is('sfBuilds*') ? 'active' : '' }}">
                     <a href="{{ route('sfBuilds.index') }}"><i class="fas fa-code-branch fa-lg"></i><span>Snowflake Builds</span></a>
+                </li>
+
+                <li class="{{ Request::is('mlBuilds*') ? 'active' : '' }}">
+                    <a href="{{ route('mlBuilds.index') }}"><i class="fas fa-code-branch fa-lg"></i><span>ML Builds</span></a>
                 </li>
 
                 <li class="{{ Request::is('intellicusVersions*') ? 'active' : '' }}">
@@ -198,6 +196,3 @@
     </li>
 
 @endif
-
-
-

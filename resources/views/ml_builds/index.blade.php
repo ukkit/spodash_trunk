@@ -1,14 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-
     <section class="content-header">
-        <h1 class="pull-left">Machine Learning Details</h1>
+        <h1 class="pull-left">Ml Builds</h1>
+        @can('add_productVersions')
         <h1 class="pull-right">
-            @can('add_databaseDetails')
-                <a class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" href="{{ route('mlDetails.create') }}">Add New</a>
-            @endcan
+           <a class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" href="{{ route('mlBuilds.create') }}">Add</a>
         </h1>
+        @endcan
     </section>
     <div class="content">
         <div class="clearfix"></div>
@@ -18,7 +17,7 @@
         <div class="clearfix"></div>
         <div class="box box-primary">
             <div class="box-body">
-                    @include('ml_details.table')
+                    @include('ml_builds.table')
             </div>
         </div>
         <div class="text-center">

@@ -9,6 +9,7 @@
             @endhasanyrole
             <th  class="name_column">Name</th>
             <th  class="name_column">Server Name</th>
+            <th>ML Build</th>
             <th class="text-left column_3pct">Port</th>
             <th  class="column_8pct">Login/PWD</th>
             {{-- <th>Password</th> --}}
@@ -40,20 +41,13 @@
                 $intellicus_name = Null;
             }
 
-            $user_has_rights = False;
-
             try {
-                $mld = DB::table('instance_details')->where('ml_details_id', $mlDetail->id)->whereNull('deleted_at')->get();
-                if (count($mld) == 1) {
-                    foreach ($mld as $value) {
-                        $instance_id = $value->id;
-                    }
-                    if (checkUserRights($instance_id)) {
-                        $user_has_rights = True;
-                    }
+                $ml_build = $mlDetail->mlBuilds->ml_version . " " . $mlDetail->mlBuilds->ml_build;
+                if ($mlDetail->mlBuilds->is_release_build == "Y") {
+                    $ml_build .= " <i class=\"fas fa-crown fa-xs\" title=\"Release Build\"></i>";
                 }
             } catch (\Throwable $th) {
-                Log::error($th->getMessage());
+                $ml_build = Null;
             }
 
             $URL = "http://".$server_ip.":".$mlDetail->zeppelin_port."/";
@@ -69,6 +63,7 @@
                 @endhasanyrole
                 <td><a href="{{ $URL }}" target="_blank"> <strong>{{ strtoupper($mlDetail->ml_name) }} </strong></a></td>
                 <td><a href="{{ $server_url }}" target="_blank"> {{strtoupper($server_name) }} </a></td>
+                <td> {!! $ml_build !!} </td>
                 <td>{{ $mlDetail->zeppelin_port }}</td>
                 <td>{{ $mlDetail->zeppelin_user }}/{{ $mlDetail->zeppelin_pwd }}</td>
                 {{-- <td></td> --}}
@@ -79,11 +74,9 @@
 
                 @can('edit_databaseDetails')
                 <td class="text-center">
-                    @if($user_has_rights)
-                        {!! Form::open(['class'=>'inline','route' => ['mlDetails.edit', $mlDetail->id], 'method' => 'get']) !!}
-                        {!! Form::button('<i class="fas fa-pencil-alt" title="Edit"></i>', ['type' => 'submit', 'class' => 'btn btn-edit btn-xs']) !!}
-                        {!! Form::close() !!}
-                    @endif
+                    {!! Form::open(['class'=>'inline','route' => ['mlDetails.edit', $mlDetail->id], 'method' => 'get']) !!}
+                    {!! Form::button('<i class="fas fa-pencil-alt" title="Edit"></i>', ['type' => 'submit', 'class' => 'btn btn-edit btn-xs']) !!}
+                    {!! Form::close() !!}
                 </td>
                 @endcan
                 @can('delete_databaseDetails')
