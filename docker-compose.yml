@@ -15,7 +15,8 @@ services:
     volumes:
       - ./:/var/www
     networks:
-      - lahmi
+      - opentap
+    restart: unless-stopped
 
   db:
     image: mysql:5.7
@@ -31,14 +32,15 @@ services:
       - ./docker-compose/mysql/my.cnf:/etc/mysql/my.cnf
       - ./docker-compose/mysql/init:/docker-entrypoint-initdb.d
     ports:
-      - 3307:3306
+      - 3306:3306
     networks:
-      - lahmi
+      - opentap
+    restart: unless-stopped
 
   nginx:
     image: nginx:alpine
     ports:
-      - 8005:80
+      - 80:80
     depends_on:
       - db
       - app
@@ -46,10 +48,11 @@ services:
       - ./:/var/www
       - ./docker-compose/nginx:/etc/nginx/conf.d/
     networks:
-      - lahmi
+      - opentap
+    restart: unless-stopped
 
 networks:
-  lahmi:
+  opentap:
     driver: bridge
 
 volumes:
