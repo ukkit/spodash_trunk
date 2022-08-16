@@ -7,12 +7,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Server_use
- * @package App\Models
+ *
  * @version January 25, 2019, 1:20 pm UTC
  *
  * @property \App\Models\ServerDetail serverDetail
  * @property \Illuminate\Database\Eloquent\Collection serverDetails
- * @property integer server_details_id
+ * @property int server_details_id
  * @property string use_short_name
  * @property string use_long_name
  */
@@ -23,16 +23,15 @@ class Server_use extends Model
     public $table = 'server_uses';
 
     const CREATED_AT = 'created_at';
+
     const UPDATED_AT = 'updated_at';
 
-
     protected $dates = ['deleted_at'];
-
 
     public $fillable = [
         'server_details_id',
         'use_short_name',
-        'use_long_name'
+        'use_long_name',
     ];
 
     /**
@@ -44,7 +43,7 @@ class Server_use extends Model
         'id' => 'integer',
         'server_details_id' => 'integer',
         'use_short_name' => 'string',
-        'use_long_name' => 'string'
+        'use_long_name' => 'string',
     ];
 
     /**
@@ -66,6 +65,6 @@ class Server_use extends Model
 
     public function server_detail()
     {
-        return $this->hasMany('App\Models\Server_detail');
+        return $this->hasMany(\App\Models\Server_detail::class);
     }
 }

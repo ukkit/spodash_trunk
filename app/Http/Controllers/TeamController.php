@@ -2,22 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Authorizable;
 use App\Http\Requests\CreateTeamRequest;
 use App\Http\Requests\UpdateTeamRequest;
 use App\Repositories\TeamRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Flash;
+use Illuminate\Http\Request;
 use Response;
-use App\User;
-use App\Models\Role;
-use App\Models\Permission;
-use App\Authorizable;
 
 class TeamController extends AppBaseController
 {
     use Authorizable;
-    /** @var  TeamRepository */
+
+    /** @var TeamRepository */
     private $teamRepository;
 
     public function __construct(TeamRepository $teamRepo)
@@ -28,8 +25,7 @@ class TeamController extends AppBaseController
     /**
      * Display a listing of the Team.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return Response
      */
     public function index(Request $request)
@@ -53,8 +49,7 @@ class TeamController extends AppBaseController
     /**
      * Store a newly created Team in storage.
      *
-     * @param CreateTeamRequest $request
-     *
+     * @param  CreateTeamRequest  $request
      * @return Response
      */
     public function store(CreateTeamRequest $request)
@@ -71,8 +66,7 @@ class TeamController extends AppBaseController
     /**
      * Display the specified Team.
      *
-     * @param int $id
-     *
+     * @param  int  $id
      * @return Response
      */
     public function show($id)
@@ -91,8 +85,7 @@ class TeamController extends AppBaseController
     /**
      * Show the form for editing the specified Team.
      *
-     * @param int $id
-     *
+     * @param  int  $id
      * @return Response
      */
     public function edit($id)
@@ -111,9 +104,8 @@ class TeamController extends AppBaseController
     /**
      * Update the specified Team in storage.
      *
-     * @param int $id
-     * @param UpdateTeamRequest $request
-     *
+     * @param  int  $id
+     * @param  UpdateTeamRequest  $request
      * @return Response
      */
     public function update($id, UpdateTeamRequest $request)
@@ -136,11 +128,10 @@ class TeamController extends AppBaseController
     /**
      * Remove the specified Team from storage.
      *
-     * @param int $id
+     * @param  int  $id
+     * @return Response
      *
      * @throws \Exception
-     *
-     * @return Response
      */
     public function destroy($id)
     {

@@ -2,12 +2,11 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Models\System_statistic;
+use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateSystem_statisticRequest extends FormRequest
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -26,7 +25,7 @@ class UpdateSystem_statisticRequest extends FormRequest
     public function rules()
     {
         $rules = System_statistic::$rules;
-        
+
         return $rules;
     }
 }

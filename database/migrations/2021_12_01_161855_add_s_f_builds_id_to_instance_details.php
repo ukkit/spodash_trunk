@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AddSFBuildsIdToInstanceDetails extends Migration
 {
@@ -15,7 +15,6 @@ class AddSFBuildsIdToInstanceDetails extends Migration
     {
         Schema::table('instance_details', function (Blueprint $table) {
             $table->string('sf_pv_id')->after('pai_pv_id')->nullable();
-        
         });
     }
 

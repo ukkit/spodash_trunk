@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Authorizable;
 use App\Http\Requests\CreateProduct_nameRequest;
 use App\Http\Requests\UpdateProduct_nameRequest;
 use App\Repositories\Product_nameRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
+use DB;
 use Flash;
+use Illuminate\Http\Request;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
-use DB;
-use App\Authorizable;
 
 class Product_nameController extends AppBaseController
 {
     use Authorizable;
-    /** @var  Product_nameRepository */
+
+    /** @var Product_nameRepository */
     private $productNameRepository;
 
     public function __construct(Product_nameRepository $productNameRepo)
@@ -27,7 +27,7 @@ class Product_nameController extends AppBaseController
     /**
      * Display a listing of the Product_name.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return Response
      */
     public function index(Request $request)
@@ -54,8 +54,7 @@ class Product_nameController extends AppBaseController
     /**
      * Store a newly created Product_name in storage.
      *
-     * @param CreateProduct_nameRequest $request
-     *
+     * @param  CreateProduct_nameRequest  $request
      * @return Response
      */
     public function store(CreateProduct_nameRequest $request)
@@ -72,8 +71,7 @@ class Product_nameController extends AppBaseController
     /**
      * Display the specified Product_name.
      *
-     * @param  int $id
-     *
+     * @param  int  $id
      * @return Response
      */
     public function show($id)
@@ -92,8 +90,7 @@ class Product_nameController extends AppBaseController
     /**
      * Show the form for editing the specified Product_name.
      *
-     * @param  int $id
-     *
+     * @param  int  $id
      * @return Response
      */
     public function edit($id)
@@ -118,9 +115,8 @@ class Product_nameController extends AppBaseController
     /**
      * Update the specified Product_name in storage.
      *
-     * @param  int              $id
-     * @param UpdateProduct_nameRequest $request
-     *
+     * @param  int  $id
+     * @param  UpdateProduct_nameRequest  $request
      * @return Response
      */
     public function update($id, UpdateProduct_nameRequest $request)
@@ -143,8 +139,7 @@ class Product_nameController extends AppBaseController
     /**
      * Remove the specified Product_name from storage.
      *
-     * @param  int $id
-     *
+     * @param  int  $id
      * @return Response
      */
     public function destroy($id)

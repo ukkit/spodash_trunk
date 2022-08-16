@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
+use DB;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Crypt;
-use DB;
-use App\Models\Server_detail;
 
 class Ml_detail extends Model
 {
@@ -15,12 +14,10 @@ class Ml_detail extends Model
     public $table = 'ml_details';
 
     const CREATED_AT = 'created_at';
+
     const UPDATED_AT = 'updated_at';
 
-
     protected $dates = ['deleted_at'];
-
-
 
     public $fillable = [
         'server_details_id',
@@ -33,7 +30,7 @@ class Ml_detail extends Model
         'zeppelin_user',
         'zeppelin_pwd',
         'installed_path',
-        'notes'
+        'notes',
     ];
 
     /**
@@ -53,7 +50,7 @@ class Ml_detail extends Model
         'zeppelin_user' => 'string',
         'zeppelin_pwd' => 'string',
         'installed_path' => 'string',
-        'notes' => 'string'
+        'notes' => 'string',
     ];
 
     /**
@@ -67,7 +64,7 @@ class Ml_detail extends Model
         'ml_name' => 'required',
         'zeppelin_port' => 'required',
         'zeppelin_user' => 'required',
-        'zeppelin_pwd' => 'required'
+        'zeppelin_pwd' => 'required',
     ];
 
     /**
@@ -113,7 +110,7 @@ class Ml_detail extends Model
 
     public function server_detail()
     {
-        return $this->hasMany('App\Models\Server_detail');
+        return $this->hasMany(\App\Models\Server_detail::class);
     }
 
     /**
@@ -127,6 +124,7 @@ class Ml_detail extends Model
     public function return_intellicus_version_details($id, $return_what)
     {
         $value = DB::table('intellicus_versions')->where('id', $id)->get();
+
         return $value->pluck($return_what);
         // return $value;
     }

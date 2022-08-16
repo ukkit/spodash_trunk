@@ -1,5 +1,5 @@
 <?php
-$os_family_array = array("microsoft","red-hat","centos","suse");
+$os_family_array = ["microsoft","red-hat","centos","suse"];
 ?>
 
 <!-- Os Short Name Field -->

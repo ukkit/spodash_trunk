@@ -2,13 +2,12 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use Carbon\Carbon;
 use DB;
+use Illuminate\Console\Command;
 
 class AddToReleaseNumbers extends Command
 {
-
     protected $signature = 'command:populateRN';
 
     protected $description = 'Command description';
@@ -41,17 +40,17 @@ class AddToReleaseNumbers extends Command
                     ->get()
                     ->toArray();
         // Below 2 lines are used to remove "null" record
-        $ars = array_search("null", array_column($pv_records,'product_ver_number'));
+        $ars = array_search('null', array_column($pv_records, 'product_ver_number'));
         unset($pv_records[$ars]);
 
         // Below 2 lines are used to remove "null" record
-        $ars2 = array_search("null", array_column($pai_records,'pai_version'));
+        $ars2 = array_search('null', array_column($pai_records, 'pai_version'));
         unset($pai_records[$ars2]);
 
-        $arr1 = array();
-        $arr2 = array();
-        $arr3 = array();
-        $arr4 = array();
+        $arr1 = [];
+        $arr2 = [];
+        $arr3 = [];
+        $arr4 = [];
 
         foreach ($pv_records as $pvr) {
             array_push($arr1, $pvr->product_ver_number);
@@ -65,9 +64,8 @@ class AddToReleaseNumbers extends Command
 
         $array = array_diff($arr1, $arr2);
 
-
         // $array = array_diff($pv_records->product_ver_number, $rn_records->release_number);
-        $ctr=0;
+        $ctr = 0;
         foreach ($array as $ar) {
             $now = Carbon::now();
             DB::table('release_numbers')->insert(
@@ -93,6 +91,6 @@ class AddToReleaseNumbers extends Command
             $ctr++;
         }
         // dd($array);
-        echo $ctr." recrods added to release_numbers table";
+        echo $ctr.' recrods added to release_numbers table';
     }
 }

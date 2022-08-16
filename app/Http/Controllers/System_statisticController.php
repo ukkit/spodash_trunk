@@ -5,19 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateSystem_statisticRequest;
 use App\Http\Requests\UpdateSystem_statisticRequest;
 use App\Repositories\System_statisticRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
-use Flash;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Routing\Redirector;
-use Illuminate\View\View;
-use Response;
 use DB;
+use Illuminate\Http\Request;
 
 class System_statisticController extends AppBaseController
 {
-    /** @var  System_statisticRepository */
+    /** @var System_statisticRepository */
     private $systemStatisticRepository;
 
     public function __construct(System_statisticRepository $systemStatisticRepo)
@@ -54,7 +47,7 @@ class System_statisticController extends AppBaseController
         return view('system_statistics.details')
             ->with('releaseNumbers', $releaseNumbers)
             ->with('releaseData', $releaseData);
-            // ->with('systemStatistics', $systemStatistics);
+        // ->with('systemStatistics', $systemStatistics);
     }
 
     public function create()

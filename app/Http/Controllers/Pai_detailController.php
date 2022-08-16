@@ -4,23 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreatePai_detailRequest;
 use App\Http\Requests\UpdatePai_detailRequest;
+use App\Models\Ambari_detail;
+use App\Models\Server_detail;
 use App\Repositories\Pai_detailRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
+use DB;
 use Flash;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
-use Response;
-use DB;
 use Log;
-use App\Models\Server_detail;
-use App\Models\Ambari_detail;
+use Response;
 
 class Pai_detailController extends AppBaseController
 {
-    /** @var  Pai_detailRepository */
+    /** @var Pai_detailRepository */
     private $paiDetailRepository;
 
     public function __construct(Pai_detailRepository $paiDetailRepo)
@@ -31,8 +30,7 @@ class Pai_detailController extends AppBaseController
     /**
      * Display a listing of the Pai_detail.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return Response|Factory|RedirectResponse|Redirector|View
      */
     public function index(Request $request)
@@ -57,7 +55,6 @@ class Pai_detailController extends AppBaseController
         $sd_arr['server_detail'] = Server_detail::All();
         $ad_arr['ambari_detail'] = Ambari_detail::All();
 
-
         Log::debug('Pai_detailController.create server_detail record count '.count($sd_arr));
         Log::debug('Pai_detailController.create ambari_detail record count '.count($ad_arr));
         // Log::debug('inside Pai_detailController.store');
@@ -71,8 +68,7 @@ class Pai_detailController extends AppBaseController
     /**
      * Store a newly created Pai_detail in storage.
      *
-     * @param CreatePai_detailRequest $request
-     *
+     * @param  CreatePai_detailRequest  $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|Response
      */
     public function store(CreatePai_detailRequest $request)
@@ -90,8 +86,7 @@ class Pai_detailController extends AppBaseController
     /**
      * Display the specified Pai_detail.
      *
-     * @param int $id
-     *
+     * @param  int  $id
      * @return Factory|RedirectResponse|Redirector|View|Response
      */
     public function show($id)
@@ -111,8 +106,7 @@ class Pai_detailController extends AppBaseController
     /**
      * Show the form for editing the specified Pai_detail.
      *
-     * @param int $id
-     *
+     * @param  int  $id
      * @return Factory|RedirectResponse|Redirector|View|Response
      */
     public function edit($id)
@@ -146,9 +140,8 @@ class Pai_detailController extends AppBaseController
     /**
      * Update the specified Pai_detail in storage.
      *
-     * @param int $id
-     * @param UpdatePai_detailRequest $request
-     *
+     * @param  int  $id
+     * @param  UpdatePai_detailRequest  $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|Response
      */
     public function update($id, UpdatePai_detailRequest $request)
@@ -173,11 +166,10 @@ class Pai_detailController extends AppBaseController
     /**
      * Remove the specified Pai_detail from storage.
      *
-     * @param int $id
+     * @param  int  $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|Response
      *
      * @throws \Exception
-     *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|Response
      */
     public function destroy($id)
     {

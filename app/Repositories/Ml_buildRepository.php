@@ -7,10 +7,9 @@ use InfyOm\Generator\Common\BaseRepository;
 
 /**
  * Class Ml_buildRepository
- * @package App\Repositories
+ *
  * @version July 14, 2022, 11:30 am IST
  */
-
 class Ml_buildRepository extends BaseRepository
 {
     /**
@@ -20,7 +19,7 @@ class Ml_buildRepository extends BaseRepository
         'ml_version',
         'ml_build',
         'pv_id',
-        'is_release_build'
+        'is_release_build',
     ];
 
     /**

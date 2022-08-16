@@ -3,14 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 // Added below 2 to disable login after registering new users
-use Illuminate\Http\Request;
-use Illuminate\Auth\Events\Registered;
-
-use App\User;
 use App\Http\Controllers\Controller;
+use App\User;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
 {
@@ -57,7 +56,7 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255','unique:users','ends_with:ptc.com'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users', 'ends_with:ptc.com'],
             'password' => ['required', 'string', 'min:6', 'confirmed'],
         ]);
     }
@@ -92,8 +91,8 @@ class RegisterController extends Controller
         $user->assignRole('basic');
 
         session()->flash('success', 'Registration successful, please continue to login');
+
         return $this->registered($request, $user)
             ?: redirect($this->redirectPath());
     }
-
 }

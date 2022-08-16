@@ -2,21 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Authorizable;
 use App\Http\Requests\CreateServer_useRequest;
 use App\Http\Requests\UpdateServer_useRequest;
 use App\Repositories\Server_useRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Flash;
+use Illuminate\Http\Request;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
-use App\Authorizable;
 
 class Server_useController extends AppBaseController
 {
     use Authorizable;
 
-    /** @var  Server_useRepository */
+    /** @var Server_useRepository */
     private $serverUseRepository;
 
     public function __construct(Server_useRepository $serverUseRepo)
@@ -27,7 +26,7 @@ class Server_useController extends AppBaseController
     /**
      * Display a listing of the Server_use.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return Response
      */
     public function index(Request $request)
@@ -52,8 +51,7 @@ class Server_useController extends AppBaseController
     /**
      * Store a newly created Server_use in storage.
      *
-     * @param CreateServer_useRequest $request
-     *
+     * @param  CreateServer_useRequest  $request
      * @return Response
      */
     public function store(CreateServer_useRequest $request)
@@ -70,8 +68,7 @@ class Server_useController extends AppBaseController
     /**
      * Display the specified Server_use.
      *
-     * @param  int $id
-     *
+     * @param  int  $id
      * @return Response
      */
     public function show($id)
@@ -90,8 +87,7 @@ class Server_useController extends AppBaseController
     /**
      * Show the form for editing the specified Server_use.
      *
-     * @param  int $id
-     *
+     * @param  int  $id
      * @return Response
      */
     public function edit($id)
@@ -110,9 +106,8 @@ class Server_useController extends AppBaseController
     /**
      * Update the specified Server_use in storage.
      *
-     * @param  int              $id
-     * @param UpdateServer_useRequest $request
-     *
+     * @param  int  $id
+     * @param  UpdateServer_useRequest  $request
      * @return Response
      */
     public function update($id, UpdateServer_useRequest $request)
@@ -135,8 +130,7 @@ class Server_useController extends AppBaseController
     /**
      * Remove the specified Server_use from storage.
      *
-     * @param  int $id
-     *
+     * @param  int  $id
      * @return Response
      */
     public function destroy($id)

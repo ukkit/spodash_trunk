@@ -2,12 +2,11 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Models\Sf_build;
+use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateSf_buildRequest extends FormRequest
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -26,7 +25,7 @@ class UpdateSf_buildRequest extends FormRequest
     public function rules()
     {
         $rules = Sf_build::$rules;
-        
+
         return $rules;
     }
 }

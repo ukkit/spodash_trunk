@@ -6,7 +6,6 @@ use App\Models\Ml_detail;
 use Faker\Generator as Faker;
 
 $factory->define(Ml_detail::class, function (Faker $faker) {
-
     return [
         'server_details_id' => $faker->randomDigitNotNull,
         'instance_details_id' => $faker->randomDigitNotNull,
@@ -20,6 +19,6 @@ $factory->define(Ml_detail::class, function (Faker $faker) {
         'notes' => $faker->text,
         'created_at' => $faker->date('Y-m-d H:i:s'),
         'updated_at' => $faker->date('Y-m-d H:i:s'),
-        'deleted_at' => $faker->date('Y-m-d H:i:s')
+        'deleted_at' => $faker->date('Y-m-d H:i:s'),
     ];
 });

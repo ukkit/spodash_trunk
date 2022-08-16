@@ -2,10 +2,9 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use DB;
-use Carbon\Carbon;
 
 class Sprint_calendar extends Model
 {
@@ -14,18 +13,16 @@ class Sprint_calendar extends Model
     public $table = 'sprint_calendars';
 
     const CREATED_AT = 'created_at';
+
     const UPDATED_AT = 'updated_at';
 
-
     protected $dates = ['deleted_at'];
-
-
 
     public $fillable = [
         'sprint_number',
         'sprint_start_date',
         'sprint_end_date',
-        'sprint_end_date_same_as_next_start_date'
+        'sprint_end_date_same_as_next_start_date',
     ];
 
     /**
@@ -38,7 +35,7 @@ class Sprint_calendar extends Model
         'sprint_number' => 'integer',
         'sprint_start_date' => 'date',
         'sprint_end_date' => 'date',
-        'sprint_end_date_same_as_next_start_date' => 'string'
+        'sprint_end_date_same_as_next_start_date' => 'string',
     ];
 
     /**
@@ -53,17 +50,17 @@ class Sprint_calendar extends Model
         // 'sprint_end_date_same_as_next_start_date' => 'required'
     ];
 
-    public static function current_sprint ()
+    public static function current_sprint()
     {
         $list = Sprint_calendar::all();
         $today = Carbon::now()->toDateString();
         $start = null;
         $end = null;
 
-        foreach($list as $li) {
+        foreach ($list as $li) {
             $st_date = Carbon::parse($li->sprint_start_date)->toDateString();
             $end_date = Carbon::parse($li->sprint_end_date)->toDateString();
-            if (($today >= $st_date) AND ($today <= $end_date)) {
+            if (($today >= $st_date) and ($today <= $end_date)) {
                 return $li->sprint_number;
             }
         }

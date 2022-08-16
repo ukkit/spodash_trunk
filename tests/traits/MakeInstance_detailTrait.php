@@ -1,15 +1,15 @@
 <?php
 
-use Faker\Factory as Faker;
 use App\Models\Instance_detail;
 use App\Repositories\Instance_detailRepository;
+use Faker\Factory as Faker;
 
 trait MakeInstance_detailTrait
 {
     /**
      * Create fake instance of Instance_detail and save it in database
      *
-     * @param array $instanceDetailFields
+     * @param  array  $instanceDetailFields
      * @return Instance_detail
      */
     public function makeInstance_detail($instanceDetailFields = [])
@@ -17,13 +17,14 @@ trait MakeInstance_detailTrait
         /** @var Instance_detailRepository $instanceDetailRepo */
         $instanceDetailRepo = App::make(Instance_detailRepository::class);
         $theme = $this->fakeInstance_detailData($instanceDetailFields);
+
         return $instanceDetailRepo->create($theme);
     }
 
     /**
      * Get fake instance of Instance_detail
      *
-     * @param array $instanceDetailFields
+     * @param  array  $instanceDetailFields
      * @return Instance_detail
      */
     public function fakeInstance_detail($instanceDetailFields = [])
@@ -34,7 +35,7 @@ trait MakeInstance_detailTrait
     /**
      * Get fake data of Instance_detail
      *
-     * @param array $postFields
+     * @param  array  $postFields
      * @return array
      */
     public function fakeInstance_detailData($instanceDetailFields = [])
@@ -60,7 +61,7 @@ trait MakeInstance_detailTrait
             'instance_shared_dir' => $fake->word,
             'created_at' => $fake->date('Y-m-d H:i:s'),
             'updated_at' => $fake->date('Y-m-d H:i:s'),
-            'deleted_at' => $fake->date('Y-m-d H:i:s')
+            'deleted_at' => $fake->date('Y-m-d H:i:s'),
         ], $instanceDetailFields);
     }
 }

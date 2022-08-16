@@ -1,5 +1,5 @@
 <?php
-$server_class_array = array("VM","AWS","AZURE","PHYSICAL");
+$server_class_array = ["VM","AWS","AZURE","PHYSICAL"];
 ?>
 
 <div class="row">

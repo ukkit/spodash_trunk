@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use DB;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use DB;
 
 class Intellicus_version extends Model
 {
@@ -13,18 +13,16 @@ class Intellicus_version extends Model
     public $table = 'intellicus_versions';
 
     const CREATED_AT = 'created_at';
+
     const UPDATED_AT = 'updated_at';
 
-
     protected $dates = ['deleted_at'];
-
-
 
     public $fillable = [
         'intellicus_version',
         'intellicus_patch',
         'release_date',
-        'is_active'
+        'is_active',
     ];
 
     /**
@@ -37,7 +35,7 @@ class Intellicus_version extends Model
         'intellicus_version' => 'string',
         'intellicus_patch' => 'string',
         'release_date' => 'date',
-        'is_active' => 'string'
+        'is_active' => 'string',
     ];
 
     /**
@@ -46,7 +44,7 @@ class Intellicus_version extends Model
      * @var array
      */
     public static $rules = [
-        'intellicus_version' => 'required'
+        'intellicus_version' => 'required',
     ];
 
     /**
@@ -60,6 +58,7 @@ class Intellicus_version extends Model
     public function get_intellicus_details_by_id($id)
     {
         $value = DB::table('intellicus_details')->where('intellicus_versions_id', $id)->whereNull('deleted_at')->get();
+
         return $value;
     }
 

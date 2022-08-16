@@ -24,6 +24,6 @@ return [
 
     'spodash_version' => env('SPOD_VERSION', '2.6'),
 
-    'copyright' => env('COPYRIGHT_YEAR', '2020')
+    'copyright' => env('COPYRIGHT_YEAR', '2020'),
 
 ];

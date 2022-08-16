@@ -1,5 +1,5 @@
 <?php
-$pai_type_array = array("pai-hadoop","pai-oracle");
+$pai_type_array = ["pai-hadoop","pai-oracle"];
 ?>
     <div class="row">
 

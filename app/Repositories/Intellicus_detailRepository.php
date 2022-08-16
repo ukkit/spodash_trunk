@@ -7,10 +7,9 @@ use InfyOm\Generator\Common\BaseRepository;
 
 /**
  * Class Intellicus_detailRepository
- * @package App\Repositories
+ *
  * @version August 30, 2020, 11:36 am IST
-*/
-
+ */
 class Intellicus_detailRepository extends BaseRepository
 {
     /**
@@ -31,7 +30,7 @@ class Intellicus_detailRepository extends BaseRepository
         'jdk_type',
         'jdk_version',
         'is_active',
-        'check_fail_count'
+        'check_fail_count',
     ];
 
     /**

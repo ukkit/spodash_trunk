@@ -1,12 +1,12 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AddPaiBuildsIdToInstanceDetails extends Migration
 {
-   /**
+    /**
      * Run the migrations.
      *
      * @return void
@@ -15,7 +15,6 @@ class AddPaiBuildsIdToInstanceDetails extends Migration
     {
         Schema::table('instance_details', function (Blueprint $table) {
             $table->string('pai_pv_id')->after('pv_id')->nullable();
-        
         });
     }
 

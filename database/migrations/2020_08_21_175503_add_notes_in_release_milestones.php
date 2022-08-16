@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AddNotesInReleaseMilestones extends Migration
 {
@@ -39,7 +39,6 @@ class AddNotesInReleaseMilestones extends Migration
             $table->date('webinspect_scan_start_date')->after('owasp_scan_comments')->nullable();
             $table->date('webinspect_scan_end_date')->after('webinspect_scan_start_date')->nullable();
             $table->mediumText('webinspect_scan_comments')->after('webinspect_scan_end_date')->nullable();
-
         });
     }
 

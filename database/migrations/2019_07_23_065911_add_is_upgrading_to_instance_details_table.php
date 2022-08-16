@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AddIsUpgradingToInstanceDetailsTable extends Migration
 {
@@ -14,7 +14,7 @@ class AddIsUpgradingToInstanceDetailsTable extends Migration
     public function up()
     {
         Schema::table('instance_details', function (Blueprint $table) {
-            $table->char('is_upgrading',1)->after('is_https')->default('N');
+            $table->char('is_upgrading', 1)->after('is_https')->default('N');
         });
     }
 

@@ -13,7 +13,7 @@ class Os_typeRepositoryTest extends TestCase
      */
     protected $osTypeRepo;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->osTypeRepo = App::make(Os_typeRepository::class);

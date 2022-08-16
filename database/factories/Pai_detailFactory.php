@@ -6,7 +6,6 @@ use App\Models\Pai_detail;
 use Faker\Generator as Faker;
 
 $factory->define(Pai_detail::class, function (Faker $faker) {
-
     return [
         'name' => $faker->text,
         'server_details_id' => $faker->randomDigitNotNull,
@@ -20,6 +19,6 @@ $factory->define(Pai_detail::class, function (Faker $faker) {
         'oracle_port' => $faker->randomDigitNotNull,
         'created_at' => $faker->date('Y-m-d H:i:s'),
         'updated_at' => $faker->date('Y-m-d H:i:s'),
-        'deleted_at' => $faker->date('Y-m-d H:i:s')
+        'deleted_at' => $faker->date('Y-m-d H:i:s'),
     ];
 });

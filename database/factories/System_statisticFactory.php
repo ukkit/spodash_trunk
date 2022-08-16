@@ -6,7 +6,6 @@ use App\Models\System_statistic;
 use Faker\Generator as Faker;
 
 $factory->define(System_statistic::class, function (Faker $faker) {
-
     return [
         'total_instance_details' => $faker->randomDigitNotNull,
         'active_instance_details' => $faker->randomDigitNotNull,
@@ -42,6 +41,6 @@ $factory->define(System_statistic::class, function (Faker $faker) {
         'incredibles_instances' => $faker->randomDigitNotNull,
         'deleted_at' => $faker->date('Y-m-d H:i:s'),
         'created_at' => $faker->date('Y-m-d H:i:s'),
-        'updated_at' => $faker->date('Y-m-d H:i:s')
+        'updated_at' => $faker->date('Y-m-d H:i:s'),
     ];
 });

@@ -8,10 +8,9 @@ use InfyOm\Generator\Common\BaseRepository;
 
 /**
  * Class Ambari_detailRepository
- * @package App\Repositories
+ *
  * @version September 22, 2020, 12:30 pm IST
-*/
-
+ */
 class Ambari_detailRepository extends BaseRepository
 {
     /**
@@ -21,7 +20,7 @@ class Ambari_detailRepository extends BaseRepository
         'ambari_name',
         'ambari_url',
         'ambari_user',
-        'ambari_pwd'
+        'ambari_pwd',
     ];
 
     /**

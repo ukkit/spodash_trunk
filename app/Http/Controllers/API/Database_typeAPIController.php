@@ -2,24 +2,22 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\CreateDatabase_typeAPIRequest;
 use App\Http\Requests\API\UpdateDatabase_typeAPIRequest;
 use App\Models\Database_type;
 use App\Repositories\Database_typeRepository;
 use Illuminate\Http\Request;
-use App\Http\Controllers\AppBaseController;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
 /**
  * Class Database_typeController
- * @package App\Http\Controllers\API
  */
-
 class Database_typeAPIController extends AppBaseController
 {
-    /** @var  Database_typeRepository */
+    /** @var Database_typeRepository */
     private $databaseTypeRepository;
 
     public function __construct(Database_typeRepository $databaseTypeRepo)
@@ -28,7 +26,7 @@ class Database_typeAPIController extends AppBaseController
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return Response
      *
      * @SWG\Get(
@@ -64,13 +62,13 @@ class Database_typeAPIController extends AppBaseController
         $this->databaseTypeRepository->pushCriteria(new RequestCriteria($request));
         $this->databaseTypeRepository->pushCriteria(new LimitOffsetCriteria($request));
         // $databaseTypes = $this->databaseTypeRepository->all();
-        $databaseTypes = Database_type::select('id','db_short_name','db_long_name','db_patchset')->get();
+        $databaseTypes = Database_type::select('id', 'db_short_name', 'db_long_name', 'db_patchset')->get();
 
         return $this->sendResponse($databaseTypes->toArray(), 'Database Types retrieved successfully');
     }
 
     /**
-     * @param CreateDatabase_typeAPIRequest $request
+     * @param  CreateDatabase_typeAPIRequest  $request
      * @return Response
      *
      * @SWG\Post(
@@ -123,7 +121,7 @@ class Database_typeAPIController extends AppBaseController
     }
 
     /**
-     * @param int $id
+     * @param  int  $id
      * @return Response
      *
      * @SWG\Get(
@@ -168,15 +166,15 @@ class Database_typeAPIController extends AppBaseController
         if (empty($databaseType)) {
             return $this->sendError('Database Type not found');
         } else {
-            $databaseType = Database_type::select('id','db_short_name','db_long_name','db_patchset')->where('id', $id)->get();
+            $databaseType = Database_type::select('id', 'db_short_name', 'db_long_name', 'db_patchset')->where('id', $id)->get();
         }
 
         return $this->sendResponse($databaseType->toArray(), 'Database Type retrieved successfully');
     }
 
     /**
-     * @param int $id
-     * @param UpdateDatabase_typeAPIRequest $request
+     * @param  int  $id
+     * @param  UpdateDatabase_typeAPIRequest  $request
      * @return Response
      *
      * @SWG\Put(
@@ -226,7 +224,7 @@ class Database_typeAPIController extends AppBaseController
 
         /** @var Database_type $databaseType */
         // $databaseType = $this->databaseTypeRepository->findWithoutFail($id);
-        $databaseType = Database_type::select('id','db_short_name','db_long_name','db_patchset')->where('id', $id)->get();
+        $databaseType = Database_type::select('id', 'db_short_name', 'db_long_name', 'db_patchset')->where('id', $id)->get();
 
         if (empty($databaseType)) {
             return $this->sendError('Database Type not found');
@@ -242,7 +240,7 @@ class Database_typeAPIController extends AppBaseController
     }
 
     /**
-     * @param int $id
+     * @param  int  $id
      * @return Response
      *
      * @SWG\Delete(

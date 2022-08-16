@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use DB;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use DB;
 
 class Database_detail extends Model
 {
@@ -14,13 +14,11 @@ class Database_detail extends Model
     public $table = 'database_details';
     // protected $softCascade = ['cascade_soft_delete_instance_detail'];
 
-
     const CREATED_AT = 'created_at';
+
     const UPDATED_AT = 'updated_at';
 
-
     protected $dates = ['deleted_at'];
-
 
     public $fillable = [
         'gen_dbd_id',
@@ -35,7 +33,7 @@ class Database_detail extends Model
         'db_notes',
         'db_is_active',
         'is_dba',
-        'repository_type'
+        'repository_type',
         // 'is_intellicus_repository'
     ];
 
@@ -58,7 +56,7 @@ class Database_detail extends Model
         'db_notes' => 'string',
         'db_is_active' => 'string',
         'is_dba' => 'string',
-        'repository_type' => 'string'
+        'repository_type' => 'string',
     ];
 
     /**
@@ -96,33 +94,35 @@ class Database_detail extends Model
 
     public function cascade_soft_delete_instance_detail()
     {
-        return $this->hasMany('App\Models\Instance_detail','database_details_id');
+        return $this->hasMany(\App\Models\Instance_detail::class, 'database_details_id');
     }
 
     public function server_details_by_id()
     {
-        return $this->belongsTo('App\Models\Server_detail', 'server_details_id');
+        return $this->belongsTo(\App\Models\Server_detail::class, 'server_details_id');
     }
 
     public function database_types_by_id()
     {
-        return $this->belongsTo('App\Models\Database_type', 'database_types_id');
+        return $this->belongsTo(\App\Models\Database_type::class, 'database_types_id');
     }
 
     public function ambari_details_by_id()
-     {
-         return $this->belongsTo('App\Models\Ambari_detail', 'ambari_details_id');
-     }
+    {
+        return $this->belongsTo(\App\Models\Ambari_detail::class, 'ambari_details_id');
+    }
 
     public function tablespace_details_by_id($id)
     {
         $retval = DB::table('tablespace_details')->where('database_details_id', $id)->orderBy('created_at', 'desc')->first();
+
         return $retval;
     }
 
     public function db_size_by_id($id)
     {
         $retval = DB::table('db_sizes')->where('database_details_id', $id)->orderBy('created_at', 'desc')->first();
+
         return $retval;
     }
 

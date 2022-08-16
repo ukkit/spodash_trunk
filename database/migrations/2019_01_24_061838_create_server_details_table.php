@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateServerDetailsTable extends Migration
 {
@@ -29,8 +29,8 @@ class CreateServerDetailsTable extends Migration
             $table->text('server_password'); //changed to text to store encrypted password
             $table->string('admin_user')->nullable();
             $table->text('admin_password')->nullable(); //changed to text to store encrypted password
-            $table->char('server_is_active',1)->default('Y');
-            $table->char('server_show_on_site',1)->default('Y');
+            $table->char('server_is_active', 1)->default('Y');
+            $table->char('server_show_on_site', 1)->default('Y');
             $table->string('server_owner')->nullable();
             $table->longText('server_note')->nullable();
             $table->timestamps();
@@ -39,7 +39,6 @@ class CreateServerDetailsTable extends Migration
             $table->foreign('os_types_id')->references('id')->on('os_types')->onDelete('cascade');
             $table->foreign('database_types_id')->references('id')->on('database_types')->onDelete('cascade');
             $table->foreign('server_uses_id')->references('id')->on('server_uses')->onDelete('cascade');
-
         });
     }
 

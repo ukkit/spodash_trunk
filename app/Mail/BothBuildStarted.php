@@ -5,21 +5,29 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class BuildStarted extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $instance;
+
     public $username;
+
     public $current_build_spo;
+
     public $latest_build_spo;
+
     public $current_build_pai;
+
     public $latest_build_pai;
+
     public $instance_id;
+
     public $at_time;
+
     public $subject;
+
     /**
      * Create a new message instance.
      *

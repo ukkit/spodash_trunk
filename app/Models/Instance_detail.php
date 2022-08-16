@@ -2,13 +2,12 @@
 
 namespace App\Models;
 
+use Auth;
+use DB;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Arr;
 use Sofa\Eloquence\Eloquence;
-use DB;
-use App\Models\databaseType;
-use App\Models\actionHistory;
-use Auth;
 
 class Instance_detail extends Model
 {
@@ -18,11 +17,10 @@ class Instance_detail extends Model
     public $table = 'instance_details';
 
     const CREATED_AT = 'created_at';
+
     const UPDATED_AT = 'updated_at';
 
-
     protected $dates = ['deleted_at'];
-
 
     public $fillable = [
         'server_details_id',
@@ -77,7 +75,7 @@ class Instance_detail extends Model
         'is_contrast_configured',
         'snowflake_configured',
         'pai_foundation',
-        'check_fail_count'
+        'check_fail_count',
     ];
 
     /**
@@ -140,7 +138,7 @@ class Instance_detail extends Model
         'is_contrast_configured' => 'string',
         'snowflake_configured' => 'string',
         'pai_foundation' => 'string',
-        'check_fail_count' => 'integer'
+        'check_fail_count' => 'integer',
     ];
 
     /**
@@ -180,27 +178,27 @@ class Instance_detail extends Model
 
     public function product_version()
     {
-        return $this->belongsTo('App\Models\Product_version');
+        return $this->belongsTo(\App\Models\Product_version::class);
     }
 
     public function product_name()
     {
-        return $this->belongsTo('App\Models\Product_name');
+        return $this->belongsTo(\App\Models\Product_name::class);
     }
 
     public function server_detail()
     {
-        return $this->belongsTo('App\Models\Server_detail');
+        return $this->belongsTo(\App\Models\Server_detail::class);
     }
 
     public function database_type()
     {
-        return $this->hasMany('App\Models\Database_type');
+        return $this->hasMany(\App\Models\Database_type::class);
     }
 
     public function database_detail()
     {
-        return $this->belongsTo('App\Models\Database_detail');
+        return $this->belongsTo(\App\Models\Database_detail::class);
     }
 
     public function sf_builds_by_pvid($pvid)
@@ -209,12 +207,13 @@ class Instance_detail extends Model
             ->where('pv_id', $pvid)
             ->select('sf_builds.*')
             ->first();
+
         return $value;
     }
 
     public function product_versions_by_id() // This is not to be used
     {
-        return $this->belongsTo('App\Models\Product_version', 'product_versions_id');
+        return $this->belongsTo(\App\Models\Product_version::class, 'product_versions_id');
     }
 
     public function return_product_versions_by_pvid($pvid, $return_what)
@@ -223,6 +222,7 @@ class Instance_detail extends Model
             ->where('pv_id', $pvid)
             ->select('product_versions.*')
             ->get();
+
         return $value->pluck($return_what);
     }
 
@@ -232,6 +232,7 @@ class Instance_detail extends Model
             ->where('pv_id', $pvid)
             ->select('product_versions.*')
             ->first();
+
         return $value;
     }
 
@@ -241,6 +242,7 @@ class Instance_detail extends Model
             ->where('pv_id', $pvid)
             ->select('pai_builds.*')
             ->first();
+
         return $value;
     }
 
@@ -251,32 +253,34 @@ class Instance_detail extends Model
             ->whereNull('deleted_at')
             ->orderBy('created_at', 'desc')
             ->first();
+
         return $value;
     }
 
     public function server_details_by_id()
     {
-        return $this->belongsTo('App\Models\Server_detail', 'server_details_id');
+        return $this->belongsTo(\App\Models\Server_detail::class, 'server_details_id');
     }
 
     public function product_names_by_id()
     {
-        return $this->belongsTo('App\Models\Product_name', 'product_names_id');
+        return $this->belongsTo(\App\Models\Product_name::class, 'product_names_id');
     }
 
     public function database_details_by_id()
     {
-        return $this->belongsTo('App\Models\Database_detail', 'database_details_id');
+        return $this->belongsTo(\App\Models\Database_detail::class, 'database_details_id');
     }
 
     public function intellicus_details_by_id()
     {
-        return $this->belongsTo('App\Models\Intellicus_detail', 'intellicus_details_id');
+        return $this->belongsTo(\App\Models\Intellicus_detail::class, 'intellicus_details_id');
     }
 
     public function return_db_details($id, $return_what)
     {
         $value = DB::table('database_details')->select($return_what)->where('id', $id)->first();
+
         return $value->$return_what;
     }
 
@@ -286,7 +290,8 @@ class Instance_detail extends Model
             ->join('database_types', 'database_details.database_types_id', '=', 'database_types.id')
             ->select('database_types.*')
             ->get();
-        return ($value->pluck($return_what));
+
+        return $value->pluck($return_what);
     }
 
     public function return_db_server_details($id)
@@ -297,18 +302,20 @@ class Instance_detail extends Model
             ->select('server_details.*')
             ->first();
         // return $value->pluck($return_what);
-        return ($value);
+        return $value;
     }
 
     public function return_server_details_by_id($id, $return_what)
     {
         $value = DB::table('server_details')->where('id', $id)->get();
+
         return $value->pluck($return_what);
     }
 
     public function return_ambari_details_by_id($id, $return_what)
     {
         $value = DB::table('ambari_details')->where('id', $id)->get();
+
         return $value->pluck($return_what);
     }
 
@@ -318,6 +325,7 @@ class Instance_detail extends Model
             ->join('os_types', 'server_details.os_types_id', '=', 'os_types.id')
             ->select('os_types.*')
             ->get();
+
         return $value->pluck($return_what);
     }
 
@@ -328,6 +336,7 @@ class Instance_detail extends Model
             ->whereNull('deleted_at')
             ->orderBy('created_at', 'desc')
             ->first();
+
         return $value;
     }
 
@@ -338,6 +347,7 @@ class Instance_detail extends Model
             ->whereNull('deleted_at')
             ->orderBy('created_at', 'desc')
             ->first();
+
         return $value;
     }
 
@@ -364,11 +374,13 @@ class Instance_detail extends Model
         // $value = DB::table('product_versions')->where('product_ver_number',$version)->max('product_build_numer');
         return $value;
     }
+
     public function get_username_by_id($id)
     {
         $value = DB::table('users')->where('id', $id)
             ->select('name')
             ->first();
+
         return $value;
     }
 
@@ -378,6 +390,7 @@ class Instance_detail extends Model
             ->select('action_histories.*')
             ->orderBy('start_time', 'desc')
             ->first();
+
         return $value;
     }
 
@@ -388,6 +401,7 @@ class Instance_detail extends Model
             ->orderBy('start_time', 'desc')
             ->take(10)
             ->get();
+
         return $value;
     }
 
@@ -396,38 +410,40 @@ class Instance_detail extends Model
         $retval = null;
         $uid = Auth::user()->id;
         $team = DB::table('user_has_teams')->where('user_id', $uid)->get();
-        $team_id = array_pluck($team, 'team_id');
+        $team_id = Arr::pluck($team, 'team_id');
         $all_team_id = DB::table('teams')->select('id')->where('team_name', 'All')->first();
         // dd($all_team_id->id);
         // $is_all_teams = DB::table('teams')->
 
         if (Auth::user()->hasAnyRole(['advance', 'admin', 'superadmin'])) {
-            $retval = True;
+            $retval = true;
         } else {
             $query = DB::table('instance_has_teams')->where('instance_id', $id)->where('team_id', $team_id)->count();
             if ($query > 0) {
-                $retval = True;
+                $retval = true;
             } else {
                 // BELOW QURTY IS USED TO CHECK IF CURRENT INSTANCE IS MEMBER OF ALL
                 $query = DB::table('instance_has_teams')->where('instance_id', $id)->where('team_id', $all_team_id->id)->count();
                 if ($query > 0) {
-                    $retval = True;
+                    $retval = true;
                 }
             }
         }
+
         return $retval;
     }
 
     public function return_team_names($id, $return_what)
     {
         $instance_team_details = DB::table('instance_has_teams')->where('instance_id', $id)->get();
-        $team_array = array();
+        $team_array = [];
         if (count($instance_team_details) > 0) {
             foreach ($instance_team_details as $itid) {
                 $team_name = DB::table('teams')->where('id', $itid->team_id)->first();
                 array_push($team_array, $team_name->$return_what);
             }
         }
+
         return $team_array;
     }
 
@@ -440,12 +456,14 @@ class Instance_detail extends Model
                 $team_details = DB::table('teams')->where('id', $itid->team_id)->first();
             }
         }
+
         return $team_details;
     }
 
     public function return_intellicus_version_details($id, $return_what)
     {
         $value = DB::table('intellicus_versions')->where('id', $id)->get();
+
         return $value->pluck($return_what);
     }
 
@@ -454,21 +472,23 @@ class Instance_detail extends Model
         $dbt_result = DB::table('database_details')->select('database_types_id')->where('id', $id)->first();
         $dbt = DB::table('database_types')->select('db_short_name')->where('id', $dbt_result->database_types_id)->first();
 
-        if (strtolower(substr($dbt->db_short_name, 0, 3)) == "mss") {
-            $retval = "mssql";
-        } elseif (strtolower(substr($dbt->db_short_name, 0, 3)) == "ora") {
-            $retval = "oracle";
-        } elseif (strtolower(substr($dbt->db_short_name, 0, 3)) == "had") {
-            $retval = "hadoop";
+        if (strtolower(substr($dbt->db_short_name, 0, 3)) == 'mss') {
+            $retval = 'mssql';
+        } elseif (strtolower(substr($dbt->db_short_name, 0, 3)) == 'ora') {
+            $retval = 'oracle';
+        } elseif (strtolower(substr($dbt->db_short_name, 0, 3)) == 'had') {
+            $retval = 'hadoop';
         } else {
             $retval = null;
         }
+
         return $retval;
     }
 
     public function get_ml_build($id)
     {
         $value = DB::table('ml_builds')->where('id', $id)->first();
+
         return $value;
     }
 }

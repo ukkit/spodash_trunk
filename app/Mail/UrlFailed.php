@@ -5,17 +5,21 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class UrlFailed extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $id_number;
+
     public $type; // This will be Instance or Intellicus
+
     public $failcount;
+
     public $url;
+
     public $at_time;
+
     public $subject;
 
     /**
@@ -42,6 +46,7 @@ class UrlFailed extends Mailable
     {
         // return $this->view('view.name');
         $failed_hours = ($this->failcount * 30) / 60; //Getting hours since URL is down
+
         return $this->subject($this->subject)->markdown('emails.action.url-check-failed')
             ->with('id_number', $this->id_number)
             ->with('type', $this->type)

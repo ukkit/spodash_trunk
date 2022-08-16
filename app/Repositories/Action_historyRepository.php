@@ -7,10 +7,9 @@ use InfyOm\Generator\Common\BaseRepository;
 
 /**
  * Class Action_historyRepository
- * @package App\Repositories
+ *
  * @version August 3, 2019, 12:01 pm UTC
-*/
-
+ */
 class Action_historyRepository extends BaseRepository
 {
     /**
@@ -24,7 +23,7 @@ class Action_historyRepository extends BaseRepository
         'action',
         'start_time',
         'end_time',
-        'status'
+        'status',
     ];
 
     /**

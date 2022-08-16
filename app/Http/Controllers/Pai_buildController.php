@@ -5,25 +5,18 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreatePai_buildRequest;
 use App\Http\Requests\UpdatePai_buildRequest;
 use App\Repositories\Pai_buildRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Flash;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Routing\Redirector;
-use Illuminate\View\View;
-use Response;
+use Illuminate\Http\Request;
 
 class Pai_buildController extends AppBaseController
 {
-    /** @var  Pai_buildRepository */
+    /** @var Pai_buildRepository */
     private $paiBuildRepository;
 
     public function __construct(Pai_buildRepository $paiBuildRepo)
     {
         $this->paiBuildRepository = $paiBuildRepo;
     }
-
 
     public function index(Request $request)
     {
@@ -33,21 +26,19 @@ class Pai_buildController extends AppBaseController
             ->with('paiBuilds', $paiBuilds);
     }
 
-
     public function create()
     {
         return view('pai_builds.create');
     }
 
-
     public function store(CreatePai_buildRequest $request)
     {
         $input = $request->all();
 
-        $strip_pvn = preg_replace("/[^0-9]/","",$input['pai_version']);
-        $strip_pbn = preg_replace("/[^0-9]/","",$input['pai_build']);
+        $strip_pvn = preg_replace('/[^0-9]/', '', $input['pai_version']);
+        $strip_pbn = preg_replace('/[^0-9]/', '', $input['pai_build']);
         $old_pvid = $strip_pvn.$strip_pbn;
-        $pv_id = $strip_pvn."_".$strip_pbn;
+        $pv_id = $strip_pvn.'_'.$strip_pbn;
 
         // Generating pv_id by merging numbers of pai_version and pai_build
         $input['pv_id'] = $pv_id;
@@ -59,7 +50,6 @@ class Pai_buildController extends AppBaseController
 
         return redirect(route('paiBuilds.index'));
     }
-
 
     public function show($id)
     {
@@ -74,7 +64,6 @@ class Pai_buildController extends AppBaseController
         return view('pai_builds.show')->with('paiBuild', $paiBuild);
     }
 
-
     public function edit($id)
     {
         $paiBuild = $this->paiBuildRepository->find($id);
@@ -87,7 +76,6 @@ class Pai_buildController extends AppBaseController
 
         return view('pai_builds.edit')->with('paiBuild', $paiBuild);
     }
-
 
     public function update($id, UpdatePai_buildRequest $request)
     {

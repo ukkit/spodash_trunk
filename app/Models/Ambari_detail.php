@@ -6,7 +6,6 @@ use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Crypt;
 
-
 class Ambari_detail extends Model
 {
     use SoftDeletes;
@@ -14,18 +13,16 @@ class Ambari_detail extends Model
     public $table = 'ambari_details';
 
     const CREATED_AT = 'created_at';
+
     const UPDATED_AT = 'updated_at';
 
-
     protected $dates = ['deleted_at'];
-
-
 
     public $fillable = [
         'ambari_name',
         'ambari_url',
         'ambari_user',
-        'ambari_pwd'
+        'ambari_pwd',
     ];
 
     /**
@@ -38,7 +35,7 @@ class Ambari_detail extends Model
         'ambari_name' => 'string',
         'ambari_url' => 'string',
         'ambari_user' => 'string',
-        'ambari_pwd' => 'string'
+        'ambari_pwd' => 'string',
     ];
 
     /**
@@ -50,7 +47,7 @@ class Ambari_detail extends Model
         'ambari_name' => 'required',
         'ambari_url' => 'required',
         'ambari_user' => 'required',
-        'ambari_pwd' => 'required'
+        'ambari_pwd' => 'required',
     ];
 
     /**

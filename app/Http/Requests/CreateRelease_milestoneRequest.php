@@ -2,12 +2,11 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Models\Release_milestone;
+use Illuminate\Foundation\Http\FormRequest;
 
 class CreateRelease_milestoneRequest extends FormRequest
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *

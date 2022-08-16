@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AddDataGatherToDatabaseDetailsTable extends Migration
 {
@@ -14,7 +14,7 @@ class AddDataGatherToDatabaseDetailsTable extends Migration
     public function up()
     {
         Schema::table('database_details', function (Blueprint $table) {
-            $table->char('data_gather_in_progress',1)->after('repository_type')->default('N');
+            $table->char('data_gather_in_progress', 1)->after('repository_type')->default('N');
         });
     }
 

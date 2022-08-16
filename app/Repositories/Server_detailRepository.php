@@ -7,13 +7,13 @@ use InfyOm\Generator\Common\BaseRepository;
 
 /**
  * Class Server_detailRepository
- * @package App\Repositories
+ *
  * @version February 19, 2019, 11:38 am UTC
  *
  * @method Server_detail findWithoutFail($id, $columns = ['*'])
  * @method Server_detail find($id, $columns = ['*'])
  * @method Server_detail first($columns = ['*'])
-*/
+ */
 class Server_detailRepository extends BaseRepository
 {
     /**
@@ -37,7 +37,7 @@ class Server_detailRepository extends BaseRepository
         'server_is_active',
         'server_show_on_site',
         'server_owner',
-        'server_note'
+        'server_note',
     ];
 
     /**

@@ -7,13 +7,13 @@ use InfyOm\Generator\Common\BaseRepository;
 
 /**
  * Class Instance_detailRepository
- * @package App\Repositories
+ *
  * @version February 19, 2019, 1:24 pm UTC
  *
  * @method Instance_detail findWithoutFail($id, $columns = ['*'])
  * @method Instance_detail find($id, $columns = ['*'])
  * @method Instance_detail first($columns = ['*'])
-*/
+ */
 class Instance_detailRepository extends BaseRepository
 {
     /**
@@ -64,7 +64,7 @@ class Instance_detailRepository extends BaseRepository
         'instance_ap_max_heap_size',
         'jdk_type',
         'jdk_version',
-		'qa_intentionally_disabled',
+        'qa_intentionally_disabled',
         'in_use',
         'in_use_msg',
         'webserver_version',
@@ -72,7 +72,7 @@ class Instance_detailRepository extends BaseRepository
         'is_contrast_configured',
         'snowflake_configured',
         'pai_foundation',
-        'check_fail_count'
+        'check_fail_count',
     ];
 
     /**

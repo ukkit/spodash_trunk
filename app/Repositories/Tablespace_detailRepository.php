@@ -9,10 +9,9 @@ use InfyOm\Generator\Common\BaseRepository;
 
 /**
  * Class Tablespace_detailRepository
- * @package App\Repositories
+ *
  * @version February 10, 2021, 4:35 pm IST
-*/
-
+ */
 class Tablespace_detailRepository extends BaseRepository
 {
     /**
@@ -24,7 +23,7 @@ class Tablespace_detailRepository extends BaseRepository
         'tablespace_name',
         'used_space',
         'free_space',
-        'total_space'
+        'total_space',
     ];
 
     /**

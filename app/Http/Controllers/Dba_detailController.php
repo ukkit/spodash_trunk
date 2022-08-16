@@ -4,23 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateDba_detailRequest;
 use App\Http\Requests\UpdateDba_detailRequest;
+use App\Models\Server_detail;
 use App\Repositories\Dba_detailRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
+use Auth;
+use DB;
 use Flash;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
-use Response;
-use App\Models\Server_detail;
-use DB;
 use Log;
-use Auth;
+use Response;
 
 class Dba_detailController extends AppBaseController
 {
-    /** @var  Dba_detailRepository */
+    /** @var Dba_detailRepository */
     private $dbaDetailRepository;
 
     public function __construct(Dba_detailRepository $dbaDetailRepo)
@@ -31,8 +30,7 @@ class Dba_detailController extends AppBaseController
     /**
      * Display a listing of the Dba_detail.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return Response|Factory|RedirectResponse|Redirector|View
      */
     public function index(Request $request)
@@ -66,8 +64,7 @@ class Dba_detailController extends AppBaseController
     /**
      * Store a newly created Dba_detail in storage.
      *
-     * @param CreateDba_detailRequest $request
-     *
+     * @param  CreateDba_detailRequest  $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|Response
      */
     public function store(CreateDba_detailRequest $request)
@@ -84,8 +81,7 @@ class Dba_detailController extends AppBaseController
     /**
      * Display the specified Dba_detail.
      *
-     * @param int $id
-     *
+     * @param  int  $id
      * @return Factory|RedirectResponse|Redirector|View|Response
      */
     public function show($id)
@@ -104,8 +100,7 @@ class Dba_detailController extends AppBaseController
     /**
      * Show the form for editing the specified Dba_detail.
      *
-     * @param int $id
-     *
+     * @param  int  $id
      * @return Factory|RedirectResponse|Redirector|View|Response
      */
     public function edit($id)
@@ -122,7 +117,6 @@ class Dba_detailController extends AppBaseController
 
         $rec_arr['record'] = DB::table('dba_details')->where('id', $id)->get()->first();
 
-
         return view('dba_details.edit')
         ->with($sd_arr)
         ->with($rec_arr)
@@ -134,9 +128,8 @@ class Dba_detailController extends AppBaseController
     /**
      * Update the specified Dba_detail in storage.
      *
-     * @param int $id
-     * @param UpdateDba_detailRequest $request
-     *
+     * @param  int  $id
+     * @param  UpdateDba_detailRequest  $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|Response
      */
     public function update($id, UpdateDba_detailRequest $request)
@@ -159,11 +152,10 @@ class Dba_detailController extends AppBaseController
     /**
      * Remove the specified Dba_detail from storage.
      *
-     * @param int $id
+     * @param  int  $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|Response
      *
      * @throws \Exception
-     *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|Response
      */
     public function destroy($id)
     {
@@ -177,7 +169,7 @@ class Dba_detailController extends AppBaseController
         }
 
         $this->dbaDetailRepository->delete($id);
-        Log::alert("Record for ID ".$id." deleted by ".$user_details->name);
+        Log::alert('Record for ID '.$id.' deleted by '.$user_details->name);
         Flash::success('Dba Detail deleted successfully.');
 
         return redirect(route('dbaDetails.index'));

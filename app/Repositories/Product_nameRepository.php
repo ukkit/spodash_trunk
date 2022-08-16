@@ -7,13 +7,13 @@ use InfyOm\Generator\Common\BaseRepository;
 
 /**
  * Class Product_nameRepository
- * @package App\Repositories
+ *
  * @version January 24, 2019, 8:20 am UTC
  *
  * @method Product_name findWithoutFail($id, $columns = ['*'])
  * @method Product_name find($id, $columns = ['*'])
  * @method Product_name first($columns = ['*'])
-*/
+ */
 class Product_nameRepository extends BaseRepository
 {
     /**
@@ -22,7 +22,7 @@ class Product_nameRepository extends BaseRepository
     protected $fieldSearchable = [
         'product_short_name',
         'product_long_name',
-        'product_is_active'
+        'product_is_active',
     ];
 
     /**

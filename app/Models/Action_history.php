@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use DB;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use DB;
 
 class Action_history extends Model
 {
@@ -13,11 +13,10 @@ class Action_history extends Model
     public $table = 'action_histories';
 
     const CREATED_AT = 'created_at';
+
     const UPDATED_AT = 'updated_at';
 
-
     protected $dates = ['deleted_at'];
-
 
     public $fillable = [
         'unique_id',
@@ -27,7 +26,7 @@ class Action_history extends Model
         'action',
         'start_time',
         'end_time',
-        'status'
+        'status',
     ];
 
     /**
@@ -44,7 +43,7 @@ class Action_history extends Model
         'action' => 'string',
         'start_time' => 'datetime',
         'end_time' => 'datetime',
-        'status' => 'string'
+        'status' => 'string',
     ];
 
     /**
@@ -60,7 +59,7 @@ class Action_history extends Model
         'action' => 'required',
         'start_time' => 'required',
         'end_time' => 'required',
-        'status' => 'required'
+        'status' => 'required',
     ];
 
     public function users()
@@ -78,6 +77,7 @@ class Action_history extends Model
         $value = DB::table('product_versions')
                         ->where('pv_id', $pvid)
                         ->first();
+
         return $value;
     }
 
@@ -86,6 +86,7 @@ class Action_history extends Model
         $value = DB::table('product_versions')
                         ->where('id', $id)
                         ->first();
+
         return $value;
     }
 
@@ -94,6 +95,7 @@ class Action_history extends Model
         $value = DB::table('pai_builds')
                         ->where('pv_id', $pvid)
                         ->first();
+
         return $value;
     }
 
@@ -102,15 +104,17 @@ class Action_history extends Model
         $value = DB::table('pai_builds')
                         ->where('id', $id)
                         ->first();
+
         return $value;
     }
 
     public function return_version_data($version)
     {
-        $query = Action_history::join('product_versions', 'product_versions.id','=','action_histories.old_build_id')
+        $query = Action_history::join('product_versions', 'product_versions.id', '=', 'action_histories.old_build_id')
                                 ->where('product_versions.product_ver_number', $version)
                                 ->select('action_histories.*', 'product_versions.product_ver_number')
                                 ->get();
+
         return $query;
     }
 }

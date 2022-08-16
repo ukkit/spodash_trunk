@@ -4,23 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateIntellicus_detailRequest;
 use App\Http\Requests\UpdateIntellicus_detailRequest;
+use App\Models\Intellicus_version;
+use App\Models\Server_detail;
 use App\Repositories\Intellicus_detailRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
+use DB;
 use Flash;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
-use App\Models\Server_detail;
-use App\Models\Database_detail;
-use App\Models\Intellicus_version;
 use Response;
-use DB;
 
 class Intellicus_detailController extends AppBaseController
 {
-    /** @var  Intellicus_detailRepository */
+    /** @var Intellicus_detailRepository */
     private $intellicusDetailRepository;
 
     public function __construct(Intellicus_detailRepository $intellicusDetailRepo)
@@ -31,8 +29,7 @@ class Intellicus_detailController extends AppBaseController
     /**
      * Display a listing of the Intellicus_detail.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return Response|Factory|RedirectResponse|Redirector|View
      */
     public function index(Request $request)
@@ -71,8 +68,7 @@ class Intellicus_detailController extends AppBaseController
     /**
      * Store a newly created Intellicus_detail in storage.
      *
-     * @param CreateIntellicus_detailRequest $request
-     *
+     * @param  CreateIntellicus_detailRequest  $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|Response
      */
     public function store(CreateIntellicus_detailRequest $request)
@@ -89,8 +85,7 @@ class Intellicus_detailController extends AppBaseController
     /**
      * Display the specified Intellicus_detail.
      *
-     * @param int $id
-     *
+     * @param  int  $id
      * @return Factory|RedirectResponse|Redirector|View|Response
      */
     public function show($id)
@@ -109,8 +104,7 @@ class Intellicus_detailController extends AppBaseController
     /**
      * Show the form for editing the specified Intellicus_detail.
      *
-     * @param int $id
-     *
+     * @param  int  $id
      * @return Factory|RedirectResponse|Redirector|View|Response
      */
     public function edit($id)
@@ -147,9 +141,8 @@ class Intellicus_detailController extends AppBaseController
     /**
      * Update the specified Intellicus_detail in storage.
      *
-     * @param int $id
-     * @param UpdateIntellicus_detailRequest $request
-     *
+     * @param  int  $id
+     * @param  UpdateIntellicus_detailRequest  $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|Response
      */
     public function update($id, UpdateIntellicus_detailRequest $request)
@@ -172,11 +165,10 @@ class Intellicus_detailController extends AppBaseController
     /**
      * Remove the specified Intellicus_detail from storage.
      *
-     * @param int $id
+     * @param  int  $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|Response
      *
      * @throws \Exception
-     *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|Response
      */
     public function destroy($id)
     {

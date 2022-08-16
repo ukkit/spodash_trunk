@@ -8,13 +8,13 @@ use InfyOm\Generator\Common\BaseRepository;
 
 /**
  * Class Database_typeRepository
- * @package App\Repositories
+ *
  * @version February 18, 2019, 10:54 am UTC
  *
  * @method Database_type findWithoutFail($id, $columns = ['*'])
  * @method Database_type find($id, $columns = ['*'])
  * @method Database_type first($columns = ['*'])
-*/
+ */
 class Database_typeRepository extends BaseRepository
 {
     /**
@@ -24,7 +24,7 @@ class Database_typeRepository extends BaseRepository
         'db_short_name',
         'db_long_name',
         'db_patchset',
-        'db_is_active'
+        'db_is_active',
     ];
 
     /**
@@ -34,6 +34,5 @@ class Database_typeRepository extends BaseRepository
     {
         return Database_type::class;
         // return Database_type::select('db_short_name', 'db_long_name')->get();
-
     }
 }

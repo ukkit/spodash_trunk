@@ -1,9 +1,9 @@
 <?php
-$java_type_array = array("Oracle JDK","Amazon Corretto");
+$java_type_array = ["Oracle JDK","Amazon Corretto"];
 // $java_type_array = array("Oracle JDK","Amazon Corretto","OpenJDK");
-$jenkins_token_array = array(array("US Jenknis Server (andcsv-svgcjk01)","11d0c46e4f38bf0a2a4ea82ef9d5266294"),array("Pune Jenkins Server 1 (10.192.110.23)","f92871a081a7d7ec3353d538bdac9b5f"),array("Pune Jenkins Server 2 (ppumsv-svgjk01d)","113b0a8f28346617b9065b1677a240e14d"));
+$jenkins_token_array = [["US Jenknis Server (andcsv-svgcjk01)","11d0c46e4f38bf0a2a4ea82ef9d5266294"],["Pune Jenkins Server 1 (10.192.110.23)","f92871a081a7d7ec3353d538bdac9b5f"],["Pune Jenkins Server 2 (ppumsv-svgjk01d)","113b0a8f28346617b9065b1677a240e14d"]];
 // $pai_type_array = array("Hadoop","Oracle");
-$escm_type_array = array("Production","Sandbox");
+$escm_type_array = ["Production","Sandbox"];
 ?>
 
     {{-- FIRST BLOCK STARTS HERE --}}

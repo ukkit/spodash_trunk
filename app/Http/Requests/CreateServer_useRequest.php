@@ -2,12 +2,11 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Models\Server_use;
+use Illuminate\Foundation\Http\FormRequest;
 
 class CreateServer_useRequest extends FormRequest
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *

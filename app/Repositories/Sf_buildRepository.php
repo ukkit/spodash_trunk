@@ -7,10 +7,9 @@ use InfyOm\Generator\Common\BaseRepository;
 
 /**
  * Class Sf_buildRepository
- * @package App\Repositories
+ *
  * @version March 2, 2022, 6:56 pm IST
-*/
-
+ */
 class Sf_buildRepository extends BaseRepository
 {
     /**
@@ -20,7 +19,7 @@ class Sf_buildRepository extends BaseRepository
         'sf_pai_version',
         'sf_pai_build',
         'pv_id',
-        'is_release_build'
+        'is_release_build',
     ];
 
     /**

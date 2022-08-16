@@ -5,16 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateAction_historyRequest;
 use App\Http\Requests\UpdateAction_historyRequest;
 use App\Repositories\Action_historyRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
-use Flash;
-use Response;
 use DB;
-use App\Models\Action_history;
+use Flash;
+use Illuminate\Http\Request;
 
 class Action_historyController extends AppBaseController
 {
-    /** @var  Action_historyRepository */
+    /** @var Action_historyRepository */
     private $actionHistoryRepository;
 
     public function __construct(Action_historyRepository $actionHistoryRepo)
@@ -95,20 +92,22 @@ class Action_historyController extends AppBaseController
         $actionHistory = $this->actionHistoryRepository->find($id);
         if (empty($actionHistory)) {
             Flash::error('Action History not found');
+
             return redirect(route('actionHistories.index'));
         }
         $this->actionHistoryRepository->delete($id);
-        return redirect(route('actionHistories.index'));
-     }
 
-     public function stats(Request $request)
-     {
+        return redirect(route('actionHistories.index'));
+    }
+
+    public function stats(Request $request)
+    {
         \Artisan::call('command:prodversionstorelnums');
         $actionHistories = $this->actionHistoryRepository->whereNull('deleted_at')->orderBy('start_time', 'desc')->get();
-        $rn_arr['version_numbers'] =  DB::table('release_numbers')->whereNull('deleted_at')->distinct()->get();
+        $rn_arr['version_numbers'] = DB::table('release_numbers')->whereNull('deleted_at')->distinct()->get();
 
-         return view('action_histories.stats')
+        return view('action_histories.stats')
             ->with($rn_arr)
             ->with('actionHistories', $actionHistories);
-     }
+    }
 }

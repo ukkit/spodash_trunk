@@ -2,28 +2,25 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\CreateServer_detailAPIRequest;
 use App\Http\Requests\API\UpdateServer_detailAPIRequest;
+use App\Models\Database_type;
+use App\Models\Os_type;
 use App\Models\Server_detail;
+use App\Models\Server_use;
 use App\Repositories\Server_detailRepository;
 use Illuminate\Http\Request;
-use App\Http\Controllers\AppBaseController;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
-use DB;
-use App\Models\Os_type;
-use App\Models\Server_use;
-use App\Models\Database_type;
 
 /**
  * Class Server_detailController
- * @package App\Http\Controllers\API
  */
-
 class Server_detailAPIController extends AppBaseController
 {
-    /** @var  Server_detailRepository */
+    /** @var Server_detailRepository */
     private $serverDetailRepository;
 
     public function __construct(Server_detailRepository $serverDetailRepo)
@@ -32,7 +29,7 @@ class Server_detailAPIController extends AppBaseController
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return Response
      *
      * @SWG\Get(
@@ -70,7 +67,7 @@ class Server_detailAPIController extends AppBaseController
 
         // $serverDetails = $this->serverDetailRepository->all();
 
-        $serverDetails = Server_detail::select('id','os_types_id','database_types_id','server_uses_id','server_name','server_ip','server_class','server_ram_gb','server_hdd_gb','server_cpu_cores', 'server_user','server_password','admin_user','admin_password','server_owner','server_location','server_note')->get();
+        $serverDetails = Server_detail::select('id', 'os_types_id', 'database_types_id', 'server_uses_id', 'server_name', 'server_ip', 'server_class', 'server_ram_gb', 'server_hdd_gb', 'server_cpu_cores', 'server_user', 'server_password', 'admin_user', 'admin_password', 'server_owner', 'server_location', 'server_note')->get();
 
         // if(empty($serverDetails)) {
         //     return $this->sendError('Server Detail not found');
@@ -80,7 +77,7 @@ class Server_detailAPIController extends AppBaseController
     }
 
     /**
-     * @param CreateServer_detailAPIRequest $request
+     * @param  CreateServer_detailAPIRequest  $request
      * @return Response
      *
      * @SWG\Post(
@@ -151,9 +148,9 @@ class Server_detailAPIController extends AppBaseController
             return $this->sendError('Admin Password cannot be blank');
         }
 
-        $osType = Os_type::where('id',$input['os_types_id'])->value('os_short_name');
-        $dbType = Database_type::where('id',$input['database_types_id'])->value('db_short_name');
-        $serverUse = Server_use::where('id',$input['server_uses_id'])->value('use_short_name');
+        $osType = Os_type::where('id', $input['os_types_id'])->value('os_short_name');
+        $dbType = Database_type::where('id', $input['database_types_id'])->value('db_short_name');
+        $serverUse = Server_use::where('id', $input['server_uses_id'])->value('use_short_name');
 
         if (empty($osType)) {
             return $this->sendError('OS Type ID '.$input['os_types_id'].' does not exist');
@@ -169,7 +166,7 @@ class Server_detailAPIController extends AppBaseController
     }
 
     /**
-     * @param int $id
+     * @param  int  $id
      * @return Response
      *
      * @SWG\Get(
@@ -214,15 +211,15 @@ class Server_detailAPIController extends AppBaseController
         if (empty($serverDetail)) {
             return $this->sendError('Server Detail not found');
         } else {
-            $serverDetail = Server_detail::select('id','os_types_id','database_types_id','server_uses_id','server_name','server_ip','server_class','server_ram_gb','server_hdd_gb','server_cpu_cores','server_user','server_password','admin_user','admin_password','server_owner','server_location','server_note')->where('id',$id)->get();
+            $serverDetail = Server_detail::select('id', 'os_types_id', 'database_types_id', 'server_uses_id', 'server_name', 'server_ip', 'server_class', 'server_ram_gb', 'server_hdd_gb', 'server_cpu_cores', 'server_user', 'server_password', 'admin_user', 'admin_password', 'server_owner', 'server_location', 'server_note')->where('id', $id)->get();
         }
 
         return $this->sendResponse($serverDetail->toArray(), 'Server Detail retrieved successfully');
     }
 
     /**
-     * @param int $id
-     * @param UpdateServer_detailAPIRequest $request
+     * @param  int  $id
+     * @param  UpdateServer_detailAPIRequest  $request
      * @return Response
      *
      * @SWG\Put(
@@ -274,7 +271,7 @@ class Server_detailAPIController extends AppBaseController
             if (empty($input['os_types_id'])) {
                 return $this->sendError('OS Type ID cannot be blank');
             } else {
-                $osType = Os_type::where('id',$input['os_types_id'])->value('os_short_name');
+                $osType = Os_type::where('id', $input['os_types_id'])->value('os_short_name');
                 if (empty($osType)) {
                     return $this->sendError('OS Type ID '.$input['os_types_id'].' does not exist');
                 }
@@ -285,7 +282,7 @@ class Server_detailAPIController extends AppBaseController
             if (empty($input['dbType'])) {
                 return $this->sendError('Database Type ID cannot be blank');
             } else {
-                $dbType = Database_type::where('id',$input['database_types_id'])->value('db_short_name');
+                $dbType = Database_type::where('id', $input['database_types_id'])->value('db_short_name');
                 if (empty($dbType)) {
                     return $this->sendError('Database Type ID '.$input['database_types_id'].' does not exist');
                 }
@@ -296,7 +293,7 @@ class Server_detailAPIController extends AppBaseController
             if (empty($input['server_uses_id'])) {
                 return $this->sendError('Server Use ID cannot be blank');
             } else {
-                $serverUse = Server_use::where('id',$input['server_uses_id'])->value('use_short_name');
+                $serverUse = Server_use::where('id', $input['server_uses_id'])->value('use_short_name');
                 if (empty($serverUse)) {
                     return $this->sendError('Server Use ID '.$input['server_uses_id'].' does not exist');
                 }
@@ -305,7 +302,7 @@ class Server_detailAPIController extends AppBaseController
 
         /** @var Server_detail $serverDetail */
         // $serverDetail = $this->serverDetailRepository->findWithoutFail($id);
-        $serverDetail = Server_detail::select('id','os_types_id','database_types_id','server_uses_id','server_name','server_ip','server_class','server_ram_gb','server_hdd_gb','server_cpu_cores','server_user','server_password','admin_user','admin_password','server_owner','server_location','server_note')->where('id',$id)->get();
+        $serverDetail = Server_detail::select('id', 'os_types_id', 'database_types_id', 'server_uses_id', 'server_name', 'server_ip', 'server_class', 'server_ram_gb', 'server_hdd_gb', 'server_cpu_cores', 'server_user', 'server_password', 'admin_user', 'admin_password', 'server_owner', 'server_location', 'server_note')->where('id', $id)->get();
 
         if (empty($serverDetail)) {
             return $this->sendError('Server Detail not found');
@@ -317,7 +314,7 @@ class Server_detailAPIController extends AppBaseController
     }
 
     /**
-     * @param int $id
+     * @param  int  $id
      * @return Response
      *
      * @SWG\Delete(
@@ -326,7 +323,6 @@ class Server_detailAPIController extends AppBaseController
      */
     public function destroy($id)
     {
-
         return $this->sendError('Deletion not supported through API');
     }
 }
