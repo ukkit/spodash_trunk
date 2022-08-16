@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Carbon\Carbon;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -43,31 +43,29 @@ class LoginController extends Controller
     public function showLoginForm()
     {
         if (session('link')) {
-            $myPath     = session('link');
-            $loginPath  = url('/login');
-            $previous   = url()->previous();
+            $myPath = session('link');
+            $loginPath = url('/login');
+            $previous = url()->previous();
 
             if ($previous = $loginPath) {
                 session(['link' => $myPath]);
-            }
-            else{
+            } else {
                 session(['link' => $previous]);
             }
-        }
-        else{
+        } else {
             session(['link' => url()->previous()]);
         }
 
         return view('auth.login');
     }
 
-    function authenticated(Request $request, $user)
+    public function authenticated(Request $request, $user)
     {
         $user->update([
             'last_login_at' => Carbon::now()->toDateTimeString(),
-            'last_login_ip' => $request->getClientIp()
+            'last_login_ip' => $request->getClientIp(),
         ]);
+
         return redirect(session('link'));
     }
-
 }

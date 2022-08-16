@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class UpdatingTableInstanceDetQAIntention extends Migration
 {
@@ -14,8 +14,8 @@ class UpdatingTableInstanceDetQAIntention extends Migration
     public function up()
     {
         Schema::table('instance_details', function (Blueprint $table) {
-            $table->char('qa_intentionally_disabled',1)->after('instance_show_on_site')->default('N');
-            });
+            $table->char('qa_intentionally_disabled', 1)->after('instance_show_on_site')->default('N');
+        });
     }
 
     /**

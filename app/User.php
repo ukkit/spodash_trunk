@@ -2,12 +2,11 @@
 
 namespace App;
 
-use Laravel\Passport\HasApiTokens;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Spatie\Permission\Traits\HasRoles;
 use DB;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
@@ -31,34 +30,41 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public static $rules = array(
+    public static $rules = [
         'name' => 'bail|required|min:2',
         // 'email' => 'required|email|unique:users',
-        'roles' => 'required|min:1'
-    );
+        'roles' => 'required|min:1',
+    ];
 
-    public function userTeams ($id) {
+    public function userTeams($id)
+    {
         $value = DB::table('teams')
                 ->join('user_has_teams', 'teams.id', '=', 'user_has_teams.team_id')
                 ->where('user_has_teams.user_id', $id)
                 ->take(10)
                 ->get('team_name');
+
         return $value;
     }
 
-    public function userAction ($id) {
+    public function userAction($id)
+    {
         $value = DB::table('action_histories')->where('users_id', $id)->orderBy('start_time', 'desc')->first();
+
         return $value;
     }
 
-    public function user_actions($id) {
+    public function user_actions($id)
+    {
         $value = DB::table('action_histories')->where('users_id', $id)->orderBy('start_time', 'desc')->get();
+
         return $value;
     }
 
     public function instance_details($instance_details_id)
     {
         $value = DB::table('instance_details')->where('id', $instance_details_id)->first();
+
         return $value;
     }
 }

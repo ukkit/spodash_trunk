@@ -37,7 +37,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *      )
  * )
  */
-
 class Database_type extends Model
 {
     use SoftDeletes;
@@ -45,17 +44,16 @@ class Database_type extends Model
     public $table = 'database_types';
 
     const CREATED_AT = 'created_at';
+
     const UPDATED_AT = 'updated_at';
 
-
     protected $dates = ['deleted_at'];
-
 
     public $fillable = [
         'db_short_name',
         'db_long_name',
         'db_patchset',
-        'db_is_active'
+        'db_is_active',
     ];
 
     /**
@@ -68,7 +66,7 @@ class Database_type extends Model
         'db_short_name' => 'string',
         'db_long_name' => 'string',
         'db_patchset' => 'string',
-        'db_is_active' => 'string'
+        'db_is_active' => 'string',
     ];
 
     /**

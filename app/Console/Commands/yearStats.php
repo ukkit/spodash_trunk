@@ -2,13 +2,12 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use DB;
 use Carbon\Carbon;
+use DB;
+use Illuminate\Console\Command;
 
 class yearStats extends Command
 {
-
     protected $signature = 'command:tpStats';
 
     protected $description = 'This command is dependent on stats1, stats2 and stats3 to be executed first';
@@ -20,7 +19,6 @@ class yearStats extends Command
 
     public function handle()
     {
-
         echo " STARTING ------------------------ TPSTATS -------------------------- \n";
 
         $fy21StartDate = date('Y-m-d', strtotime('2020-10-01'));
@@ -36,12 +34,12 @@ class yearStats extends Command
         $fy22Q4StartDate = date('Y-m-d', strtotime('2022-07-01'));
         $fy22Q4EndDate = date('Y-m-d', strtotime('2022-09-30    '));
         $todate = date('Y-m-d');
-        $lastSixMonths = date("Y-m-d", strtotime("-6 months"));
-        $lastThreeMonths = date("Y-m-d", strtotime("-3 months"));
-        $lastOneMonth = date("Y-m-d", strtotime("-1 months"));
+        $lastSixMonths = date('Y-m-d', strtotime('-6 months'));
+        $lastThreeMonths = date('Y-m-d', strtotime('-3 months'));
+        $lastOneMonth = date('Y-m-d', strtotime('-1 months'));
 
-        $dropTable = "DROP TABLE IF EXISTS z_tp_data";
-        $createTable = "CREATE TABLE IF NOT EXISTS z_tp_data (
+        $dropTable = 'DROP TABLE IF EXISTS z_tp_data';
+        $createTable = 'CREATE TABLE IF NOT EXISTS z_tp_data (
             id int(11) NOT NULL AUTO_INCREMENT,
             time_period varchar(50) NULL,
 
@@ -102,7 +100,7 @@ class yearStats extends Command
 
             created_at datetime NULL,
             CONSTRAINT pk_z_release_data_id PRIMARY KEY (id)
-        )";
+        )';
 
         \DB::statement($dropTable);
         \DB::statement($createTable);
@@ -224,8 +222,8 @@ class yearStats extends Command
         //     return $rv;
         // }
 
-        function insert_data($time_period, $array) {
-
+        function insert_data($time_period, $array)
+        {
             $pass = 0;
             $fail = 0;
             $startup = 0;
@@ -252,26 +250,26 @@ class yearStats extends Command
             $all_pass_time = 0;
             $all_fail_time = 0;
 
-            $startup_array = array();
-            $shutdown_array = array();
-            $spm_upgrade_array = array();
-            $pai_upgrade_array = array();
-            $both_upgrade_array = array();
-            $restart_array = array();
+            $startup_array = [];
+            $shutdown_array = [];
+            $spm_upgrade_array = [];
+            $pai_upgrade_array = [];
+            $both_upgrade_array = [];
+            $restart_array = [];
 
-            $startup_fail_array = array();
-            $shutdown_fail_array = array();
-            $spm_upgrade_fail_array = array();
-            $pai_upgrade_fail_array = array();
-            $both_upgrade_fail_array = array();
-            $restart_fail_array = array();
+            $startup_fail_array = [];
+            $shutdown_fail_array = [];
+            $spm_upgrade_fail_array = [];
+            $pai_upgrade_fail_array = [];
+            $both_upgrade_fail_array = [];
+            $restart_fail_array = [];
 
-            $startup_array_scheduler = array();
-            $shutdown_array_scheduler = array();
-            $spm_upgrade_array_scheduler = array();
-            $pai_upgrade_array_scheduler = array();
-            $both_upgrade_array_scheduler = array();
-            $restart_array_scheduler = array();
+            $startup_array_scheduler = [];
+            $shutdown_array_scheduler = [];
+            $spm_upgrade_array_scheduler = [];
+            $pai_upgrade_array_scheduler = [];
+            $both_upgrade_array_scheduler = [];
+            $restart_array_scheduler = [];
 
             foreach ($array as $sS) {
                 // if ($sS->spm_version == $release) {
@@ -280,26 +278,25 @@ class yearStats extends Command
                 //     $pai_version = $release;
                 // }
 
-                if ($sS->action == "StartAppServer") {
+                if ($sS->action == 'StartAppServer') {
                     $startup++;
-                    if ($sS->status == "Successful") {
+                    if ($sS->status == 'Successful') {
                         array_push($startup_array, $sS->time_taken);
                         $startup_pass_count++;
-                    } elseif ($sS->status == "Scheduler") {
+                    } elseif ($sS->status == 'Scheduler') {
                         array_push($startup_array_scheduler, $sS->time_taken);
                         $startup_pass_count++;
-                    }
-                    else {
+                    } else {
                         array_push($startup_fail_array, $sS->time_taken);
                         $startup_fail_count++;
                     }
                 }
-                if ($sS->action == "ShutDownAppServer") {
+                if ($sS->action == 'ShutDownAppServer') {
                     $shutdown++;
-                    if ($sS->status == "Successful") {
+                    if ($sS->status == 'Successful') {
                         array_push($shutdown_array, $sS->time_taken);
                         $shutdown_pass_count++;
-                    } elseif ($sS->status == "Scheduler") {
+                    } elseif ($sS->status == 'Scheduler') {
                         array_push($shutdown_array_scheduler, $sS->time_taken);
                         $shutdown_pass_count++;
                     } else {
@@ -307,12 +304,12 @@ class yearStats extends Command
                         $shutdown_fail_count++;
                     }
                 }
-                if ($sS->action == "SPO_upgrade") {
+                if ($sS->action == 'SPO_upgrade') {
                     $spm_upgrade++;
-                    if ($sS->status == "Successful") {
+                    if ($sS->status == 'Successful') {
                         array_push($spm_upgrade_array, $sS->time_taken);
                         $spm_upgrade_pass_count++;
-                    } elseif ($sS->status == "Scheduler") {
+                    } elseif ($sS->status == 'Scheduler') {
                         array_push($spm_upgrade_array_scheduler, $sS->time_taken);
                         $spm_upgrade_pass_count++;
                     } else {
@@ -320,12 +317,12 @@ class yearStats extends Command
                         $spm_upgrade_fail_count++;
                     }
                 }
-                if ($sS->action == "PAI_upgrade") {
+                if ($sS->action == 'PAI_upgrade') {
                     $pai_upgrade++;
-                    if ($sS->status == "Successful") {
+                    if ($sS->status == 'Successful') {
                         array_push($pai_upgrade_array, $sS->time_taken);
                         $pai_upgrade_pass_count++;
-                    } elseif ($sS->status == "Scheduler") {
+                    } elseif ($sS->status == 'Scheduler') {
                         array_push($pai_upgrade_array_scheduler, $sS->time_taken);
                         $pai_upgrade_pass_count++;
                     } else {
@@ -333,12 +330,12 @@ class yearStats extends Command
                         $pai_upgrade_fail_count++;
                     }
                 }
-                if ($sS->action == "BuildUpdate") {
+                if ($sS->action == 'BuildUpdate') {
                     $both_upgrade++;
-                    if ($sS->status == "Successful") {
+                    if ($sS->status == 'Successful') {
                         array_push($both_upgrade_array, $sS->time_taken);
                         $both_upgrade_pass_count++;
-                    } elseif ($sS->status == "Scheduler") {
+                    } elseif ($sS->status == 'Scheduler') {
                         array_push($both_upgrade_array_scheduler, $sS->time_taken);
                         $both_upgrade_pass_count++;
                     } else {
@@ -346,12 +343,12 @@ class yearStats extends Command
                         $both_upgrade_fail_count++;
                     }
                 }
-                if ($sS->action == "Restart") {
+                if ($sS->action == 'Restart') {
                     $restart++;
-                    if ($sS->status == "Successful") {
+                    if ($sS->status == 'Successful') {
                         array_push($restart_array, $sS->time_taken);
                         $restart_pass_count++;
-                    } elseif ($sS->status == "Scheduler"){
+                    } elseif ($sS->status == 'Scheduler') {
                         array_push($restart_array_scheduler, $sS->time_taken);
                         $restart_pass_count++;
                     } else {
@@ -361,24 +358,23 @@ class yearStats extends Command
                 }
 
                 try {
-                    list($spm_upgrade_max_time, $spm_upgrade_min_time, $spm_upgrade_avg_time, $spm_upgrade_total_time) = max_min_avg_total($spm_upgrade_array, $spm_upgrade_array_scheduler);
+                    [$spm_upgrade_max_time, $spm_upgrade_min_time, $spm_upgrade_avg_time, $spm_upgrade_total_time] = max_min_avg_total($spm_upgrade_array, $spm_upgrade_array_scheduler);
                 } catch (\Throwable $th) {
                     // echo $th;
                     $spm_upgrade_max_time = null;
                     $spm_upgrade_min_time = null;
                     $spm_upgrade_avg_time = null;
                     $spm_upgrade_total_time = null;
-
                 }
 
                 try {
-                    $spm_upgrade_total_fail_time = fail_hours($spm_upgrade_fail_count,$spm_upgrade_fail_array);
+                    $spm_upgrade_total_fail_time = fail_hours($spm_upgrade_fail_count, $spm_upgrade_fail_array);
                 } catch (\Throwable $th) {
                     $spm_upgrade_total_fail_time = null;
                 }
 
                 try {
-                    list($pai_upgrade_max_time, $pai_upgrade_min_time, $pai_upgrade_avg_time, $pai_upgrade_total_time) = max_min_avg_total($pai_upgrade_array, $pai_upgrade_array_scheduler);
+                    [$pai_upgrade_max_time, $pai_upgrade_min_time, $pai_upgrade_avg_time, $pai_upgrade_total_time] = max_min_avg_total($pai_upgrade_array, $pai_upgrade_array_scheduler);
                 } catch (\Throwable $th) {
                     // echo $th;
                     $pai_upgrade_max_time = null;
@@ -389,13 +385,13 @@ class yearStats extends Command
                 }
 
                 try {
-                    $pai_upgrade_total_fail_time = fail_hours($pai_upgrade_fail_count,$pai_upgrade_fail_array);
+                    $pai_upgrade_total_fail_time = fail_hours($pai_upgrade_fail_count, $pai_upgrade_fail_array);
                 } catch (\Throwable $th) {
                     $pai_upgrade_total_fail_time = null;
                 }
 
                 try {
-                    list($both_upgrade_max_time, $both_upgrade_min_time, $both_upgrade_avg_time, $both_upgrade_total_time) = max_min_avg_total($both_upgrade_array, $both_upgrade_array_scheduler);
+                    [$both_upgrade_max_time, $both_upgrade_min_time, $both_upgrade_avg_time, $both_upgrade_total_time] = max_min_avg_total($both_upgrade_array, $both_upgrade_array_scheduler);
                 } catch (\Throwable $th) {
                     echo $th;
                     $both_upgrade_max_time = null;
@@ -405,13 +401,13 @@ class yearStats extends Command
                 }
 
                 try {
-                    $both_upgrade_total_fail_time = fail_hours($both_upgrade_fail_count,$both_upgrade_fail_array);
+                    $both_upgrade_total_fail_time = fail_hours($both_upgrade_fail_count, $both_upgrade_fail_array);
                 } catch (\Throwable $th) {
                     $both_upgrade_total_fail_time = null;
                 }
 
                 try {
-                    list($startup_max_time, $startup_min_time, $startup_avg_time, $startup_total_time) = max_min_avg_total($startup_array, $startup_array_scheduler);
+                    [$startup_max_time, $startup_min_time, $startup_avg_time, $startup_total_time] = max_min_avg_total($startup_array, $startup_array_scheduler);
                 } catch (\Throwable $th) {
                     echo $th;
                     $startup_max_time = null;
@@ -421,13 +417,13 @@ class yearStats extends Command
                 }
 
                 try {
-                    $startup_total_fail_time = fail_hours($startup_fail_count,$startup_fail_array);
+                    $startup_total_fail_time = fail_hours($startup_fail_count, $startup_fail_array);
                 } catch (\Throwable $th) {
                     $startup_total_fail_time = null;
                 }
 
                 try {
-                    list($shutdown_max_time, $shutdown_min_time, $shutdown_avg_time, $shutdown_total_time) = max_min_avg_total($shutdown_array, $shutdown_array_scheduler);
+                    [$shutdown_max_time, $shutdown_min_time, $shutdown_avg_time, $shutdown_total_time] = max_min_avg_total($shutdown_array, $shutdown_array_scheduler);
                 } catch (\Throwable $th) {
                     echo $th;
                     $shutdown_max_time = null;
@@ -437,13 +433,13 @@ class yearStats extends Command
                 }
 
                 try {
-                    $shutdown_total_fail_time = fail_hours($restart_fail_count,$shutdown_fail_array);
+                    $shutdown_total_fail_time = fail_hours($restart_fail_count, $shutdown_fail_array);
                 } catch (\Throwable $th) {
                     $shutdown_total_fail_time = null;
                 }
 
                 try {
-                    list($restart_max_time, $restart_min_time, $restart_avg_time, $restart_total_time) = max_min_avg_total($restart_array, $restart_array_scheduler);
+                    [$restart_max_time, $restart_min_time, $restart_avg_time, $restart_total_time] = max_min_avg_total($restart_array, $restart_array_scheduler);
                 } catch (\Throwable $th) {
                     echo $th;
                     $restart_max_time = null;
@@ -453,7 +449,7 @@ class yearStats extends Command
                 }
 
                 try {
-                    $restart_total_fail_time = fail_hours($restart_fail_count,$restart_fail_array);
+                    $restart_total_fail_time = fail_hours($restart_fail_count, $restart_fail_array);
                 } catch (\Throwable $th) {
                     $restart_total_fail_time = null;
                 }
@@ -475,10 +471,9 @@ class yearStats extends Command
 
                 $total_passed_count = $spm_upgrade_pass_count + $pai_upgrade_pass_count + $both_upgrade_pass_count + $shutdown_pass_count + $restart_pass_count;
                 $total_failed_count = $spm_upgrade_fail_count + $pai_upgrade_fail_count + $both_upgrade_fail_count + $shutdown_fail_count + $restart_fail_count;
-
             }
             try {
-                DB::table('z_tp_data')->insert(['id'=>null, 'time_period' => $time_period, 'spm_upgrade_pass_count' => $spm_upgrade_pass_count, 'spm_upgrade_fail_count' => $spm_upgrade_fail_count, 'spm_upgrade_max_time' => $spm_upgrade_max_time, 'spm_upgrade_min_time' => $spm_upgrade_min_time, 'spm_upgrade_avg_time' => $spm_upgrade_avg_time, 'spm_upgrade_total_time' => $spm_upgrade_total_time, 'spm_upgrade_total_fail_time' => $spm_upgrade_total_fail_time, 'pai_upgrade_pass_count' => $pai_upgrade_pass_count, 'pai_upgrade_fail_count' => $pai_upgrade_fail_count, 'pai_upgrade_max_time' => $pai_upgrade_max_time, 'pai_upgrade_min_time'=> $pai_upgrade_min_time, 'pai_upgrade_avg_time'=>$pai_upgrade_avg_time, 'pai_upgrade_total_time'=>$pai_upgrade_total_time, 'pai_upgrade_total_fail_time'=>$pai_upgrade_total_fail_time, 'both_upgrade_fail_count' => $both_upgrade_fail_count, 'both_upgrade_pass_count' => $both_upgrade_pass_count, 'both_upgrade_max_time'=>$both_upgrade_max_time, 'both_upgrade_min_time'=>$both_upgrade_min_time, 'both_upgrade_avg_time'=>$both_upgrade_avg_time, 'both_upgrade_total_time'=>$both_upgrade_total_time, 'both_upgrade_total_fail_time'=>$both_upgrade_total_fail_time, 'startup_pass_count' => $startup_pass_count, 'startup_fail_count' => $startup_fail_count, 'startup_max_time'=>$startup_max_time, 'startup_min_time'=>$startup_min_time, 'startup_avg_time'=>$startup_avg_time, 'startup_total_time'=>$startup_total_time, 'startup_total_fail_time'=>$startup_total_fail_time, 'shutdown_pass_count' => $shutdown_pass_count, 'shutdown_fail_count' => $shutdown_fail_count, 'shutdown_max_time'=>$shutdown_max_time, 'shutdown_min_time'=>$shutdown_min_time, 'shutdown_avg_time'=>$shutdown_avg_time, 'shutdown_total_time'=>$shutdown_total_time, 'shutdown_total_fail_time'=>$shutdown_total_fail_time, 'restart_pass_count' => $restart_pass_count, 'restart_fail_count' => $restart_fail_count, 'restart_max_time'=>$restart_max_time, 'restart_min_time'=>$restart_min_time, 'restart_avg_time'=>$restart_avg_time, 'restart_total_time'=>$restart_total_time, 'restart_total_fail_time'=>$restart_total_fail_time, 'total_passed_count'=>$total_passed_count, 'total_failed_count'=>$total_failed_count, 'all_pass_time'=>$all_pass_time, 'all_fail_time'=>$all_fail_time, 'created_at'=>Carbon::now()]);
+                DB::table('z_tp_data')->insert(['id' => null, 'time_period' => $time_period, 'spm_upgrade_pass_count' => $spm_upgrade_pass_count, 'spm_upgrade_fail_count' => $spm_upgrade_fail_count, 'spm_upgrade_max_time' => $spm_upgrade_max_time, 'spm_upgrade_min_time' => $spm_upgrade_min_time, 'spm_upgrade_avg_time' => $spm_upgrade_avg_time, 'spm_upgrade_total_time' => $spm_upgrade_total_time, 'spm_upgrade_total_fail_time' => $spm_upgrade_total_fail_time, 'pai_upgrade_pass_count' => $pai_upgrade_pass_count, 'pai_upgrade_fail_count' => $pai_upgrade_fail_count, 'pai_upgrade_max_time' => $pai_upgrade_max_time, 'pai_upgrade_min_time' => $pai_upgrade_min_time, 'pai_upgrade_avg_time' => $pai_upgrade_avg_time, 'pai_upgrade_total_time' => $pai_upgrade_total_time, 'pai_upgrade_total_fail_time' => $pai_upgrade_total_fail_time, 'both_upgrade_fail_count' => $both_upgrade_fail_count, 'both_upgrade_pass_count' => $both_upgrade_pass_count, 'both_upgrade_max_time' => $both_upgrade_max_time, 'both_upgrade_min_time' => $both_upgrade_min_time, 'both_upgrade_avg_time' => $both_upgrade_avg_time, 'both_upgrade_total_time' => $both_upgrade_total_time, 'both_upgrade_total_fail_time' => $both_upgrade_total_fail_time, 'startup_pass_count' => $startup_pass_count, 'startup_fail_count' => $startup_fail_count, 'startup_max_time' => $startup_max_time, 'startup_min_time' => $startup_min_time, 'startup_avg_time' => $startup_avg_time, 'startup_total_time' => $startup_total_time, 'startup_total_fail_time' => $startup_total_fail_time, 'shutdown_pass_count' => $shutdown_pass_count, 'shutdown_fail_count' => $shutdown_fail_count, 'shutdown_max_time' => $shutdown_max_time, 'shutdown_min_time' => $shutdown_min_time, 'shutdown_avg_time' => $shutdown_avg_time, 'shutdown_total_time' => $shutdown_total_time, 'shutdown_total_fail_time' => $shutdown_total_fail_time, 'restart_pass_count' => $restart_pass_count, 'restart_fail_count' => $restart_fail_count, 'restart_max_time' => $restart_max_time, 'restart_min_time' => $restart_min_time, 'restart_avg_time' => $restart_avg_time, 'restart_total_time' => $restart_total_time, 'restart_total_fail_time' => $restart_total_fail_time, 'total_passed_count' => $total_passed_count, 'total_failed_count' => $total_failed_count, 'all_pass_time' => $all_pass_time, 'all_fail_time' => $all_fail_time, 'created_at' => Carbon::now()]);
                 $pass++;
             } catch (\Throwable $th) {
                 throw $th;
@@ -487,77 +482,77 @@ class yearStats extends Command
         }
 
         $actionData = DB::Table('system_statistics')->orderBy('start_time')->get();
-        $tpArray = array("FY21", "FY22Q1", "FY22Q2", "FY22", "6MTH", "3MTH", "1MTH");
-        $fy21array=array();
-        $fy22array=array();
-        $fy22q1array=array();
-        $fy22q2array=array();
-        $fy22q3array=array();
-        $fy22q4array=array();
-        $sixmontharray=array();
-        $threemontharray=array();
-        $onemontharray=array();
+        $tpArray = ['FY21', 'FY22Q1', 'FY22Q2', 'FY22', '6MTH', '3MTH', '1MTH'];
+        $fy21array = [];
+        $fy22array = [];
+        $fy22q1array = [];
+        $fy22q2array = [];
+        $fy22q3array = [];
+        $fy22q4array = [];
+        $sixmontharray = [];
+        $threemontharray = [];
+        $onemontharray = [];
 
         foreach ($actionData as $aD) {
-            $data_date=date('Y-m-d', strtotime($aD->start_time));
+            $data_date = date('Y-m-d', strtotime($aD->start_time));
 
-            if($data_date >= $fy21StartDate && $data_date <= $fy21EndDate){
+            if ($data_date >= $fy21StartDate && $data_date <= $fy21EndDate) {
                 $fy21array[] = $aD;
             }
-            if($data_date >= $fy22StartDate && $data_date <= $fy22EndDate){
+            if ($data_date >= $fy22StartDate && $data_date <= $fy22EndDate) {
                 $fy22array[] = $aD;
             }
-            if($data_date >= $fy22Q1StartDate && $data_date <= $fy22Q1EndDate){
+            if ($data_date >= $fy22Q1StartDate && $data_date <= $fy22Q1EndDate) {
                 $fy22q1array[] = $aD;
             }
-            if($data_date >= $fy22Q2StartDate && $data_date <= $fy22Q2EndDate){
+            if ($data_date >= $fy22Q2StartDate && $data_date <= $fy22Q2EndDate) {
                 $fy22q2array[] = $aD;
             }
-            if($data_date >= $fy22Q3StartDate && $data_date <= $fy22Q3EndDate){
+            if ($data_date >= $fy22Q3StartDate && $data_date <= $fy22Q3EndDate) {
                 $fy22q3array[] = $aD;
             }
-            if($data_date >= $fy22Q4StartDate && $data_date <= $fy22Q4EndDate){
+            if ($data_date >= $fy22Q4StartDate && $data_date <= $fy22Q4EndDate) {
                 $fy22q4array[] = $aD;
             }
-            if($data_date >= $lastSixMonths && $data_date <= $todate){
+            if ($data_date >= $lastSixMonths && $data_date <= $todate) {
                 $sixmontharray[] = $aD;
             }
-            if($data_date >= $lastThreeMonths && $data_date <= $todate){
+            if ($data_date >= $lastThreeMonths && $data_date <= $todate) {
                 $threemontharray[] = $aD;
             }
-            if($data_date >= $lastOneMonth && $data_date <= $todate){
+            if ($data_date >= $lastOneMonth && $data_date <= $todate) {
                 $onemontharray[] = $aD;
             }
         }
         if (count($fy21array) > 0) {
-            insert_data("FY 2021", $fy21array);
+            insert_data('FY 2021', $fy21array);
         }
         if (count($fy22array) > 0) {
-            insert_data("FY 2022", $fy22array);
+            insert_data('FY 2022', $fy22array);
         }
         if (count($fy22q1array) > 0) {
-            insert_data("Q1 FY 2022", $fy22q1array);
+            insert_data('Q1 FY 2022', $fy22q1array);
         }
         if (count($fy22q2array) > 0) {
-            insert_data("Q2 FY 2022", $fy22q2array);
+            insert_data('Q2 FY 2022', $fy22q2array);
         }
         if (count($fy22q3array) > 0) {
-            insert_data("Q3 FY 2022", $fy22q3array);
+            insert_data('Q3 FY 2022', $fy22q3array);
         }
         if (count($fy22q4array) > 0) {
-            insert_data("Q4 FY 2022", $fy22q4array);
+            insert_data('Q4 FY 2022', $fy22q4array);
         }
         if (count($sixmontharray) > 0) {
-            insert_data("Last 6 months", $sixmontharray);
+            insert_data('Last 6 months', $sixmontharray);
         }
         if (count($threemontharray) > 0) {
-            insert_data("Last 3 months", $threemontharray);
+            insert_data('Last 3 months', $threemontharray);
         }
         if (count($onemontharray) > 0) {
-            insert_data("Last 1 month", $onemontharray);
+            insert_data('Last 1 month', $onemontharray);
         }
 
-        echo (count($actionData)."\n");
+        echo count($actionData)."\n";
         // echo ."\n");
         // echo (count($fy22array)."\n");
         // echo (count($fy22q1array)."\n");
@@ -567,8 +562,6 @@ class yearStats extends Command
         // echo (count($sixmontharray)."\n");
         // echo (count($threemontharray)."\n");
         // echo (count($onemontharray)."\n");
-
-
 
         // echo ($fy21StartDate . " - " . $fy21EndDate . "\n");
         // echo ($fy22StartDate . " - " . $fy22EndDate . "\n");

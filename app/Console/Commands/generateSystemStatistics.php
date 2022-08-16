@@ -2,11 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-
 use DB;
-use Log;
-use Carbon\Carbon;
+use Illuminate\Console\Command;
 
 class generateSystemStatistics extends Command
 {
@@ -42,16 +39,16 @@ class generateSystemStatistics extends Command
     public function handle()
     {
         $total_instance_details = DB::table('instance_details')->count();
-        $active_instance_details = DB::table('instance_details')->where('instance_is_active','Y')->whereNull('deleted_at')->count();
+        $active_instance_details = DB::table('instance_details')->where('instance_is_active', 'Y')->whereNull('deleted_at')->count();
         $deleted_instance_details = DB::table('instance_details')->whereNotNull('deleted_at')->count();
         $auto_upgrade_enabled_instances = DB::table('instance_details')->where('instance_is_auto_upgraded', 'Y')->whereNull('deleted_at')->count();
 
         $total_server_details = DB::table('server_details')->count();
-        $active_server_details = DB::table('server_details')->where('server_is_active','Y')->whereNull('deleted_at')->count();
+        $active_server_details = DB::table('server_details')->where('server_is_active', 'Y')->whereNull('deleted_at')->count();
         $deleted_server_details = DB::table('server_details')->whereNotNull('deleted_at')->count();
 
         $total_database_details = DB::table('database_details')->count();
-        $active_database_details = DB::table('database_details')->where('db_is_active','Y')->whereNull('deleted_at')->count();
+        $active_database_details = DB::table('database_details')->where('db_is_active', 'Y')->whereNull('deleted_at')->count();
         $deleted_database_details = DB::table('database_details')->whereNotNull('deleted_at')->count();
 
         $total_intellicus_details = DB::table('intellicus_details')->count();
@@ -102,42 +99,41 @@ class generateSystemStatistics extends Command
 
         try {
             DB::table('system_statistics')->insertGetId(['total_instance_details' => $total_instance_details,
-                                                        'active_instance_details' => $active_instance_details,
-                                                        'deleted_instance_details' => $deleted_instance_details,
-                                                        'auto_upgrade_enabled_instances' => $auto_upgrade_enabled_instances,
-                                                        'total_server_details' => $total_server_details,
-                                                        'active_server_details' => $active_server_details,
-                                                        'deleted_server_details' => $deleted_server_details,
-                                                        'total_database_details' => $total_database_details,
-                                                        'active_database_details' => $active_database_details,
-                                                        'deleted_database_details' => $deleted_database_details,
-                                                        'total_intellicus_details' => $total_intellicus_details,
-                                                        'deleted_intellicus_details' => $deleted_intellicus_details,
-                                                        'total_pai_details' => $total_pai_details,
-                                                        'deleted_pai_details' => $deleted_pai_details,
-                                                        'total_product_versions' => $total_product_versions,
-                                                        'deleted_product_versions' => $deleted_product_versions,
-                                                        'total_release_builds' => $total_release_builds,
-                                                        'total_users' => $total_users,
-                                                        'total_teams' => $total_teams,
-                                                        'deleted_teams' => $deleted_teams,
-                                                        'total_action_histories' => $total_action_histories,
-                                                        'deleted_action_histories' => $deleted_action_histories,
-                                                        'total_intellicus_versions' => $total_intellicus_versions,
-                                                        'deleted_intellicus_versions' => $deleted_intellicus_versions,
-                                                        'avengers_instances' => $avengers_instances,
-                                                        'dragons_instances' => $dragons_instances,
-                                                        'jl_instances' => $jl_instances,
-                                                        'seekers_instances' => $seekers_instances,
-                                                        'guardians_instances' => $guardians_instances,
-                                                        'transformers_instances' => $transformers_instances,
-                                                        'pm_instances' => $pm_instances,
-                                                        'incredibles_instances' => $incredibles_instances,
-                                                        'created_at' => now() ]);
+                'active_instance_details' => $active_instance_details,
+                'deleted_instance_details' => $deleted_instance_details,
+                'auto_upgrade_enabled_instances' => $auto_upgrade_enabled_instances,
+                'total_server_details' => $total_server_details,
+                'active_server_details' => $active_server_details,
+                'deleted_server_details' => $deleted_server_details,
+                'total_database_details' => $total_database_details,
+                'active_database_details' => $active_database_details,
+                'deleted_database_details' => $deleted_database_details,
+                'total_intellicus_details' => $total_intellicus_details,
+                'deleted_intellicus_details' => $deleted_intellicus_details,
+                'total_pai_details' => $total_pai_details,
+                'deleted_pai_details' => $deleted_pai_details,
+                'total_product_versions' => $total_product_versions,
+                'deleted_product_versions' => $deleted_product_versions,
+                'total_release_builds' => $total_release_builds,
+                'total_users' => $total_users,
+                'total_teams' => $total_teams,
+                'deleted_teams' => $deleted_teams,
+                'total_action_histories' => $total_action_histories,
+                'deleted_action_histories' => $deleted_action_histories,
+                'total_intellicus_versions' => $total_intellicus_versions,
+                'deleted_intellicus_versions' => $deleted_intellicus_versions,
+                'avengers_instances' => $avengers_instances,
+                'dragons_instances' => $dragons_instances,
+                'jl_instances' => $jl_instances,
+                'seekers_instances' => $seekers_instances,
+                'guardians_instances' => $guardians_instances,
+                'transformers_instances' => $transformers_instances,
+                'pm_instances' => $pm_instances,
+                'incredibles_instances' => $incredibles_instances,
+                'created_at' => now(), ]);
         } catch (\Throwable $th) {
             //throw $th;
             echo $th;
         }
-
     }
 }

@@ -4,20 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateServer_detailRequest;
 use App\Http\Requests\UpdateServer_detailRequest;
+use App\Models\Database_type;
+use App\Models\Os_type;
+use App\Models\Server_use;
 use App\Repositories\Server_detailRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
+use DB;
 use Flash;
+use Illuminate\Http\Request;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
-use App\Models\Os_type;
-use App\Models\Database_type;
-use App\Models\Server_use;
-use DB;
 
 class Server_detailController extends AppBaseController
 {
-    /** @var  Server_detailRepository */
+    /** @var Server_detailRepository */
     private $serverDetailRepository;
 
     public function __construct(Server_detailRepository $serverDetailRepo)
@@ -28,7 +27,7 @@ class Server_detailController extends AppBaseController
     /**
      * Display a listing of the Server_detail.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return Response
      */
     public function index(Request $request)
@@ -55,10 +54,9 @@ class Server_detailController extends AppBaseController
      */
     public function create()
     {
-        $ot_arr['os_types'] = Os_type::where('os_is_active','Y')->get();
-        $db_arr['database_types'] = Database_type::where('db_is_active','Y')->get();
+        $ot_arr['os_types'] = Os_type::where('os_is_active', 'Y')->get();
+        $db_arr['database_types'] = Database_type::where('db_is_active', 'Y')->get();
         $su_arr['server_uses'] = Server_use::all();
-
 
         return view('server_details.create')
         ->with($ot_arr)
@@ -71,8 +69,7 @@ class Server_detailController extends AppBaseController
     /**
      * Store a newly created Server_detail in storage.
      *
-     * @param CreateServer_detailRequest $request
-     *
+     * @param  CreateServer_detailRequest  $request
      * @return Response
      */
     public function store(CreateServer_detailRequest $request)
@@ -80,12 +77,12 @@ class Server_detailController extends AppBaseController
         $input = $request->all();
 
         // CODE START - Auto Generate GEN_SD_ID
-        $stripped_ip = str_replace(".","",$input['server_ip']);
+        $stripped_ip = str_replace('.', '', $input['server_ip']);
         $lower_servername = strtolower($input['server_name']);
-        $stripped_servername = str_replace("_","",$lower_servername);
-        $stripped_servername = str_replace("-","",$stripped_servername);
-        $stripped_servername = str_replace(".","",$stripped_servername);
-        $gen_sd_id = $stripped_servername."_".$stripped_ip;
+        $stripped_servername = str_replace('_', '', $lower_servername);
+        $stripped_servername = str_replace('-', '', $stripped_servername);
+        $stripped_servername = str_replace('.', '', $stripped_servername);
+        $gen_sd_id = $stripped_servername.'_'.$stripped_ip;
 
         $input['gen_sd_id'] = $gen_sd_id;
         // CODE END - Auto Generate GEN_SD_ID
@@ -100,8 +97,7 @@ class Server_detailController extends AppBaseController
     /**
      * Display the specified Server_detail.
      *
-     * @param  int $id
-     *
+     * @param  int  $id
      * @return Response
      */
     public function show($id)
@@ -124,8 +120,7 @@ class Server_detailController extends AppBaseController
     /**
      * Show the form for editing the specified Server_detail.
      *
-     * @param  int $id
-     *
+     * @param  int  $id
      * @return Response
      */
     public function edit($id)
@@ -157,9 +152,8 @@ class Server_detailController extends AppBaseController
     /**
      * Update the specified Server_detail in storage.
      *
-     * @param  int              $id
-     * @param UpdateServer_detailRequest $request
-     *
+     * @param  int  $id
+     * @param  UpdateServer_detailRequest  $request
      * @return Response
      */
     public function update($id, UpdateServer_detailRequest $request)
@@ -175,9 +169,9 @@ class Server_detailController extends AppBaseController
         // CODE START - Auto Generate GEN_SD_ID
         $value = DB::table('server_details')->where('id', $id)->get()->first();
         if ($request['server_ip'] == null) {
-            $stripped_ip = str_replace(".","",$value->server_ip);
+            $stripped_ip = str_replace('.', '', $value->server_ip);
         } else {
-            $stripped_ip = str_replace(".","",$request['server_ip']);
+            $stripped_ip = str_replace('.', '', $request['server_ip']);
         }
         if ($request['server_name'] == null) {
             $lower_servername = strtolower($value->server_name);
@@ -185,10 +179,10 @@ class Server_detailController extends AppBaseController
             $lower_servername = strtolower($request['server_name']);
         }
 
-        $stripped_servername = str_replace("_","",$lower_servername);
-        $stripped_servername = str_replace("-","",$stripped_servername);
-        $stripped_servername = str_replace(".","",$stripped_servername);
-        $gen_sd_id = $stripped_servername."_".$stripped_ip;
+        $stripped_servername = str_replace('_', '', $lower_servername);
+        $stripped_servername = str_replace('-', '', $stripped_servername);
+        $stripped_servername = str_replace('.', '', $stripped_servername);
+        $gen_sd_id = $stripped_servername.'_'.$stripped_ip;
 
         $request['gen_sd_id'] = $gen_sd_id;
         // CODE END - Auto Generate GEN_SD_ID
@@ -203,8 +197,7 @@ class Server_detailController extends AppBaseController
     /**
      * Remove the specified Server_detail from storage.
      *
-     * @param  int $id
-     *
+     * @param  int  $id
      * @return Response
      */
     public function destroy($id)

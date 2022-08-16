@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+
 /**
  * @SWG\Definition(
  *      definition="Os_type",
@@ -41,7 +42,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *      )
  * )
  */
-
 class Os_type extends Model
 {
     use SoftDeletes;
@@ -49,18 +49,17 @@ class Os_type extends Model
     public $table = 'os_types';
 
     const CREATED_AT = 'created_at';
+
     const UPDATED_AT = 'updated_at';
 
-
     protected $dates = ['deleted_at'];
-
 
     public $fillable = [
         'os_family',
         'os_short_name',
         'os_long_name',
         'os_patchset',
-        'os_is_active'
+        'os_is_active',
     ];
 
     /**
@@ -74,7 +73,7 @@ class Os_type extends Model
         'os_short_name' => 'string',
         'os_long_name' => 'string',
         'os_patchset' => 'string',
-        'os_is_active' => 'string'
+        'os_is_active' => 'string',
     ];
 
     /**
@@ -93,5 +92,4 @@ class Os_type extends Model
     {
         return $this->hasMany(\App\Models\ServerDetail::class);
     }
-
 }

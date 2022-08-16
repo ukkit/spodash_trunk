@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AddAppLoginSwitchesToInstanceDetails extends Migration
 {
@@ -14,8 +14,8 @@ class AddAppLoginSwitchesToInstanceDetails extends Migration
     public function up()
     {
         Schema::table('instance_details', function (Blueprint $table) {
-            $table->char('show_instance_login',1)->after('instance_pwd')->default('Y');
-            $table->char('enable_instance_auto_login',1)->after('show_instance_login')->default('Y');
+            $table->char('show_instance_login', 1)->after('instance_pwd')->default('Y');
+            $table->char('enable_instance_auto_login', 1)->after('show_instance_login')->default('Y');
         });
     }
 

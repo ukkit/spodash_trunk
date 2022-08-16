@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateDatabaseSizesTable extends Migration
 {
@@ -25,7 +25,6 @@ class CreateDatabaseSizesTable extends Migration
             $table->softDeletes();
 
             $table->foreign('database_details_id')->references('id')->on('database_details');
-
         });
     }
 

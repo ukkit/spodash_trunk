@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateDatabaseDetailsTable extends Migration
 {
@@ -23,8 +23,8 @@ class CreateDatabaseDetailsTable extends Migration
             $table->integer('db_port');
             $table->string('jira_number');
             $table->longText('db_notes')->nullable();
-            $table->char('db_is_active',1)->default('Y');
-            $table->char('is_dba',1)->default('N');
+            $table->char('db_is_active', 1)->default('Y');
+            $table->char('is_dba', 1)->default('N');
             $table->timestamps();
             $table->softDeletes();
 

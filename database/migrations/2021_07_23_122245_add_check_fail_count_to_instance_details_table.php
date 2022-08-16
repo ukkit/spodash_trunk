@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AddCheckFailCountToInstanceDetailsTable extends Migration
 {
@@ -16,7 +16,6 @@ class AddCheckFailCountToInstanceDetailsTable extends Migration
         Schema::table('instance_details', function (Blueprint $table) {
             $table->char('snowflake_configured', 1)->after('intellicus_version')->default('N');
             $table->integer('check_fail_count')->after('snowflake_configured')->nullable()->default(0);
-
         });
     }
 

@@ -5,19 +5,18 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateIntellicus_versionRequest;
 use App\Http\Requests\UpdateIntellicus_versionRequest;
 use App\Repositories\Intellicus_versionRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
+use DB;
 use Flash;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 use Response;
-use DB;
 
 class Intellicus_versionController extends AppBaseController
 {
-    /** @var  Intellicus_versionRepository */
+    /** @var Intellicus_versionRepository */
     private $intellicusVersionRepository;
 
     public function __construct(Intellicus_versionRepository $intellicusVersionRepo)
@@ -28,8 +27,7 @@ class Intellicus_versionController extends AppBaseController
     /**
      * Display a listing of the Intellicus_version.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return Response|Factory|RedirectResponse|Redirector|View
      */
     public function index(Request $request)
@@ -55,8 +53,7 @@ class Intellicus_versionController extends AppBaseController
     /**
      * Store a newly created Intellicus_version in storage.
      *
-     * @param CreateIntellicus_versionRequest $request
-     *
+     * @param  CreateIntellicus_versionRequest  $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|Response
      */
     public function store(CreateIntellicus_versionRequest $request)
@@ -73,8 +70,7 @@ class Intellicus_versionController extends AppBaseController
     /**
      * Display the specified Intellicus_version.
      *
-     * @param int $id
-     *
+     * @param  int  $id
      * @return Factory|RedirectResponse|Redirector|View|Response
      */
     public function show($id)
@@ -93,8 +89,7 @@ class Intellicus_versionController extends AppBaseController
     /**
      * Show the form for editing the specified Intellicus_version.
      *
-     * @param int $id
-     *
+     * @param  int  $id
      * @return Factory|RedirectResponse|Redirector|View|Response
      */
     public function edit($id)
@@ -119,9 +114,8 @@ class Intellicus_versionController extends AppBaseController
     /**
      * Update the specified Intellicus_version in storage.
      *
-     * @param int $id
-     * @param UpdateIntellicus_versionRequest $request
-     *
+     * @param  int  $id
+     * @param  UpdateIntellicus_versionRequest  $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|Response
      */
     public function update($id, UpdateIntellicus_versionRequest $request)
@@ -144,11 +138,10 @@ class Intellicus_versionController extends AppBaseController
     /**
      * Remove the specified Intellicus_version from storage.
      *
-     * @param int $id
+     * @param  int  $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|Response
      *
      * @throws \Exception
-     *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|Response
      */
     public function destroy($id)
     {

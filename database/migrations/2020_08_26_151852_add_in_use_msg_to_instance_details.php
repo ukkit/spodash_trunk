@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AddInUseMsgToInstanceDetails extends Migration
 {
@@ -14,7 +14,7 @@ class AddInUseMsgToInstanceDetails extends Migration
     public function up()
     {
         Schema::table('instance_details', function (Blueprint $table) {
-            $table->string('in_use_msg',50)->after('in_use')->default('Customer Demo');
+            $table->string('in_use_msg', 50)->after('in_use')->default('Customer Demo');
         });
     }
 

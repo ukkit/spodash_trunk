@@ -2,14 +2,12 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use DB;
 use Carbon\Carbon;
-use Log;
+use DB;
+use Illuminate\Console\Command;
 
 class archiveFailedInstance extends Command
 {
-
     protected $signature = 'command:archiveFI';
 
     protected $description = 'This command move records older than 30 days in failed_instance_histories table to archive_fi_histories table';
@@ -39,22 +37,22 @@ class archiveFailedInstance extends Command
         $oldData = DB::table($existingTable)->whereRaw('created_at < now() - interval 60 DAY')->get();
 
         foreach ($oldData as $old) {
-            $delete_record = True;
+            $delete_record = true;
             $todayz = Carbon::now();
 
             try {
-                DB::table($archiveTable)->insert(['id' => Null,'failed_instance_histories_id' => $old->id, 'instance_details_id' => $old->instance_details_id, 'created_at' => $old->created_at, 'updated_at' => $old->updated_at, 'deleted_at' => $old->deleted_at, 'record_moved_to_archive_at' => $todayz]);
+                DB::table($archiveTable)->insert(['id' => null, 'failed_instance_histories_id' => $old->id, 'instance_details_id' => $old->instance_details_id, 'created_at' => $old->created_at, 'updated_at' => $old->updated_at, 'deleted_at' => $old->deleted_at, 'record_moved_to_archive_at' => $todayz]);
             } catch (\Exception $e) {
                 echo $e->getMessage();
-                $delete_record = False;
+                $delete_record = false;
             }
 
-            if($delete_record) {
+            if ($delete_record) {
                 try {
                     DB::table($existingTable)->where('id', $old->id)->delete();
-                    echo "Record archived for $existingTable ID " . $old->id . "\n";
+                    echo "Record archived for $existingTable ID ".$old->id."\n";
                 } catch (\Throwable $th) {
-                    echo "Unable to archive record for $existingTable ID " . $old->id . ", hence removing record from $archiveTable also.\n";
+                    echo "Unable to archive record for $existingTable ID ".$old->id.", hence removing record from $archiveTable also.\n";
                     DB::table($archiveTable)->where('product_versions_id', $old->id)->delete();
                 }
             }

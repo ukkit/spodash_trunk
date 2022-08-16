@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateInstanceDetailsTable extends Migration
 {
@@ -28,9 +28,9 @@ class CreateInstanceDetailsTable extends Migration
             $table->longText('jenkins_url')->nullable();
             $table->char('instance_is_auto_upgraded', 1)->default('Y');
             $table->char('instance_is_active', 1)->default('Y');
-            $table->char('instance_show_on_site',1)->default('Y');
-            $table->char('show_jenkins_build',1)->default('N');
-            $table->char('is_https',1)->nullable()->default('Y');
+            $table->char('instance_show_on_site', 1)->default('Y');
+            $table->char('show_jenkins_build', 1)->default('N');
+            $table->char('is_https', 1)->nullable()->default('Y');
             $table->string('instance_status')->nullable();
             $table->string('instance_owner')->nullable();
             $table->longText('instance_note')->nullable();

@@ -2,25 +2,22 @@
 
 namespace App\Models;
 
+use DB;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Crypt;
-use App\Models\Server_detail;
-use DB;
 
- class Intellicus_detail extends Model
+class Intellicus_detail extends Model
 {
     use SoftDeletes;
 
     public $table = 'intellicus_details';
 
     const CREATED_AT = 'created_at';
+
     const UPDATED_AT = 'updated_at';
 
-
     protected $dates = ['deleted_at'];
-
-
 
     public $fillable = [
         'intellicus_name',
@@ -36,7 +33,7 @@ use DB;
         'jdk_type',
         'jdk_version',
         'is_active',
-        'check_fail_count'
+        'check_fail_count',
     ];
 
     /**
@@ -130,21 +127,22 @@ use DB;
     public function database_details_by_id()
     {
         return $this->belongsTo('App\Models\Database_detail', 'database_details_id');
-
     }
 
-    public function return_server_details($id,$return_what)
+    public function return_server_details($id, $return_what)
     {
-    $value = DB::table('server_details')->where('id', $id)
-                ->get();
+        $value = DB::table('server_details')->where('id', $id)
+               ->get();
+
         return $value->pluck($return_what);
         // return $value;
     }
 
-    public function return_intellicus_version_details($id,$return_what)
+    public function return_intellicus_version_details($id, $return_what)
     {
-    $value = DB::table('intellicus_versions')->where('id', $id)
-                ->get();
+        $value = DB::table('intellicus_versions')->where('id', $id)
+               ->get();
+
         return $value->pluck($return_what);
         // return $value;
     }
@@ -163,9 +161,10 @@ use DB;
         $this->attributes['intellicus_pwd'] = Crypt::encryptString($value);
     }
 
-    public function getIntellicusVersionbyID($id) {
+    public function getIntellicusVersionbyID($id)
+    {
         $retval = DB::table('intellicus_versions')->where('id', $id)->get();
         // return ($retval[0]->id);
-        return ($retval);
+        return $retval;
     }
 }

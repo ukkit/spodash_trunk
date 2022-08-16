@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use DB;
+use Illuminate\Console\Command;
 
 class UpdatePAIDetails extends Command
 {
@@ -41,12 +41,11 @@ class UpdatePAIDetails extends Command
         $instances = DB::table('instance_details')->get();
         foreach ($instances as $inst) {
             if ($inst->is_hadoop_configured == 'Y') {
-
                 $updated = DB::table('instance_details')->where('id', $inst->id)
                             ->update([
-                                'pai_type' => "Hadoop",
+                                'pai_type' => 'Hadoop',
                             ]);
-                echo "YES " . $inst->id."\n";
+                echo 'YES '.$inst->id."\n";
             }
         }
     }

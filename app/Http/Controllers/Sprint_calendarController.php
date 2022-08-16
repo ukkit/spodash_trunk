@@ -5,14 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateSprint_calendarRequest;
 use App\Http\Requests\UpdateSprint_calendarRequest;
 use App\Repositories\Sprint_calendarRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Flash;
+use Illuminate\Http\Request;
 use Response;
 
 class Sprint_calendarController extends AppBaseController
 {
-    /** @var  Sprint_calendarRepository */
+    /** @var Sprint_calendarRepository */
     private $sprintCalendarRepository;
 
     public function __construct(Sprint_calendarRepository $sprintCalendarRepo)
@@ -23,8 +22,7 @@ class Sprint_calendarController extends AppBaseController
     /**
      * Display a listing of the Sprint_calendar.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return Response
      */
     public function index(Request $request)
@@ -48,8 +46,7 @@ class Sprint_calendarController extends AppBaseController
     /**
      * Store a newly created Sprint_calendar in storage.
      *
-     * @param CreateSprint_calendarRequest $request
-     *
+     * @param  CreateSprint_calendarRequest  $request
      * @return Response
      */
     public function store(CreateSprint_calendarRequest $request)
@@ -66,8 +63,7 @@ class Sprint_calendarController extends AppBaseController
     /**
      * Display the specified Sprint_calendar.
      *
-     * @param int $id
-     *
+     * @param  int  $id
      * @return Response
      */
     public function show($id)
@@ -86,8 +82,7 @@ class Sprint_calendarController extends AppBaseController
     /**
      * Show the form for editing the specified Sprint_calendar.
      *
-     * @param int $id
-     *
+     * @param  int  $id
      * @return Response
      */
     public function edit($id)
@@ -106,9 +101,8 @@ class Sprint_calendarController extends AppBaseController
     /**
      * Update the specified Sprint_calendar in storage.
      *
-     * @param int $id
-     * @param UpdateSprint_calendarRequest $request
-     *
+     * @param  int  $id
+     * @param  UpdateSprint_calendarRequest  $request
      * @return Response
      */
     public function update($id, UpdateSprint_calendarRequest $request)
@@ -131,11 +125,10 @@ class Sprint_calendarController extends AppBaseController
     /**
      * Remove the specified Sprint_calendar from storage.
      *
-     * @param int $id
+     * @param  int  $id
+     * @return Response
      *
      * @throws \Exception
-     *
-     * @return Response
      */
     public function destroy($id)
     {

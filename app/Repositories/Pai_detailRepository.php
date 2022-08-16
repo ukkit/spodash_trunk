@@ -4,14 +4,14 @@ namespace App\Repositories;
 
 use App\Models\Pai_detail;
 use InfyOm\Generator\Common\BaseRepository;
+
 // use App\Repositories\BaseRepository;
 
 /**
  * Class Pai_detailRepository
- * @package App\Repositories
+ *
  * @version September 22, 2020, 2:32 pm IST
-*/
-
+ */
 class Pai_detailRepository extends BaseRepository
 {
     /**
@@ -24,7 +24,7 @@ class Pai_detailRepository extends BaseRepository
         'pai_user',
         'pai_pwd',
         'pai_db',
-        'pai_port'
+        'pai_port',
     ];
 
     /**

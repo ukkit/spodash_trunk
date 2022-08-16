@@ -2,27 +2,24 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\CreateDatabase_detailAPIRequest;
 use App\Http\Requests\API\UpdateDatabase_detailAPIRequest;
 use App\Models\Database_detail;
+use App\Models\Database_type;
+use App\Models\Server_detail;
 use App\Repositories\Database_detailRepository;
 use Illuminate\Http\Request;
-use App\Http\Controllers\AppBaseController;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
-use App\Models\Server_detail;
-use App\Models\Database_type;
-use DB;
 
 /**
  * Class Database_detailController
- * @package App\Http\Controllers\API
  */
-
 class Database_detailAPIController extends AppBaseController
 {
-    /** @var  Database_detailRepository */
+    /** @var Database_detailRepository */
     private $databaseDetailRepository;
 
     public function __construct(Database_detailRepository $databaseDetailRepo)
@@ -31,7 +28,7 @@ class Database_detailAPIController extends AppBaseController
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return Response
      *
      * @SWG\Get(
@@ -68,13 +65,13 @@ class Database_detailAPIController extends AppBaseController
         $this->databaseDetailRepository->pushCriteria(new LimitOffsetCriteria($request));
         // $databaseDetails = $this->databaseDetailRepository->all();
 
-        $databaseDetails = Database_detail::select('id','server_details_id','database_types_id','db_sid','db_user','db_pass','db_port','db_notes','db_is_active','is_dba')->get();
+        $databaseDetails = Database_detail::select('id', 'server_details_id', 'database_types_id', 'db_sid', 'db_user', 'db_pass', 'db_port', 'db_notes', 'db_is_active', 'is_dba')->get();
 
         return $this->sendResponse($databaseDetails->toArray(), 'Database Details retrieved successfully');
     }
 
     /**
-     * @param CreateDatabase_detailAPIRequest $request
+     * @param  CreateDatabase_detailAPIRequest  $request
      * @return Response
      *
      * @SWG\Post(
@@ -115,7 +112,6 @@ class Database_detailAPIController extends AppBaseController
     {
         $input = $request->all();
 
-
         if (empty($input['server_details_id'])) {
             return $this->sendError('Server Detail ID cannot be blank');
         } elseif (empty($input['database_types_id'])) {
@@ -130,12 +126,12 @@ class Database_detailAPIController extends AppBaseController
             return $this->sendError('Database Port Number cannot be blank');
         }
 
-        $serverName = Server_detail::where('id',$input['server_details_id'])->value('server_name');
-        $dbType = Database_type::where('id',$input['database_types_id'])->value('db_short_name');
+        $serverName = Server_detail::where('id', $input['server_details_id'])->value('server_name');
+        $dbType = Database_type::where('id', $input['database_types_id'])->value('db_short_name');
 
         if (empty($serverName)) {
             return $this->sendError('Server Detail ID '.$input['server_details_id'].' does not exist');
-        }elseif (empty($dbType)) {
+        } elseif (empty($dbType)) {
             return $this->sendError('Database Type ID '.$input['database_types_id'].' does not exist');
         }
 
@@ -145,7 +141,7 @@ class Database_detailAPIController extends AppBaseController
     }
 
     /**
-     * @param int $id
+     * @param  int  $id
      * @return Response
      *
      * @SWG\Get(
@@ -190,15 +186,15 @@ class Database_detailAPIController extends AppBaseController
         if (empty($databaseDetail)) {
             return $this->sendError('Database Detail not found');
         } else {
-            $databaseDetail= Database_detail::select('id','server_details_id','database_types_id','db_sid','db_user','db_pass','db_port','db_notes','db_is_active','is_dba')->where('id',$id)->get();
+            $databaseDetail = Database_detail::select('id', 'server_details_id', 'database_types_id', 'db_sid', 'db_user', 'db_pass', 'db_port', 'db_notes', 'db_is_active', 'is_dba')->where('id', $id)->get();
         }
 
         return $this->sendResponse($databaseDetail->toArray(), 'Database Detail retrieved successfully');
     }
 
     /**
-     * @param int $id
-     * @param UpdateDatabase_detailAPIRequest $request
+     * @param  int  $id
+     * @param  UpdateDatabase_detailAPIRequest  $request
      * @return Response
      *
      * @SWG\Put(
@@ -251,7 +247,7 @@ class Database_detailAPIController extends AppBaseController
             if (empty($input['database_types_id'])) {
                 return $this->sendError('Database Type ID cannot be blank');
             } else {
-                $dbType = Database_type::where('id',$input['database_types_id'])->value('db_short_name');
+                $dbType = Database_type::where('id', $input['database_types_id'])->value('db_short_name');
                 if (empty($dbType)) {
                     return $this->sendError('Database Type ID '.$input['database_types_id'].' does not exist');
                 }
@@ -262,7 +258,7 @@ class Database_detailAPIController extends AppBaseController
             if (empty($input['server_details_id'])) {
                 return $this->sendError('Server Details ID cannot be blank');
             } else {
-                $serverName = Server_detail::where('id',$input['server_details_id'])->value('server_name');
+                $serverName = Server_detail::where('id', $input['server_details_id'])->value('server_name');
                 if (empty($serverName)) {
                     return $this->sendError('Server Detail ID '.$input['server_details_id'].' does not exist');
                 }
@@ -271,7 +267,7 @@ class Database_detailAPIController extends AppBaseController
 
         /** @var Database_detail $databaseDetail */
         // $databaseDetail = $this->databaseDetailRepository->findWithoutFail($id);
-        $databaseDetail= Database_detail::select('id','server_details_id','database_types_id','db_sid','db_user','db_pass','db_port','db_notes','db_is_active','is_dba')->where('id',$id)->get();
+        $databaseDetail = Database_detail::select('id', 'server_details_id', 'database_types_id', 'db_sid', 'db_user', 'db_pass', 'db_port', 'db_notes', 'db_is_active', 'is_dba')->where('id', $id)->get();
 
         $databaseDetail = $this->databaseDetailRepository->update($input, $id);
 
@@ -279,7 +275,7 @@ class Database_detailAPIController extends AppBaseController
     }
 
     /**
-     * @param int $id
+     * @param  int  $id
      * @return Response
      *
      * @SWG\Delete(

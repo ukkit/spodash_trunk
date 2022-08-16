@@ -6,7 +6,6 @@ use App\Models\Sf_build;
 use Faker\Generator as Faker;
 
 $factory->define(Sf_build::class, function (Faker $faker) {
-
     return [
         'sf_pai_version' => $faker->word,
         'sf_pai_build' => $faker->randomDigitNotNull,
@@ -14,6 +13,6 @@ $factory->define(Sf_build::class, function (Faker $faker) {
         'is_release_build' => $faker->word,
         'created_at' => $faker->date('Y-m-d H:i:s'),
         'updated_at' => $faker->date('Y-m-d H:i:s'),
-        'deleted_at' => $faker->date('Y-m-d H:i:s')
+        'deleted_at' => $faker->date('Y-m-d H:i:s'),
     ];
 });

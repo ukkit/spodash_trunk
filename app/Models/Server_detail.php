@@ -2,15 +2,13 @@
 
 namespace App\Models;
 
+use Auth;
+use DB;
 use Eloquent as Model;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Contracts\Encryption\DecryptException;
-use App\Models\instanceDetails;
 use Spatie\Permission\Traits\HasRoles;
-use DB;
-use Auth;
-
 
 class Server_detail extends Model
 {
@@ -18,14 +16,14 @@ class Server_detail extends Model
     use \Askedio\SoftCascade\Traits\SoftCascadeTrait;
 
     public $table = 'server_details';
-    protected $softCascade = ['cascade_soft_delete_instance_detail','cascade_soft_delete_database_detail'];
+
+    protected $softCascade = ['cascade_soft_delete_instance_detail', 'cascade_soft_delete_database_detail'];
 
     const CREATED_AT = 'created_at';
+
     const UPDATED_AT = 'updated_at';
 
-
     protected $dates = ['deleted_at'];
-
 
     public $fillable = [
         'gen_sd_id',
@@ -46,7 +44,7 @@ class Server_detail extends Model
         'server_is_active',
         'server_show_on_site',
         'server_owner',
-        'server_note'
+        'server_note',
     ];
 
     /**
@@ -74,7 +72,7 @@ class Server_detail extends Model
         'server_is_active' => 'string',
         'server_show_on_site' => 'string',
         'server_owner' => 'string',
-        'server_note' => 'string'
+        'server_note' => 'string',
     ];
 
     /**
@@ -140,22 +138,23 @@ class Server_detail extends Model
 
     public function cascade_soft_delete()
     {
-        return $this->hasMany('App\Models\Instance_detail','database_details_id');
+        return $this->hasMany('App\Models\Instance_detail', 'database_details_id');
     }
 
     public function cascade_soft_delete_instance_detail()
     {
-        return $this->hasMany('App\Models\Instance_detail','server_details_id', 'database_details_id');
+        return $this->hasMany('App\Models\Instance_detail', 'server_details_id', 'database_details_id');
     }
 
     public function cascade_soft_delete_database_detail()
     {
-        return $this->hasMany('App\Models\Database_detail','server_details_id');
+        return $this->hasMany('App\Models\Database_detail', 'server_details_id');
     }
 
     public function get_dba_counts($id)
     {
         $value = DB::table('dba_details')->where('server_details_id', $id)->whereNull('deleted_at')->get();
+
         return count($value);
     }
 
@@ -174,69 +173,73 @@ class Server_detail extends Model
         return $this->belongsTo('App\Models\Database_type', 'database_types_id');
     }
 
-    public function return_server_details($id,$return_what)
+    public function return_server_details($id, $return_what)
     {
-       $value = DB::table('database_details')->where('database_details.id', $id)
+        $value = DB::table('database_details')->where('database_details.id', $id)
                 ->join('server_details', 'database_details.server_details_id', '=', 'server_details.id')
                 ->select('server_details.*')
                 ->get();
+
         return $value->pluck($return_what);
     }
 
     public function database_details_by_id($id)
     {
-        if(Auth::guest()) { // IF USER IS NOT LOGGED IN, THEN DON'T SHOW ANYTHING
-            $ret_val = array();
+        if (Auth::guest()) { // IF USER IS NOT LOGGED IN, THEN DON'T SHOW ANYTHING
+            $ret_val = [];
         } else {
             $ret_val = DB::table('database_details')->where('server_details_id', $id)->where('db_is_active', 'Y')->whereNull('database_details.deleted_at')->get();
         }
+
         return $ret_val;
     }
 
     public function instance_details_by_server_id($id)
     {
         // $user_id = Auth::id();
-        $send_all = "N";
-        if(Auth::guest()) {
-            $send_all = "N";
-        }elseif(Auth::user()->hasAnyRole(['advance','admin','superadmin'])){
-            $send_all = "Y";
+        $send_all = 'N';
+        if (Auth::guest()) {
+            $send_all = 'N';
+        } elseif (Auth::user()->hasAnyRole(['advance', 'admin', 'superadmin'])) {
+            $send_all = 'Y';
         }
 
-        $instance_id_array = array();
+        $instance_id_array = [];
         $all_team_id = DB::table('teams')->select('id')->where('team_name', 'All')->first();
         $intance_list = DB::table('instance_details')->where('server_details_id', $id)->whereNull('instance_details.deleted_at')->get();
 
-        if ($send_all == "Y") {
+        if ($send_all == 'Y') {
             return $intance_list;
         } else {
             $user_team_id = DB::table('user_has_teams')->select('team_id')->where('user_id', Auth::id())->get();
-             foreach ($intance_list as $ilist) {
+            foreach ($intance_list as $ilist) {
                 foreach ($user_team_id as $utid) {
                     $instance_team_id = DB::table('instance_has_teams')->where('instance_id', $ilist->id)->where('team_id', $utid->team_id)->get();
                     // echo $utid->team_id . "-----" . $ilist->id;
-                    if (count($instance_team_id) > 0 ) {
+                    if (count($instance_team_id) > 0) {
                         array_push($instance_id_array, $ilist->id);
                     }
                 }
-                $all_teams =  DB::table('instance_has_teams')->where('instance_id', $ilist->id)->where('team_id', $all_team_id->id)->get();
-                if (count($all_teams) > 0 ) {
+                $all_teams = DB::table('instance_has_teams')->where('instance_id', $ilist->id)->where('team_id', $all_team_id->id)->get();
+                if (count($all_teams) > 0) {
                     array_push($instance_id_array, $ilist->id);
                 }
             }
             // $ret_val = instance_detail::whereIn('id', $instance_id_array)->where('instance_show_on_site', 'Y')->get();
             $ret_val = DB::table('instance_details')->whereIn('id', $instance_id_array)->where('instance_show_on_site', 'Y')->get();
+
             return $ret_val;
         }
     }
 
     public function ml_details_by_server_id($id)
     {
-        if(Auth::guest()) { // IF USER IS NOT LOGGED IN, THEN DON'T SHOW ANYTHING
-            $ret_val = array();
+        if (Auth::guest()) { // IF USER IS NOT LOGGED IN, THEN DON'T SHOW ANYTHING
+            $ret_val = [];
         } else {
             $ret_val = DB::table('ml_details')->where('server_details_id', $id)->whereNull('deleted_at')->get();
         }
+
         return $ret_val;
     }
 
@@ -246,6 +249,7 @@ class Server_detail extends Model
             ->where('server_details_id', $id)
             ->whereNull('instance_details.deleted_at')
             ->count();
+
         return $inst_count;
     }
 
@@ -255,21 +259,28 @@ class Server_detail extends Model
             ->where('server_details_id', $id)
             ->whereNull('database_details.deleted_at')
             ->count();
+
         return $db_count;
     }
 
-    public function product_version_by_id($id,$return_what) {
+    public function product_version_by_id($id, $return_what)
+    {
         $query = DB::table('product_versions')->where('id', $id)->value($return_what);
+
         return $query;
     }
 
-    public function product_version_by_pvid($id,$return_what) {
+    public function product_version_by_pvid($id, $return_what)
+    {
         $query = DB::table('product_versions')->where('pv_id', $id)->value($return_what);
+
         return $query;
     }
 
-    public function product_name_by_id($id,$return_what) {
+    public function product_name_by_id($id, $return_what)
+    {
         $query = DB::table('product_names')->where('id', $id)->value($return_what);
+
         return $query;
     }
 
@@ -281,21 +292,21 @@ class Server_detail extends Model
     public function return_team_names($id)
     {
         $instance_team_id = DB::table('instance_has_teams')->where('instance_id', $id)->get();
-        $team_array = array();
-        if (count($instance_team_id) > 0)
-        {
-            foreach ($instance_team_id as $itid)
-            {
+        $team_array = [];
+        if (count($instance_team_id) > 0) {
+            foreach ($instance_team_id as $itid) {
                 $team_name = DB::table('teams')->where('id', $itid->team_id)->first();
                 array_push($team_array, $team_name->team_name);
             }
         }
+
         return $team_array;
     }
 
     public function db_size_by_id($id)
     {
         $retval = DB::table('db_sizes')->where('database_details_id', $id)->orderBy('created_at', 'desc')->first();
+
         return $retval;
     }
 

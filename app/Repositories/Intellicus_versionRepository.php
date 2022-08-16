@@ -4,14 +4,14 @@ namespace App\Repositories;
 
 use App\Models\Intellicus_version;
 use InfyOm\Generator\Common\BaseRepository;
+
 // use App\Repositories\BaseRepository;
 
 /**
  * Class Intellicus_versionRepository
- * @package App\Repositories
+ *
  * @version September 1, 2020, 10:49 am IST
-*/
-
+ */
 class Intellicus_versionRepository extends BaseRepository
 {
     /**
@@ -21,7 +21,7 @@ class Intellicus_versionRepository extends BaseRepository
         'intellicus_version',
         'intellicus_patch',
         'release_date',
-        'is_active'
+        'is_active',
     ];
 
     /**

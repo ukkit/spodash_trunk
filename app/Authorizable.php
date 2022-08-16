@@ -1,6 +1,7 @@
 <?php
 
 namespace App;
+
 /*
  * A trait to handle authorization based on users permissions for given controller
  */
@@ -19,7 +20,7 @@ trait Authorizable
         'update' => 'edit',
         'create' => 'add',
         'store' => 'add',
-        'destroy' => 'delete'
+        'destroy' => 'delete',
     ];
 
     /**
@@ -31,7 +32,7 @@ trait Authorizable
      */
     public function callAction($method, $parameters)
     {
-        if( $ability = $this->getAbility($method) ) {
+        if ($ability = $this->getAbility($method)) {
             $this->authorize($ability);
         }
 
@@ -50,7 +51,7 @@ trait Authorizable
         $action = array_get($this->getAbilities(), $method);
 
         // dd($action . '_' . $routeName[0]);
-        return $action ? $action . '_' . $routeName[0] : null;
+        return $action ? $action.'_'.$routeName[0] : null;
     }
 
     /**
@@ -62,7 +63,7 @@ trait Authorizable
     }
 
     /**
-     * @param array $abilities
+     * @param  array  $abilities
      */
     public function setAbilities($abilities)
     {

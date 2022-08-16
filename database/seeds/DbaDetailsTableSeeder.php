@@ -6,7 +6,6 @@ use Illuminate\Database\Seeder;
 
 class DbaDetailsTableSeeder extends Seeder
 {
-
     /**
      * Auto generated seed file
      *
@@ -14,13 +13,10 @@ class DbaDetailsTableSeeder extends Seeder
      */
     public function run()
     {
-        
-
         \DB::table('dba_details')->delete();
-        
-        \DB::table('dba_details')->insert(array (
-            0 => 
-            array (
+
+        \DB::table('dba_details')->insert([
+            0 => [
                 'id' => 1,
                 'server_details_id' => 4,
                 'dba_user' => 'adminuser',
@@ -28,10 +24,9 @@ class DbaDetailsTableSeeder extends Seeder
                 'db_sid' => 'orcl',
                 'created_at' => '2021-05-31 07:47:07',
                 'updated_at' => '2021-05-31 07:47:07',
-                'deleted_at' => NULL,
-            ),
-            1 => 
-            array (
+                'deleted_at' => null,
+            ],
+            1 => [
                 'id' => 2,
                 'server_details_id' => 46,
                 'dba_user' => 'adminuser',
@@ -39,10 +34,9 @@ class DbaDetailsTableSeeder extends Seeder
                 'db_sid' => 'devdb10d',
                 'created_at' => '2021-05-31 07:47:28',
                 'updated_at' => '2021-05-31 07:47:28',
-                'deleted_at' => NULL,
-            ),
-            2 => 
-            array (
+                'deleted_at' => null,
+            ],
+            2 => [
                 'id' => 3,
                 'server_details_id' => 59,
                 'dba_user' => 'adminuser',
@@ -50,10 +44,9 @@ class DbaDetailsTableSeeder extends Seeder
                 'db_sid' => 'orcl',
                 'created_at' => '2021-05-31 07:47:51',
                 'updated_at' => '2021-05-31 07:47:51',
-                'deleted_at' => NULL,
-            ),
-            3 => 
-            array (
+                'deleted_at' => null,
+            ],
+            3 => [
                 'id' => 4,
                 'server_details_id' => 51,
                 'dba_user' => 'adminuser',
@@ -61,10 +54,9 @@ class DbaDetailsTableSeeder extends Seeder
                 'db_sid' => 'orcl',
                 'created_at' => '2021-05-31 07:48:30',
                 'updated_at' => '2021-05-31 07:48:30',
-                'deleted_at' => NULL,
-            ),
-            4 => 
-            array (
+                'deleted_at' => null,
+            ],
+            4 => [
                 'id' => 5,
                 'server_details_id' => 2,
                 'dba_user' => 'adminuser',
@@ -72,10 +64,9 @@ class DbaDetailsTableSeeder extends Seeder
                 'db_sid' => 'devdb8d',
                 'created_at' => '2021-05-31 08:55:13',
                 'updated_at' => '2021-05-31 08:55:13',
-                'deleted_at' => NULL,
-            ),
-            5 => 
-            array (
+                'deleted_at' => null,
+            ],
+            5 => [
                 'id' => 6,
                 'server_details_id' => 111,
                 'dba_user' => 'adminuser',
@@ -83,10 +74,9 @@ class DbaDetailsTableSeeder extends Seeder
                 'db_sid' => 'orcl',
                 'created_at' => '2021-05-31 08:55:43',
                 'updated_at' => '2021-05-31 08:55:43',
-                'deleted_at' => NULL,
-            ),
-            6 => 
-            array (
+                'deleted_at' => null,
+            ],
+            6 => [
                 'id' => 7,
                 'server_details_id' => 110,
                 'dba_user' => 'adminuser',
@@ -94,10 +84,9 @@ class DbaDetailsTableSeeder extends Seeder
                 'db_sid' => 'orcl',
                 'created_at' => '2021-05-31 08:56:14',
                 'updated_at' => '2021-05-31 08:56:14',
-                'deleted_at' => NULL,
-            ),
-            7 => 
-            array (
+                'deleted_at' => null,
+            ],
+            7 => [
                 'id' => 8,
                 'server_details_id' => 14,
                 'dba_user' => 'adminuser',
@@ -105,10 +94,9 @@ class DbaDetailsTableSeeder extends Seeder
                 'db_sid' => 'orcl',
                 'created_at' => '2021-05-31 08:56:40',
                 'updated_at' => '2021-05-31 08:56:40',
-                'deleted_at' => NULL,
-            ),
-            8 => 
-            array (
+                'deleted_at' => null,
+            ],
+            8 => [
                 'id' => 9,
                 'server_details_id' => 17,
                 'dba_user' => 'adminuser',
@@ -116,10 +104,9 @@ class DbaDetailsTableSeeder extends Seeder
                 'db_sid' => 'orcl',
                 'created_at' => '2021-05-31 09:02:07',
                 'updated_at' => '2021-05-31 09:02:07',
-                'deleted_at' => NULL,
-            ),
-            9 => 
-            array (
+                'deleted_at' => null,
+            ],
+            9 => [
                 'id' => 10,
                 'server_details_id' => 18,
                 'dba_user' => 'adminuser',
@@ -127,10 +114,8 @@ class DbaDetailsTableSeeder extends Seeder
                 'db_sid' => 'spm01p',
                 'created_at' => '2021-05-31 09:35:30',
                 'updated_at' => '2021-05-31 09:35:30',
-                'deleted_at' => NULL,
-            ),
-        ));
-        
-        
+                'deleted_at' => null,
+            ],
+        ]);
     }
 }

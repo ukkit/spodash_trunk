@@ -4,20 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateMl_buildRequest;
 use App\Http\Requests\UpdateMl_buildRequest;
-use App\Repositories\Ml_buildRepository;
-use App\Http\Controllers\AppBaseController;
 use App\Models\Ml_build;
-use Illuminate\Http\Request;
+use App\Repositories\Ml_buildRepository;
 use Flash;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 use Response;
 
 class Ml_buildController extends AppBaseController
 {
-    /** @var  Ml_buildRepository */
+    /** @var Ml_buildRepository */
     private $mlBuildRepository;
 
     public function __construct(Ml_buildRepository $mlBuildRepo)
@@ -28,8 +27,7 @@ class Ml_buildController extends AppBaseController
     /**
      * Display a listing of the Ml_build.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return Response|Factory|RedirectResponse|Redirector|View
      */
     public function index(Request $request)
@@ -53,18 +51,17 @@ class Ml_buildController extends AppBaseController
     /**
      * Store a newly created Ml_build in storage.
      *
-     * @param CreateMl_buildRequest $request
-     *
+     * @param  CreateMl_buildRequest  $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|Response
      */
     public function store(CreateMl_buildRequest $request)
     {
         $input = $request->all();
 
-        $strip_pvn = preg_replace("/[^0-9]/", "", $input['ml_version']);
-        $strip_pbn = preg_replace("/[^0-9]/", "", $input['ml_build']);
-        $old_pvid = $strip_pvn . $strip_pbn;
-        $pv_id = $strip_pvn . "_" . $strip_pbn;
+        $strip_pvn = preg_replace('/[^0-9]/', '', $input['ml_version']);
+        $strip_pbn = preg_replace('/[^0-9]/', '', $input['ml_build']);
+        $old_pvid = $strip_pvn.$strip_pbn;
+        $pv_id = $strip_pvn.'_'.$strip_pbn;
 
         $input['pv_id'] = $pv_id;
 
@@ -78,8 +75,7 @@ class Ml_buildController extends AppBaseController
     /**
      * Display the specified Ml_build.
      *
-     * @param int $id
-     *
+     * @param  int  $id
      * @return Factory|RedirectResponse|Redirector|View|Response
      */
     public function show($id)
@@ -98,8 +94,7 @@ class Ml_buildController extends AppBaseController
     /**
      * Show the form for editing the specified Ml_build.
      *
-     * @param int $id
-     *
+     * @param  int  $id
      * @return Factory|RedirectResponse|Redirector|View|Response
      */
     public function edit($id)
@@ -123,9 +118,8 @@ class Ml_buildController extends AppBaseController
     /**
      * Update the specified Ml_build in storage.
      *
-     * @param int $id
-     * @param UpdateMl_buildRequest $request
-     *
+     * @param  int  $id
+     * @param  UpdateMl_buildRequest  $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|Response
      */
     public function update($id, UpdateMl_buildRequest $request)
@@ -148,11 +142,10 @@ class Ml_buildController extends AppBaseController
     /**
      * Remove the specified Ml_build from storage.
      *
-     * @param int $id
+     * @param  int  $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|Response
      *
      * @throws \Exception
-     *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|Response
      */
     public function destroy($id)
     {

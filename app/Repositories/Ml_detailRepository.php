@@ -8,10 +8,9 @@ use InfyOm\Generator\Common\BaseRepository;
 
 /**
  * Class Ml_detailRepository
- * @package App\Repositories
+ *
  * @version November 29, 2021, 10:54 am IST
  */
-
 class Ml_detailRepository extends BaseRepository
 {
     /**
@@ -28,7 +27,7 @@ class Ml_detailRepository extends BaseRepository
         'zeppelin_user',
         'zeppelin_pwd',
         'installed_path',
-        'notes'
+        'notes',
     ];
 
     /**

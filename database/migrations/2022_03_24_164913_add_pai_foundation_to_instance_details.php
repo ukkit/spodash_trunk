@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AddPaiFoundationToInstanceDetails extends Migration
 {
@@ -14,7 +14,7 @@ class AddPaiFoundationToInstanceDetails extends Migration
     public function up()
     {
         Schema::table('instance_details', function (Blueprint $table) {
-            $table->char('pai_foundation',1)->after('snowflake_configured')->default('N');
+            $table->char('pai_foundation', 1)->after('snowflake_configured')->default('N');
         });
     }
 

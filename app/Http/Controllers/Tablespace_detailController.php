@@ -5,18 +5,17 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateTablespace_detailRequest;
 use App\Http\Requests\UpdateTablespace_detailRequest;
 use App\Repositories\Tablespace_detailRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Flash;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 use Response;
 
 class Tablespace_detailController extends AppBaseController
 {
-    /** @var  Tablespace_detailRepository */
+    /** @var Tablespace_detailRepository */
     private $tablespaceDetailRepository;
 
     public function __construct(Tablespace_detailRepository $tablespaceDetailRepo)
@@ -27,8 +26,7 @@ class Tablespace_detailController extends AppBaseController
     /**
      * Display a listing of the Tablespace_detail.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return Response|Factory|RedirectResponse|Redirector|View
      */
     public function index(Request $request)
@@ -50,14 +48,12 @@ class Tablespace_detailController extends AppBaseController
         // return view('tablespace_details.create');
         // return redirect(route('tablespace_details.index'));
         return redirect(route('tablespaceDetails.index'));
-
     }
 
     /**
      * Store a newly created Tablespace_detail in storage.
      *
-     * @param CreateTablespace_detailRequest $request
-     *
+     * @param  CreateTablespace_detailRequest  $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|Response
      */
     public function store(CreateTablespace_detailRequest $request)
@@ -74,8 +70,7 @@ class Tablespace_detailController extends AppBaseController
     /**
      * Display the specified Tablespace_detail.
      *
-     * @param int $id
-     *
+     * @param  int  $id
      * @return Factory|RedirectResponse|Redirector|View|Response
      */
     public function show($id)
@@ -95,8 +90,7 @@ class Tablespace_detailController extends AppBaseController
     /**
      * Show the form for editing the specified Tablespace_detail.
      *
-     * @param int $id
-     *
+     * @param  int  $id
      * @return Factory|RedirectResponse|Redirector|View|Response
      */
     public function edit($id)
@@ -116,9 +110,8 @@ class Tablespace_detailController extends AppBaseController
     /**
      * Update the specified Tablespace_detail in storage.
      *
-     * @param int $id
-     * @param UpdateTablespace_detailRequest $request
-     *
+     * @param  int  $id
+     * @param  UpdateTablespace_detailRequest  $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|Response
      */
     public function update($id, UpdateTablespace_detailRequest $request)
@@ -142,11 +135,10 @@ class Tablespace_detailController extends AppBaseController
     /**
      * Remove the specified Tablespace_detail from storage.
      *
-     * @param int $id
+     * @param  int  $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|Response
      *
      * @throws \Exception
-     *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|Response
      */
     public function destroy($id)
     {

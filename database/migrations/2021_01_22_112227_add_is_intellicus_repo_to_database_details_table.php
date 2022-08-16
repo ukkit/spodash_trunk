@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AddIsIntellicusRepoToDatabaseDetailsTable extends Migration
 {
@@ -14,7 +14,7 @@ class AddIsIntellicusRepoToDatabaseDetailsTable extends Migration
     public function up()
     {
         Schema::table('database_details', function (Blueprint $table) {
-            $table->char('is_intellicus_repository',1)->after('is_dba')->default('N');
+            $table->char('is_intellicus_repository', 1)->after('is_dba')->default('N');
         });
     }
 

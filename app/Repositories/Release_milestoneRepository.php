@@ -8,10 +8,9 @@ use InfyOm\Generator\Common\BaseRepository;
 
 /**
  * Class Release_milestoneRepository
- * @package App\Repositories
+ *
  * @version April 24, 2020, 12:20 pm IST
-*/
-
+ */
 class Release_milestoneRepository extends BaseRepository
 {
     /**
@@ -78,7 +77,7 @@ class Release_milestoneRepository extends BaseRepository
         'owasp_scan_comments',
         'webinspect_scan_start_date',
         'webinspect_scan_end_date',
-        'webinspect_scan_comments'
+        'webinspect_scan_comments',
     ];
 
     /**

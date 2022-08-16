@@ -7,13 +7,13 @@ use InfyOm\Generator\Common\BaseRepository;
 
 /**
  * Class Database_detailRepository
- * @package App\Repositories
+ *
  * @version February 19, 2019, 9:24 am UTC
  *
  * @method Database_detail findWithoutFail($id, $columns = ['*'])
  * @method Database_detail find($id, $columns = ['*'])
  * @method Database_detail first($columns = ['*'])
-*/
+ */
 class Database_detailRepository extends BaseRepository
 {
     /**
@@ -30,7 +30,7 @@ class Database_detailRepository extends BaseRepository
         'db_notes',
         'db_is_active',
         'is_dba',
-        'repository_type'
+        'repository_type',
         // 'is_intellicus_repository'
     ];
 

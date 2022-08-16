@@ -2,13 +2,12 @@
 
 namespace App\Console\Commands;
 
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 class unarchiveSF extends Command
 {
-
     protected $signature = 'command:unarchiveSF';
 
     protected $description = 'Command description';
@@ -24,13 +23,14 @@ class unarchiveSF extends Command
         if (empty($sql)) {
             $sql2 = DB::table('archive_sf_builds')->select('sf_builds_id')->where('pv_id', $pv_id)->first();
             if (empty($sql2)) {
-                return Null;
+                return null;
             } else {
                 return $sql2->sf_builds_id;
             }
         } else {
             $rv = $sql->id;
         }
+
         return $rv;
     }
 
@@ -38,12 +38,13 @@ class unarchiveSF extends Command
     {
         try {
             DB::table('sf_builds')->insert(['id' => $Asql->sf_builds_id, 'sf_pai_version' => $Asql->sf_pai_version, 'sf_pai_build' => $Asql->sf_pai_build, 'pv_id' => $Asql->pv_id, 'old_pvid' => $Asql->old_pvid, 'is_release_build' => $Asql->is_release_build, 'created_at' => $Asql->created_at]);
-            echo $Asql->sf_builds_id . " INSERTED \n";
-            $doDelete = True;
+            echo $Asql->sf_builds_id." INSERTED \n";
+            $doDelete = true;
         } catch (\Throwable $th) {
             throw $th;
-            $doDelete = False;
+            $doDelete = false;
         }
+
         return $doDelete;
     }
 
@@ -52,13 +53,11 @@ class unarchiveSF extends Command
         $scriptID = 'qzEEMTndrPiyGfjFOswU26e1gwI1JmUOTJCxBueh5VFq9zQxyDMqK5MWv0glVzOJ'; //NOT TO BE CHANGED
         $scriptName = 'unarchiveSF'; //NOT TO BE CHANGED
 
-
-
-        $sf_build_array = array();
-        $pvid_array =  array();
-        $sf_array = array();
-        $pvid_archive = array();
-        $sf_id_archive = array();
+        $sf_build_array = [];
+        $pvid_array = [];
+        $sf_array = [];
+        $pvid_archive = [];
+        $sf_id_archive = [];
 
         $sf_build = DB::table('sf_builds')->get();
         foreach ($sf_build as $key => $value) {
@@ -77,7 +76,7 @@ class unarchiveSF extends Command
                 if (in_array(trim($sf_build_id), $sf_build_array)) {
                 } else {
                     array_push($pvid_array, trim($value->sf_pv_id));
-                    echo "sf_PV_ID: " . $value->sf_pv_id . " Not found " . $value->id . "\n";
+                    echo 'sf_PV_ID: '.$value->sf_pv_id.' Not found '.$value->id."\n";
                 }
             }
         }
@@ -94,7 +93,7 @@ class unarchiveSF extends Command
                         }
                     }
                 } else {
-                    echo "NOT FOUND: " . $par . "\n";
+                    echo 'NOT FOUND: '.$par."\n";
                 }
             }
         } else {
@@ -108,7 +107,7 @@ class unarchiveSF extends Command
                     // echo $value->old_build_id." Found in SPM Build table \n";
                 } else {
                     array_push($sf_array, trim($value->old_sf_build_id));
-                    echo "OLD ID: " . $value->old_sf_build_id . " Not found " . $value->id . "\n";
+                    echo 'OLD ID: '.$value->old_sf_build_id.' Not found '.$value->id."\n";
                 }
             }
 
@@ -117,7 +116,7 @@ class unarchiveSF extends Command
                     // echo "new_build_id Found in SPM Build table \n";
                 } else {
                     array_push($sf_array, trim($value->new_sf_build_id));
-                    echo "NEW ID: " . $value->new_sf_build_id . " Not found " . $value->id . "\n";
+                    echo 'NEW ID: '.$value->new_sf_build_id.' Not found '.$value->id."\n";
                 }
             }
         }
@@ -126,7 +125,7 @@ class unarchiveSF extends Command
         // dd($sf_array);
         if (count($sf_array) > 0) {
             $sf_array = array_unique($sf_array);
-            echo "Found " . count($sf_array) . " missing SPM build number from action_histories table\n";
+            echo 'Found '.count($sf_array)." missing SPM build number from action_histories table\n";
             foreach ($sf_array as $par) {
                 if (in_array(trim($par), $sf_id_archive)) {
                     $Asql = DB::table('archive_sf_builds')->where('sf_builds_id', $par)->first();
@@ -137,7 +136,7 @@ class unarchiveSF extends Command
                         }
                     }
                 } else {
-                    echo "NOT FOUND: " . $par . "\n";
+                    echo 'NOT FOUND: '.$par."\n";
                 }
             }
         } else {

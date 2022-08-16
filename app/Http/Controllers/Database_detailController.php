@@ -2,24 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Authorizable;
 use App\Http\Requests\CreateDatabase_detailRequest;
 use App\Http\Requests\UpdateDatabase_detailRequest;
+use App\Models\Ambari_detail;
+use App\Models\Database_type;
+use App\Models\Server_detail;
 use App\Repositories\Database_detailRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
+use DB;
 use Flash;
+use Illuminate\Http\Request;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
-use DB;
-use App\Models\Server_detail;
-use App\Models\Database_type;
-use App\Models\Ambari_detail;
-use App\Authorizable;
 
 class Database_detailController extends AppBaseController
 {
     use Authorizable;
-    /** @var  Database_detailRepository */
+
+    /** @var Database_detailRepository */
     private $databaseDetailRepository;
 
     public function __construct(Database_detailRepository $databaseDetailRepo)
@@ -30,7 +30,7 @@ class Database_detailController extends AppBaseController
     /**
      * Display a listing of the Database_detail.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return Response
      */
     public function index(Request $request)
@@ -71,8 +71,7 @@ class Database_detailController extends AppBaseController
     /**
      * Store a newly created Database_detail in storage.
      *
-     * @param CreateDatabase_detailRequest $request
-     *
+     * @param  CreateDatabase_detailRequest  $request
      * @return Response
      */
     public function store(CreateDatabase_detailRequest $request)
@@ -81,15 +80,15 @@ class Database_detailController extends AppBaseController
 
         //  CODE START - auto generate GEN_DBD_ID
         $value = DB::table('server_details')->select('server_ip')->where('id', $input['server_details_id'])->get()->first();
-        $stripped_ip = str_replace(".","",$value->server_ip);
+        $stripped_ip = str_replace('.', '', $value->server_ip);
         $lower_dbsid = strtolower($input['db_sid']);
-        $stripped_dbsid = str_replace("_","",$lower_dbsid);
-        $stripped_dbsid = str_replace("-","",$stripped_dbsid);
+        $stripped_dbsid = str_replace('_', '', $lower_dbsid);
+        $stripped_dbsid = str_replace('-', '', $stripped_dbsid);
         $lower_dbuser = strtolower($input['db_user']);
-        $stripped_dbuser = str_replace("_","",$lower_dbuser);
-        $stripped_dbuser = str_replace("-","",$stripped_dbuser);
+        $stripped_dbuser = str_replace('_', '', $lower_dbuser);
+        $stripped_dbuser = str_replace('-', '', $stripped_dbuser);
 
-        $dbd_id = $stripped_ip."_".$stripped_dbsid."_".$stripped_dbuser;
+        $dbd_id = $stripped_ip.'_'.$stripped_dbsid.'_'.$stripped_dbuser;
 
         $input['gen_dbd_id'] = $dbd_id;
         // CODE END - auto generate GEN_DBD_ID
@@ -104,8 +103,7 @@ class Database_detailController extends AppBaseController
     /**
      * Display the specified Database_detail.
      *
-     * @param  int $id
-     *
+     * @param  int  $id
      * @return Response
      */
     public function show($id)
@@ -120,15 +118,12 @@ class Database_detailController extends AppBaseController
 
         // return view('database_details.show')->with('databaseDetail', $databaseDetail);
         return redirect(route('databaseDetails.index'));
-
-
     }
 
     /**
      * Show the form for editing the specified Database_detail.
      *
-     * @param  int $id
-     *
+     * @param  int  $id
      * @return Response
      */
     public function edit($id)
@@ -160,9 +155,8 @@ class Database_detailController extends AppBaseController
     /**
      * Update the specified Database_detail in storage.
      *
-     * @param  int              $id
-     * @param UpdateDatabase_detailRequest $request
-     *
+     * @param  int  $id
+     * @param  UpdateDatabase_detailRequest  $request
      * @return Response
      */
     public function update($id, UpdateDatabase_detailRequest $request)
@@ -177,15 +171,15 @@ class Database_detailController extends AppBaseController
 
         // CODE START - auto generate GEN_DBD_ID
         $value = DB::table('server_details')->select('server_ip')->where('id', $databaseDetail['server_details_id'])->get()->first();
-        $stripped_ip = str_replace(".","",$value->server_ip);
+        $stripped_ip = str_replace('.', '', $value->server_ip);
         $lower_dbsid = strtolower($request['db_sid']);
-        $stripped_dbsid = str_replace("_","",$lower_dbsid);
-        $stripped_dbsid = str_replace("-","",$stripped_dbsid);
+        $stripped_dbsid = str_replace('_', '', $lower_dbsid);
+        $stripped_dbsid = str_replace('-', '', $stripped_dbsid);
         $lower_dbuser = strtolower($request['db_user']);
-        $stripped_dbuser = str_replace("_","",$lower_dbuser);
-        $stripped_dbuser = str_replace("-","",$stripped_dbuser);
+        $stripped_dbuser = str_replace('_', '', $lower_dbuser);
+        $stripped_dbuser = str_replace('-', '', $stripped_dbuser);
 
-        $dbd_id = $stripped_ip."_".$stripped_dbsid."_".$stripped_dbuser;
+        $dbd_id = $stripped_ip.'_'.$stripped_dbsid.'_'.$stripped_dbuser;
 
         $request['gen_dbd_id'] = $dbd_id;
         // CODE END - auto generate GEN_DBD_ID
@@ -200,8 +194,7 @@ class Database_detailController extends AppBaseController
     /**
      * Remove the specified Database_detail from storage.
      *
-     * @param  int $id
-     *
+     * @param  int  $id
      * @return Response
      */
     public function destroy($id)

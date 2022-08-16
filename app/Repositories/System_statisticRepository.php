@@ -8,10 +8,9 @@ use InfyOm\Generator\Common\BaseRepository;
 
 /**
  * Class System_statisticRepository
- * @package App\Repositories
+ *
  * @version January 14, 2021, 11:16 am IST
-*/
-
+ */
 class System_statisticRepository extends BaseRepository
 {
     /**
@@ -49,7 +48,7 @@ class System_statisticRepository extends BaseRepository
         'guardians_instances',
         'transformers_instances',
         'pm_instances',
-        'incredibles_instances'
+        'incredibles_instances',
     ];
 
     /**

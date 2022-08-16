@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Authorizable;
 use App\Http\Requests\CreateProduct_versionRequest;
 use App\Http\Requests\UpdateProduct_versionRequest;
 use App\Repositories\Product_versionRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
+use DB;
 use Flash;
+use Illuminate\Http\Request;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
-use DB;
-use App\Authorizable;
 
 class Product_versionController extends AppBaseController
 {
     use Authorizable;
-    /** @var  Product_versionRepository */
+
+    /** @var Product_versionRepository */
     private $productVersionRepository;
 
     public function __construct(Product_versionRepository $productVersionRepo)
@@ -27,7 +27,7 @@ class Product_versionController extends AppBaseController
     /**
      * Display a listing of the Product_version.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return Response
      */
     public function index(Request $request)
@@ -53,18 +53,17 @@ class Product_versionController extends AppBaseController
     /**
      * Store a newly created Product_version in storage.
      *
-     * @param CreateProduct_versionRequest $request
-     *
+     * @param  CreateProduct_versionRequest  $request
      * @return Response
      */
     public function store(CreateProduct_versionRequest $request)
     {
         $input = $request->all();
 
-        $strip_pvn = preg_replace("/[^0-9]/", "", $input['product_ver_number']);
-        $strip_pbn = preg_replace("/[^0-9]/", "", $input['product_build_numer']);
-        $old_pvid = $strip_pvn . $strip_pbn;
-        $pv_id = $strip_pvn . "_" . $strip_pbn;
+        $strip_pvn = preg_replace('/[^0-9]/', '', $input['product_ver_number']);
+        $strip_pbn = preg_replace('/[^0-9]/', '', $input['product_build_numer']);
+        $old_pvid = $strip_pvn.$strip_pbn;
+        $pv_id = $strip_pvn.'_'.$strip_pbn;
 
         // Generating pv_id by merging numbers of product_Ver_number and product_build_number
         $input['pv_id'] = $pv_id;
@@ -82,8 +81,7 @@ class Product_versionController extends AppBaseController
     /**
      * Display the specified Product_version.
      *
-     * @param  int $id
-     *
+     * @param  int  $id
      * @return Response
      */
     public function show($id)
@@ -102,8 +100,7 @@ class Product_versionController extends AppBaseController
     /**
      * Show the form for editing the specified Product_version.
      *
-     * @param  int $id
-     *
+     * @param  int  $id
      * @return Response
      */
     public function edit($id)
@@ -127,9 +124,8 @@ class Product_versionController extends AppBaseController
     /**
      * Update the specified Product_version in storage.
      *
-     * @param  int              $id
-     * @param UpdateProduct_versionRequest $request
-     *
+     * @param  int  $id
+     * @param  UpdateProduct_versionRequest  $request
      * @return Response
      */
     public function update($id, UpdateProduct_versionRequest $request)
@@ -152,8 +148,7 @@ class Product_versionController extends AppBaseController
     /**
      * Remove the specified Product_version from storage.
      *
-     * @param  int $id
-     *
+     * @param  int  $id
      * @return Response
      */
     public function destroy($id)

@@ -2,12 +2,11 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Models\Product_version;
+use Illuminate\Foundation\Http\FormRequest;
 
 class CreateProduct_versionRequest extends FormRequest
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *

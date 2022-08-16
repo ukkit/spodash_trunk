@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Authorizable;
 use App\Http\Requests\CreateOs_typeRequest;
 use App\Http\Requests\UpdateOs_typeRequest;
 use App\Repositories\Os_typeRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
+use DB;
 use Flash;
+use Illuminate\Http\Request;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
-use DB;
-use App\Authorizable;
 
 class Os_typeController extends AppBaseController
 {
     use Authorizable;
-    /** @var  Os_typeRepository */
+
+    /** @var Os_typeRepository */
     private $osTypeRepository;
 
     public function __construct(Os_typeRepository $osTypeRepo)
@@ -27,7 +27,7 @@ class Os_typeController extends AppBaseController
     /**
      * Display a listing of the Os_type.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return Response
      */
     public function index(Request $request)
@@ -54,8 +54,7 @@ class Os_typeController extends AppBaseController
     /**
      * Store a newly created Os_type in storage.
      *
-     * @param CreateOs_typeRequest $request
-     *
+     * @param  CreateOs_typeRequest  $request
      * @return Response
      */
     public function store(CreateOs_typeRequest $request)
@@ -72,8 +71,7 @@ class Os_typeController extends AppBaseController
     /**
      * Display the specified Os_type.
      *
-     * @param  int $id
-     *
+     * @param  int  $id
      * @return Response
      */
     public function show($id)
@@ -92,8 +90,7 @@ class Os_typeController extends AppBaseController
     /**
      * Show the form for editing the specified Os_type.
      *
-     * @param  int $id
-     *
+     * @param  int  $id
      * @return Response
      */
     public function edit($id)
@@ -118,9 +115,8 @@ class Os_typeController extends AppBaseController
     /**
      * Update the specified Os_type in storage.
      *
-     * @param  int              $id
-     * @param UpdateOs_typeRequest $request
-     *
+     * @param  int  $id
+     * @param  UpdateOs_typeRequest  $request
      * @return Response
      */
     public function update($id, UpdateOs_typeRequest $request)
@@ -143,8 +139,7 @@ class Os_typeController extends AppBaseController
     /**
      * Remove the specified Os_type from storage.
      *
-     * @param  int $id
-     *
+     * @param  int  $id
      * @return Response
      */
     public function destroy($id)

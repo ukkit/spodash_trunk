@@ -12,18 +12,16 @@ class Ml_build extends Model
     public $table = 'ml_builds';
 
     const CREATED_AT = 'created_at';
+
     const UPDATED_AT = 'updated_at';
 
-
     protected $dates = ['deleted_at'];
-
-
 
     public $fillable = [
         'ml_version',
         'ml_build',
         'pv_id',
-        'is_release_build'
+        'is_release_build',
     ];
 
     /**
@@ -36,7 +34,7 @@ class Ml_build extends Model
         'ml_version' => 'string',
         'ml_build' => 'integer',
         'pv_id' => 'string',
-        'is_release_build' => 'string'
+        'is_release_build' => 'string',
     ];
 
     /**
