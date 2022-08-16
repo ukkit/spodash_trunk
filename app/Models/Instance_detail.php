@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Arr;
 use Auth;
 use DB;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Arr;
 use Sofa\Eloquence\Eloquence;
 
 class Instance_detail extends Model
