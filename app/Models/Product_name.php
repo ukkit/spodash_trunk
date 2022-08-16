@@ -65,6 +65,6 @@ class Product_name extends Model
 
     public function product_version()
     {
-        return $this->hasMany('App\Models\Product_version');
+        return $this->hasMany(\App\Models\Product_version::class);
     }
 }

@@ -43,12 +43,12 @@ class Product_version extends Model
 
     public function product_names()
     {
-        return $this->belongsTo('App\Models\Product_name');
+        return $this->belongsTo(\App\Models\Product_name::class);
     }
 
     public function instance_detail()
     {
-        return $this->hasMany('App\Models\Instance_detail');
+        return $this->hasMany(\App\Models\Instance_detail::class);
     }
 
     public function instance_list_by_pvid($pvid)

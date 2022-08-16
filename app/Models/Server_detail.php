@@ -118,37 +118,37 @@ class Server_detail extends Model
 
     public function os_type()
     {
-        return $this->belongsTo('App\Models\Os_type');
+        return $this->belongsTo(\App\Models\Os_type::class);
     }
 
     public function database_type()
     {
-        return $this->belongsTo('App\Models\Database_type');
+        return $this->belongsTo(\App\Models\Database_type::class);
     }
 
     public function instance_detail()
     {
-        return $this->hasMany('App\Models\Instance_detail');
+        return $this->hasMany(\App\Models\Instance_detail::class);
     }
 
     public function intellicus_detail()
     {
-        return $this->hasMany('App\Models\Intellicus_detail');
+        return $this->hasMany(\App\Models\Intellicus_detail::class);
     }
 
     public function cascade_soft_delete()
     {
-        return $this->hasMany('App\Models\Instance_detail', 'database_details_id');
+        return $this->hasMany(\App\Models\Instance_detail::class, 'database_details_id');
     }
 
     public function cascade_soft_delete_instance_detail()
     {
-        return $this->hasMany('App\Models\Instance_detail', 'server_details_id', 'database_details_id');
+        return $this->hasMany(\App\Models\Instance_detail::class, 'server_details_id', 'database_details_id');
     }
 
     public function cascade_soft_delete_database_detail()
     {
-        return $this->hasMany('App\Models\Database_detail', 'server_details_id');
+        return $this->hasMany(\App\Models\Database_detail::class, 'server_details_id');
     }
 
     public function get_dba_counts($id)
@@ -165,12 +165,12 @@ class Server_detail extends Model
 
     public function os_types_by_id()
     {
-        return $this->belongsTo('App\Models\Os_type', 'os_types_id');
+        return $this->belongsTo(\App\Models\Os_type::class, 'os_types_id');
     }
 
     public function database_types_by_id()
     {
-        return $this->belongsTo('App\Models\Database_type', 'database_types_id');
+        return $this->belongsTo(\App\Models\Database_type::class, 'database_types_id');
     }
 
     public function return_server_details($id, $return_what)
@@ -286,7 +286,7 @@ class Server_detail extends Model
 
     public function server_use_by_id()
     {
-        return $this->belongsTo('App\Models\Server_use', 'server_uses_id');
+        return $this->belongsTo(\App\Models\Server_use::class, 'server_uses_id');
     }
 
     public function return_team_names($id)

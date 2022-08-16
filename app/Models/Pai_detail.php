@@ -84,7 +84,7 @@ class Pai_detail extends Model
 
     public function server_details_by_id()
     {
-        return $this->belongsTo('App\Models\Server_detail', 'server_details_id');
+        return $this->belongsTo(\App\Models\Server_detail::class, 'server_details_id');
     }
 
     public function tablespace_details_by_id($id)

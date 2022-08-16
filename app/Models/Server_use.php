@@ -65,6 +65,6 @@ class Server_use extends Model
 
     public function server_detail()
     {
-        return $this->hasMany('App\Models\Server_detail');
+        return $this->hasMany(\App\Models\Server_detail::class);
     }
 }

@@ -101,32 +101,32 @@ class Intellicus_detail extends Model
 
     public function instance_detail()
     {
-        return $this->hasMany('App\Models\Instance_detail');
+        return $this->hasMany(\App\Models\Instance_detail::class);
     }
 
     public function server_detail()
     {
-        return $this->hasMany('App\Models\Server_detail');
+        return $this->hasMany(\App\Models\Server_detail::class);
     }
 
     public function database_detail()
     {
-        return $this->hasMany('App\Models\Database_detail');
+        return $this->hasMany(\App\Models\Database_detail::class);
     }
 
     public function intellicus_version()
     {
-        return $this->hasMany('App\Models\Intellicus_version');
+        return $this->hasMany(\App\Models\Intellicus_version::class);
     }
 
     public function server_details_by_id()
     {
-        return $this->belongsTo('App\Models\Server_detail', 'server_details_id');
+        return $this->belongsTo(\App\Models\Server_detail::class, 'server_details_id');
     }
 
     public function database_details_by_id()
     {
-        return $this->belongsTo('App\Models\Database_detail', 'database_details_id');
+        return $this->belongsTo(\App\Models\Database_detail::class, 'database_details_id');
     }
 
     public function return_server_details($id, $return_what)

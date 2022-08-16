@@ -101,11 +101,11 @@ class Database_type extends Model
 
     public function instance_detail()
     {
-        return $this->hasMany('App\Models\Instance_detail');
+        return $this->hasMany(\App\Models\Instance_detail::class);
     }
 
     public function server_detail()
     {
-        return $this->hasMany('App\Models\Server_detail');
+        return $this->hasMany(\App\Models\Server_detail::class);
     }
 }

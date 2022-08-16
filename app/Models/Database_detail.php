@@ -94,22 +94,22 @@ class Database_detail extends Model
 
     public function cascade_soft_delete_instance_detail()
     {
-        return $this->hasMany('App\Models\Instance_detail', 'database_details_id');
+        return $this->hasMany(\App\Models\Instance_detail::class, 'database_details_id');
     }
 
     public function server_details_by_id()
     {
-        return $this->belongsTo('App\Models\Server_detail', 'server_details_id');
+        return $this->belongsTo(\App\Models\Server_detail::class, 'server_details_id');
     }
 
     public function database_types_by_id()
     {
-        return $this->belongsTo('App\Models\Database_type', 'database_types_id');
+        return $this->belongsTo(\App\Models\Database_type::class, 'database_types_id');
     }
 
     public function ambari_details_by_id()
     {
-        return $this->belongsTo('App\Models\Ambari_detail', 'ambari_details_id');
+        return $this->belongsTo(\App\Models\Ambari_detail::class, 'ambari_details_id');
     }
 
     public function tablespace_details_by_id($id)

@@ -177,27 +177,27 @@ class Instance_detail extends Model
 
     public function product_version()
     {
-        return $this->belongsTo('App\Models\Product_version');
+        return $this->belongsTo(\App\Models\Product_version::class);
     }
 
     public function product_name()
     {
-        return $this->belongsTo('App\Models\Product_name');
+        return $this->belongsTo(\App\Models\Product_name::class);
     }
 
     public function server_detail()
     {
-        return $this->belongsTo('App\Models\Server_detail');
+        return $this->belongsTo(\App\Models\Server_detail::class);
     }
 
     public function database_type()
     {
-        return $this->hasMany('App\Models\Database_type');
+        return $this->hasMany(\App\Models\Database_type::class);
     }
 
     public function database_detail()
     {
-        return $this->belongsTo('App\Models\Database_detail');
+        return $this->belongsTo(\App\Models\Database_detail::class);
     }
 
     public function sf_builds_by_pvid($pvid)
@@ -212,7 +212,7 @@ class Instance_detail extends Model
 
     public function product_versions_by_id() // This is not to be used
     {
-        return $this->belongsTo('App\Models\Product_version', 'product_versions_id');
+        return $this->belongsTo(\App\Models\Product_version::class, 'product_versions_id');
     }
 
     public function return_product_versions_by_pvid($pvid, $return_what)
@@ -258,22 +258,22 @@ class Instance_detail extends Model
 
     public function server_details_by_id()
     {
-        return $this->belongsTo('App\Models\Server_detail', 'server_details_id');
+        return $this->belongsTo(\App\Models\Server_detail::class, 'server_details_id');
     }
 
     public function product_names_by_id()
     {
-        return $this->belongsTo('App\Models\Product_name', 'product_names_id');
+        return $this->belongsTo(\App\Models\Product_name::class, 'product_names_id');
     }
 
     public function database_details_by_id()
     {
-        return $this->belongsTo('App\Models\Database_detail', 'database_details_id');
+        return $this->belongsTo(\App\Models\Database_detail::class, 'database_details_id');
     }
 
     public function intellicus_details_by_id()
     {
-        return $this->belongsTo('App\Models\Intellicus_detail', 'intellicus_details_id');
+        return $this->belongsTo(\App\Models\Intellicus_detail::class, 'intellicus_details_id');
     }
 
     public function return_db_details($id, $return_what)

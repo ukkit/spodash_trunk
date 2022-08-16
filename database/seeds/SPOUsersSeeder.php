@@ -95,32 +95,32 @@ class SPOUsersSeeder extends Seeder
         \DB::table('model_has_roles')->insert([
             0 => [
                 'role_id' => 8,
-                'model_type' => 'App\\User',
+                'model_type' => \App\User::class,
                 'model_id' => 501,
             ],
             1 => [
                 'role_id' => 8,
-                'model_type' => 'App\\User',
+                'model_type' => \App\User::class,
                 'model_id' => 502,
             ],
             2 => [
                 'role_id' => 8,
-                'model_type' => 'App\\User',
+                'model_type' => \App\User::class,
                 'model_id' => 503,
             ],
             3 => [
                 'role_id' => 8,
-                'model_type' => 'App\\User',
+                'model_type' => \App\User::class,
                 'model_id' => 504,
             ],
             4 => [
                 'role_id' => 8,
-                'model_type' => 'App\\User',
+                'model_type' => \App\User::class,
                 'model_id' => 505,
             ],
             5 => [
                 'role_id' => 8,
-                'model_type' => 'App\\User',
+                'model_type' => \App\User::class,
                 'model_id' => 506,
             ],
         ]);
