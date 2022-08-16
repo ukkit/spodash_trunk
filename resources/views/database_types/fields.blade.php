@@ -1,5 +1,5 @@
 <?php
-$is_active_array = array("Y","N");
+$is_active_array = ["Y","N"];
 ?>
 <!-- Db Short Name Field -->
 <div class="form-group col-sm-2">
