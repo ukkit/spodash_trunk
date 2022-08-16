@@ -26,7 +26,7 @@
 
                     <div class="col-md-3">
                         <div class="checkbox">
-                            <label class="{{ str_contains($perm->name, 'delete') ? 'text-danger' : '' }}">
+                            <label class="{{ Str::contains($perm->name, 'delete') ? 'text-danger' : '' }}">
                                 @can('edit_roles')
                                 {!! Form::checkbox("permissions[]", $perm->name, $per_found, isset($options) ? $options : []) !!} {{ $perm->name }}
                                 @else

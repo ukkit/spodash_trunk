@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Arr;
+
 // Logic, based on intellicus_details_id, look for instance_details_id in team_permissions table
 // If found, return true
 function user_has_rights($id)
@@ -19,7 +21,7 @@ function checkUserRights($id)
     $uid = Auth::user()->id;
     // echo " | " . $uid;
     $team = DB::table('user_has_teams')->where('user_id', $uid)->get();
-    $team_id = array_pluck($team, 'team_id');
+    $team_id = Arr::pluck($team, 'team_id');
     $all_team_id = DB::table('teams')->select('id')->where('team_name', 'All')->first();
 
     if (Auth::user()->hasAnyRole(['advance', 'admin', 'superadmin'])) {

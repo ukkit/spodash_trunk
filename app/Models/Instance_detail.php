@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Arr;
 use Auth;
 use DB;
 use Eloquent as Model;
@@ -409,7 +410,7 @@ class Instance_detail extends Model
         $retval = null;
         $uid = Auth::user()->id;
         $team = DB::table('user_has_teams')->where('user_id', $uid)->get();
-        $team_id = array_pluck($team, 'team_id');
+        $team_id = Arr::pluck($team, 'team_id');
         $all_team_id = DB::table('teams')->select('id')->where('team_name', 'All')->first();
         // dd($all_team_id->id);
         // $is_all_teams = DB::table('teams')->

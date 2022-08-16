@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Illuminate\Support\Arr;
+
 /*
  * A trait to handle authorization based on users permissions for given controller
  */
@@ -48,7 +50,7 @@ trait Authorizable
     public function getAbility($method)
     {
         $routeName = explode('.', \Request::route()->getName());
-        $action = array_get($this->getAbilities(), $method);
+        $action = Arr::get($this->getAbilities(), $method);
 
         // dd($action . '_' . $routeName[0]);
         return $action ? $action.'_'.$routeName[0] : null;
