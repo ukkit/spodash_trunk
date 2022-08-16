@@ -13,7 +13,7 @@ class Database_typeRepositoryTest extends TestCase
      */
     protected $databaseTypeRepo;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->databaseTypeRepo = App::make(Database_typeRepository::class);

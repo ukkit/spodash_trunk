@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Authorizable;
 use App\Http\Requests\CreateDatabase_typeRequest;
 use App\Http\Requests\UpdateDatabase_typeRequest;
 use App\Repositories\Database_typeRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
+use DB;
 use Flash;
+use Illuminate\Http\Request;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
-use DB;
-use App\Authorizable;
 
 class Database_typeController extends AppBaseController
 {
     use Authorizable;
-    /** @var  Database_typeRepository */
+
+    /** @var Database_typeRepository */
     private $databaseTypeRepository;
 
     public function __construct(Database_typeRepository $databaseTypeRepo)
@@ -27,7 +27,7 @@ class Database_typeController extends AppBaseController
     /**
      * Display a listing of the Database_type.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return Response
      */
     public function index(Request $request)
@@ -49,14 +49,12 @@ class Database_typeController extends AppBaseController
         return view('database_types.create')
         ->with('show_is_active', false)
         ->with('this_is_edit', false);
-
     }
 
     /**
      * Store a newly created Database_type in storage.
      *
-     * @param CreateDatabase_typeRequest $request
-     *
+     * @param  CreateDatabase_typeRequest  $request
      * @return Response
      */
     public function store(CreateDatabase_typeRequest $request)
@@ -73,8 +71,7 @@ class Database_typeController extends AppBaseController
     /**
      * Display the specified Database_type.
      *
-     * @param  int $id
-     *
+     * @param  int  $id
      * @return Response
      */
     public function show($id)
@@ -93,8 +90,7 @@ class Database_typeController extends AppBaseController
     /**
      * Show the form for editing the specified Database_type.
      *
-     * @param  int $id
-     *
+     * @param  int  $id
      * @return Response
      */
     public function edit($id)
@@ -119,9 +115,8 @@ class Database_typeController extends AppBaseController
     /**
      * Update the specified Database_type in storage.
      *
-     * @param  int              $id
-     * @param UpdateDatabase_typeRequest $request
-     *
+     * @param  int  $id
+     * @param  UpdateDatabase_typeRequest  $request
      * @return Response
      */
     public function update($id, UpdateDatabase_typeRequest $request)
@@ -144,8 +139,7 @@ class Database_typeController extends AppBaseController
     /**
      * Remove the specified Database_type from storage.
      *
-     * @param  int $id
-     *
+     * @param  int  $id
      * @return Response
      */
     public function destroy($id)

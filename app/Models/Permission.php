@@ -11,7 +11,6 @@ namespace App\Models;
 
 class Permission extends \Spatie\Permission\Models\Permission
 {
-
     public static function defaultPermissions()
     {
         return [
@@ -35,7 +34,6 @@ class Permission extends \Spatie\Permission\Models\Permission
             'stop_instanceDetails',
             'restart_instanceDetails',
             'upgrade_instanceDetails',
-           
 
             'view_serverDetails',
             'add_serverDetails',

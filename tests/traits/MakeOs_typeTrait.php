@@ -1,15 +1,15 @@
 <?php
 
-use Faker\Factory as Faker;
 use App\Models\Os_type;
 use App\Repositories\Os_typeRepository;
+use Faker\Factory as Faker;
 
 trait MakeOs_typeTrait
 {
     /**
      * Create fake instance of Os_type and save it in database
      *
-     * @param array $osTypeFields
+     * @param  array  $osTypeFields
      * @return Os_type
      */
     public function makeOs_type($osTypeFields = [])
@@ -17,13 +17,14 @@ trait MakeOs_typeTrait
         /** @var Os_typeRepository $osTypeRepo */
         $osTypeRepo = App::make(Os_typeRepository::class);
         $theme = $this->fakeOs_typeData($osTypeFields);
+
         return $osTypeRepo->create($theme);
     }
 
     /**
      * Get fake instance of Os_type
      *
-     * @param array $osTypeFields
+     * @param  array  $osTypeFields
      * @return Os_type
      */
     public function fakeOs_type($osTypeFields = [])
@@ -34,7 +35,7 @@ trait MakeOs_typeTrait
     /**
      * Get fake data of Os_type
      *
-     * @param array $postFields
+     * @param  array  $postFields
      * @return array
      */
     public function fakeOs_typeData($osTypeFields = [])
@@ -48,7 +49,7 @@ trait MakeOs_typeTrait
             'os_is_active' => $fake->word,
             'created_at' => $fake->date('Y-m-d H:i:s'),
             'updated_at' => $fake->date('Y-m-d H:i:s'),
-            'deleted_at' => $fake->date('Y-m-d H:i:s')
+            'deleted_at' => $fake->date('Y-m-d H:i:s'),
         ], $osTypeFields);
     }
 }

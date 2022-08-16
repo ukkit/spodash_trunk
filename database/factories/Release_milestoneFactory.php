@@ -6,7 +6,6 @@ use App\Models\Release_milestone;
 use Faker\Generator as Faker;
 
 $factory->define(Release_milestone::class, function (Faker $faker) {
-
     return [
         'release_numbers_id' => $faker->randomDigitNotNull,
         'release_start_date' => $faker->word,
@@ -45,6 +44,6 @@ $factory->define(Release_milestone::class, function (Faker $faker) {
         'released_date' => $faker->word,
         'created_at' => $faker->date('Y-m-d H:i:s'),
         'updated_at' => $faker->date('Y-m-d H:i:s'),
-        'deleted_at' => $faker->date('Y-m-d H:i:s')
+        'deleted_at' => $faker->date('Y-m-d H:i:s'),
     ];
 });

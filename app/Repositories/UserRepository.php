@@ -7,10 +7,9 @@ use InfyOm\Generator\Common\BaseRepository;
 
 /**
  * Class UserRepository
- * @package App\Repositories
+ *
  * @version July 29, 2019, 2:32 am UTC
-*/
-
+ */
 class UserRepository extends BaseRepository
 {
     /**
@@ -21,7 +20,7 @@ class UserRepository extends BaseRepository
         'email',
         'email_verified_at',
         'password',
-        'remember_token'
+        'remember_token',
     ];
 
     /**

@@ -4,8 +4,6 @@ namespace App\Models;
 
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Instance_detail;
-use App\Models\Product_name;
 
 class Pai_build extends Model
 {
@@ -14,18 +12,16 @@ class Pai_build extends Model
     public $table = 'pai_builds';
 
     const CREATED_AT = 'created_at';
+
     const UPDATED_AT = 'updated_at';
 
-
     protected $dates = ['deleted_at'];
-
-
 
     public $fillable = [
         'pai_version',
         'pai_build',
         'pv_id',
-        'is_release_build'
+        'is_release_build',
     ];
 
     /**
@@ -38,7 +34,7 @@ class Pai_build extends Model
         'pai_version' => 'string',
         'pai_build' => 'integer',
         'pv_id' => 'string',
-        'is_release_build' => 'string'
+        'is_release_build' => 'string',
     ];
 
     /**
@@ -50,7 +46,7 @@ class Pai_build extends Model
         'pai_version' => 'required',
         'pai_build' => 'required',
         'pv_id' => 'required',
-        'is_release_build' => 'required'
+        'is_release_build' => 'required',
     ];
 
     public function actionHistories()
@@ -66,12 +62,14 @@ class Pai_build extends Model
     public function instance_list_by_pvid($pvid)
     {
         $value = Instance_detail::where('pai_pv_id', $pvid)->whereNull('deleted_at')->get();
+
         return $value;
     }
 
     public function instance_list_by_pai_pvid($pvid)
     {
         $value = Instance_detail::where('pai_pv_id', $pvid)->whereNull('deleted_at')->get();
+
         return $value;
     }
 
@@ -79,5 +77,4 @@ class Pai_build extends Model
     {
         return Product_name::where('id', $id)->first();
     }
-
 }

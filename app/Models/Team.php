@@ -29,15 +29,14 @@ class Team extends Model
     public $table = 'teams';
 
     const CREATED_AT = 'created_at';
-    const UPDATED_AT = 'updated_at';
 
+    const UPDATED_AT = 'updated_at';
 
     protected $dates = ['deleted_at'];
 
-
     public $fillable = [
         'team_name',
-        'team_email'
+        'team_email',
     ];
 
     /**
@@ -48,7 +47,7 @@ class Team extends Model
     protected $casts = [
         'id' => 'integer',
         'team_name' => 'string',
-        'team_email' => 'string'
+        'team_email' => 'string',
     ];
 
     /**
@@ -57,9 +56,7 @@ class Team extends Model
      * @var array
      */
     public static $rules = [
-        #'id' => 'required',
-        'team_name' => 'required'
+        //'id' => 'required',
+        'team_name' => 'required',
     ];
-
-
 }

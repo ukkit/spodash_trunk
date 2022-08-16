@@ -5,16 +5,19 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class ServerStarted extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $instance;
+
     public $username;
+
     public $instance_id;
+
     public $at_time;
+
     public $subject;
 
     /**

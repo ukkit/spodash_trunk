@@ -2,13 +2,11 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-
 use DB;
-use Log;
-use Carbon\Carbon;
+use Illuminate\Console\Command;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
+use Log;
 
 class getDBSize extends Command
 {
@@ -45,22 +43,22 @@ class getDBSize extends Command
     {
         $dbid = $this->argument('id');
         $jarfile = public_path('jar/GetDBInformation.jar');
-        Log::debug("set jar file path to" .$jarfile);
+        Log::debug('set jar file path to'.$jarfile);
         $pass_counter = 1;
         $fail_counter = 1;
         $record_count = 1;
 
-        if ( $dbid == "all") {
-            Log::debug("Fetching database records for all active database details");
-            $db_records = DB::table('database_details')->where('db_is_active',"Y")->whereNull('deleted_at')->get();
+        if ($dbid == 'all') {
+            Log::debug('Fetching database records for all active database details');
+            $db_records = DB::table('database_details')->where('db_is_active', 'Y')->whereNull('deleted_at')->get();
             $record_count = count($db_records);
-            Log::debug("Record count ".$record_count);
+            Log::debug('Record count '.$record_count);
         } else {
-            Log::debug("Fetching database record for database details id ".$dbid);
-            $db_records = DB::table('database_details')->where('id',$dbid)->where('db_is_active',"Y")->whereNull('deleted_at')->get();
+            Log::debug('Fetching database record for database details id '.$dbid);
+            $db_records = DB::table('database_details')->where('id', $dbid)->where('db_is_active', 'Y')->whereNull('deleted_at')->get();
         }
 
-        Log::debug("Starting foreach loop");
+        Log::debug('Starting foreach loop');
         foreach ($db_records as $dbr) {
             $run_jar = true; //this will be false if jar is not be run
             $jar_variables = null;
@@ -69,79 +67,79 @@ class getDBSize extends Command
             $dbt = DB::table('database_types')->where('id', $dbr->database_types_id)->value('db_short_name');
             $first_two = substr($dbt, 0, 2);
 
-            if ($first_two == "MS") {
-                $db_type = "MSSQL";
+            if ($first_two == 'MS') {
+                $db_type = 'MSSQL';
                 $dba_user = $dbr->db_user;
                 $dba_pass = $dbr->db_pass;
-                $non_dba_user = "Null";
-            } elseif ($first_two == "OR") {
-                $db_type = "ORA";
-                $dba_record = DB::table('dba_details')->where('server_details_id', $dbr->server_details_id)->where('db_sid',$dbr->db_sid)->first();
+                $non_dba_user = 'Null';
+            } elseif ($first_two == 'OR') {
+                $db_type = 'ORA';
+                $dba_record = DB::table('dba_details')->where('server_details_id', $dbr->server_details_id)->where('db_sid', $dbr->db_sid)->first();
                 try {
                     $dba_user = $dba_record->dba_user;
                 } catch (\Throwable $th) {
                     $dba_user = null;
-                    Log::error("DBA_USER not found for Database Details ID ".$dbr->id);
+                    Log::error('DBA_USER not found for Database Details ID '.$dbr->id);
                 }
                 try {
                     $encrypted = $dba_record->dba_password;
                 } catch (\Throwable $th) {
                     $encrypted = null;
-                    Log::error("DBA_PASSWORD not found for Database Details ID ".$dbr->id);
+                    Log::error('DBA_PASSWORD not found for Database Details ID '.$dbr->id);
                 }
                 try {
                     $dba_pass = Crypt::decryptString($encrypted);
                 } catch (DecryptException $e) {
                     $dba_pass = null;
-                    Log::error("Unable to decrypt password for DBD ID ".$dbr->id);
+                    Log::error('Unable to decrypt password for DBD ID '.$dbr->id);
                 }
                 try {
                     $non_dba_user = $dbr->db_user;
                 } catch (\Throwable $th) {
-                    $non_dba_user = Null;
+                    $non_dba_user = null;
                 }
             } else {
-                $db_type = Null;
-                $run_jar = False;
-                Log::alert("Marking run_jar as false because db_type is incorrect for ID ".$dbr->id);
+                $db_type = null;
+                $run_jar = false;
+                Log::alert('Marking run_jar as false because db_type is incorrect for ID '.$dbr->id);
             }
 
             if ((is_null($dba_user)) || (is_null($dba_pass))) {
                 // Log::error("dba_user, dba_pass or non_dba_user does not exists for ID ".$dbr->id);
                 //
-                $run_jar = False;
-                Log::alert("Marking run_jar as false because dba_user/dba_password is blank for ID ".$dbr->id);
-                $jar_variables = "FAILED FOR ".$dbr->id;
+                $run_jar = false;
+                Log::alert('Marking run_jar as false because dba_user/dba_password is blank for ID '.$dbr->id);
+                $jar_variables = 'FAILED FOR '.$dbr->id;
             }
 
             // echo " -----> ".$run_jar."\n";
             // Below will execute only if run_jar is true
-            if($run_jar) {
-                $jar_variables = $dbr->id." ".$db_type." ".$server_ip . " " .$dba_user . " ".$dba_pass." " .$dbr->db_sid ." " .$dbr->db_port ." " . $non_dba_user;
+            if ($run_jar) {
+                $jar_variables = $dbr->id.' '.$db_type.' '.$server_ip.' '.$dba_user.' '.$dba_pass.' '.$dbr->db_sid.' '.$dbr->db_port.' '.$non_dba_user;
 
                 // echo $jar_variables."\n";
 
-                $jar_command = "java -jar ".$jarfile." ".$jar_variables;
-                echo $jar_command ."\n";
+                $jar_command = 'java -jar '.$jarfile.' '.$jar_variables;
+                echo $jar_command."\n";
 
                 DB::table('database_details')->where('id', $dbr->id)->update(['data_gather_in_progress' => 'Y']);
 
                 try {
                     // echo " inside try \n";
-                    $retval = exec('java -jar '.$jarfile. ' '.$jar_variables);
+                    $retval = exec('java -jar '.$jarfile.' '.$jar_variables);
                     // dd($retval);
-                    if ($retval == "Success") {
-                        echo "Success (".$pass_counter." / ".$record_count.")\n";
+                    if ($retval == 'Success') {
+                        echo 'Success ('.$pass_counter.' / '.$record_count.")\n";
                         $pass_counter++;
-                        Log::info($pass_counter."/".$record_count."} DB size details added for Database Details ID ".$dbr->id);
+                        Log::info($pass_counter.'/'.$record_count.'} DB size details added for Database Details ID '.$dbr->id);
                     } else {
                         // echo $dbr->id." Failed \n";
-                        echo  $dbr->id." Failed (".$pass_counter." / ".$record_count.")\n";
+                        echo  $dbr->id.' Failed ('.$pass_counter.' / '.$record_count.")\n";
                         $fail_counter++;
-                        Log::error($fail_counter."/".$record_count."} Unable to get database size for Database Details ID ".$dbr->id);
+                        Log::error($fail_counter.'/'.$record_count.'} Unable to get database size for Database Details ID '.$dbr->id);
                     }
                 } catch (\Throwable $th) {
-                    Log::error("Unable to get database size for DBD_ID ". $dbr->id .", Error returned ".$th);
+                    Log::error('Unable to get database size for DBD_ID '.$dbr->id.', Error returned '.$th);
                 }
 
                 DB::table('database_details')->where('id', $dbr->id)->update(['data_gather_in_progress' => 'N']);
@@ -155,7 +153,7 @@ class getDBSize extends Command
                 }
             }
         }
-        Log::debug("Foreach loop Ended");
-        Log::info($pass_counter." records added to database and ".$fail_counter." failed");
+        Log::debug('Foreach loop Ended');
+        Log::info($pass_counter.' records added to database and '.$fail_counter.' failed');
     }
 }

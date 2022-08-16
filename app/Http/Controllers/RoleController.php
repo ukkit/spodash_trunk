@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Role;
-use App\Models\Permission;
-use Illuminate\Http\Request;
 use App\Authorizable;
+use App\Models\Permission;
+use App\Models\Role;
+use Illuminate\Http\Request;
 
 class RoleController extends Controller
 {
@@ -44,7 +44,7 @@ class RoleController extends Controller
     {
         $this->validate($request, ['name' => 'required|unique:roles']);
 
-        if( Role::create($request->only('name')) ) {
+        if (Role::create($request->only('name'))) {
             flash('Role Added');
         }
 
@@ -82,18 +82,19 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if($role = Role::findOrFail($id)) {
+        if ($role = Role::findOrFail($id)) {
             // admin role has everything
-            if($role->name === 'superadmin') {
+            if ($role->name === 'superadmin') {
                 $role->syncPermissions(Permission::all());
+
                 return redirect()->route('roles.index');
             }
 
             $permissions = $request->get('permissions', []);
             $role->syncPermissions($permissions);
-            flash( $role->name . ' permissions has been updated.');
+            flash($role->name.' permissions has been updated.');
         } else {
-            flash()->error( 'Role with id '. $id .' note found.');
+            flash()->error('Role with id '.$id.' note found.');
         }
 
         return redirect()->route('roles.index');

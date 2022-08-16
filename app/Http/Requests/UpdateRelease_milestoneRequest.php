@@ -2,12 +2,11 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Models\Release_milestone;
+use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRelease_milestoneRequest extends FormRequest
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -63,7 +62,7 @@ class UpdateRelease_milestoneRequest extends FormRequest
             'pre_release_3_date' => 'nullable|date|after_or_equal:pre_release_2_date|before:release_end_date',
             'has_pre_release_4' => 'nullable|string|max:1',
             'pre_release_4_date' => 'nullable|date|after_or_equal:pre_release_3_date|before:release_end_date',
-            'released_date' => 'nullable|date|after_or_equal:release_end_date|before_or_equal:today'
+            'released_date' => 'nullable|date|after_or_equal:release_end_date|before_or_equal:today',
         ];
 
         return $rules;

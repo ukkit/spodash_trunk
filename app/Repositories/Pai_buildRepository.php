@@ -7,10 +7,9 @@ use InfyOm\Generator\Common\BaseRepository;
 
 /**
  * Class Pai_buildRepository
- * @package App\Repositories
+ *
  * @version March 2, 2022, 6:55 pm IST
-*/
-
+ */
 class Pai_buildRepository extends BaseRepository
 {
     /**
@@ -20,7 +19,7 @@ class Pai_buildRepository extends BaseRepository
         'pai_version',
         'pai_build',
         'pv_id',
-        'is_release_build'
+        'is_release_build',
     ];
 
     /**

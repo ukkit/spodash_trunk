@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AddIsHttpsToIntellicusDetailstable extends Migration
 {
@@ -17,7 +17,6 @@ class AddIsHttpsToIntellicusDetailstable extends Migration
             $table->char('is_https', 1)->default('N')->after('intellicus_memory');
             $table->string('jdk_type')->after('is_https')->nullable();
             $table->string('jdk_version')->after('jdk_type')->nullable();
-
         });
     }
 

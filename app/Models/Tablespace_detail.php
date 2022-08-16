@@ -12,12 +12,10 @@ class Tablespace_detail extends Model
     public $table = 'tablespace_details';
 
     const CREATED_AT = 'created_at';
+
     const UPDATED_AT = 'updated_at';
 
-
     protected $dates = ['deleted_at'];
-
-
 
     public $fillable = [
         'database_details_id',
@@ -25,7 +23,7 @@ class Tablespace_detail extends Model
         'tablespace_name',
         'used_space',
         'free_space',
-        'total_space'
+        'total_space',
     ];
 
     /**
@@ -40,7 +38,7 @@ class Tablespace_detail extends Model
         'tablespace_name' => 'string',
         'used_space' => 'integer',
         'free_space' => 'integer',
-        'total_space' => 'integer'
+        'total_space' => 'integer',
     ];
 
     /**
@@ -53,7 +51,7 @@ class Tablespace_detail extends Model
         'tablespace_name' => 'required',
         'used_space' => 'required',
         'free_space' => 'required',
-        'total_space' => 'required'
+        'total_space' => 'required',
     ];
 
     /**

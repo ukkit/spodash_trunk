@@ -5,17 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateRelease_milestoneRequest;
 use App\Http\Requests\UpdateRelease_milestoneRequest;
 use App\Repositories\Release_milestoneRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
-use Flash;
-use Response;
 use DB;
-use Auth;
-
+use Flash;
+use Illuminate\Http\Request;
+use Response;
 
 class Release_milestoneController extends AppBaseController
 {
-    /** @var  Release_milestoneRepository */
+    /** @var Release_milestoneRepository */
     private $releaseMilestoneRepository;
 
     public function __construct(Release_milestoneRepository $releaseMilestoneRepo)
@@ -26,8 +23,7 @@ class Release_milestoneController extends AppBaseController
     /**
      * Display a listing of the Release_milestone.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return Response
      */
     public function index(Request $request)
@@ -45,10 +41,9 @@ class Release_milestoneController extends AppBaseController
      */
     public function create()
     {
-
         $rel_arr['release_number'] = DB::table('release_numbers')
                 ->whereNull('release_numbers.released_date')
-                ->whereNotIn('release_numbers.id', function($query) {
+                ->whereNotIn('release_numbers.id', function ($query) {
                     $query->select('release_milestones.release_numbers_id')->from('release_milestones');
                 })
                 ->get();
@@ -62,8 +57,7 @@ class Release_milestoneController extends AppBaseController
     /**
      * Store a newly created Release_milestone in storage.
      *
-     * @param CreateRelease_milestoneRequest $request
-     *
+     * @param  CreateRelease_milestoneRequest  $request
      * @return Response
      */
     public function store(CreateRelease_milestoneRequest $request)
@@ -80,8 +74,7 @@ class Release_milestoneController extends AppBaseController
     /**
      * Display the specified Release_milestone.
      *
-     * @param int $id
-     *
+     * @param  int  $id
      * @return Response
      */
     public function show($id)
@@ -100,8 +93,7 @@ class Release_milestoneController extends AppBaseController
     /**
      * Show the form for editing the specified Release_milestone.
      *
-     * @param int $id
-     *
+     * @param  int  $id
      * @return Response
      */
     public function edit($id)
@@ -110,7 +102,7 @@ class Release_milestoneController extends AppBaseController
 
         $rel_arr['release_number'] = DB::table('release_numbers')
                 ->whereNull('release_numbers.released_date')
-                ->whereNotIn('release_numbers.id', function($query) {
+                ->whereNotIn('release_numbers.id', function ($query) {
                     $query->select('release_milestones.release_numbers_id')->from('release_milestones');
                 })
                 ->get();
@@ -133,9 +125,8 @@ class Release_milestoneController extends AppBaseController
     /**
      * Update the specified Release_milestone in storage.
      *
-     * @param int $id
-     * @param UpdateRelease_milestoneRequest $request
-     *
+     * @param  int  $id
+     * @param  UpdateRelease_milestoneRequest  $request
      * @return Response
      */
     public function update($id, UpdateRelease_milestoneRequest $request)
@@ -158,11 +149,10 @@ class Release_milestoneController extends AppBaseController
     /**
      * Remove the specified Release_milestone from storage.
      *
-     * @param int $id
+     * @param  int  $id
+     * @return Response
      *
      * @throws \Exception
-     *
-     * @return Response
      */
     public function destroy($id)
     {
@@ -180,6 +170,4 @@ class Release_milestoneController extends AppBaseController
 
         return redirect(route('releaseMilestones.index'));
     }
-
-
 }

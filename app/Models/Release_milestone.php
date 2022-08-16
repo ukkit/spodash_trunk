@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+use DB;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use DB;
-use App\Models\Sprint_calendar;
-use Carbon\Carbon;
 
 class Release_milestone extends Model
 {
@@ -15,12 +14,10 @@ class Release_milestone extends Model
     public $table = 'release_milestones';
 
     const CREATED_AT = 'created_at';
+
     const UPDATED_AT = 'updated_at';
 
-
     protected $dates = ['deleted_at'];
-
-
 
     public $fillable = [
         'release_numbers_id',
@@ -83,7 +80,7 @@ class Release_milestone extends Model
         'owasp_scan_comments',
         'webinspect_scan_start_date',
         'webinspect_scan_end_date',
-        'webinspect_scan_comments'
+        'webinspect_scan_comments',
     ];
 
     /**
@@ -153,7 +150,7 @@ class Release_milestone extends Model
         'owasp_scan_comments' => 'string',
         'webinspect_scan_start_date' => 'date',
         'webinspect_scan_end_date' => 'date',
-        'webinspect_scan_comments' => 'string'
+        'webinspect_scan_comments' => 'string',
     ];
 
     /**
@@ -164,7 +161,7 @@ class Release_milestone extends Model
     public static $rules = [
         'release_numbers_id' => 'required',
         'release_start_date' => 'required',
-        'release_end_date' => 'required'
+        'release_end_date' => 'required',
     ];
 
     /**
@@ -184,7 +181,7 @@ class Release_milestone extends Model
     //     return ($value->pluck($return_what));
     // }
 
-    public static function product_name_by_id ($id, $what)
+    public static function product_name_by_id($id, $what)
     {
         $value = DB::table('release_numbers')->where('release_numbers.id', $id)
                 ->join('product_names', 'product_names.id', '=', 'release_numbers.product_names_id')
@@ -193,25 +190,26 @@ class Release_milestone extends Model
 
         // return $value;
         // dd($value);
-        return ($value->pluck($what));
+        return $value->pluck($what);
     }
-    public function release_number_by_id ($id)
+
+    public function release_number_by_id($id)
     {
         $value = DB::table('release_numbers')
-                ->where('id',$id)
+                ->where('id', $id)
                 ->first();
 
         return $value;
     }
 
-    public function sprint_by_date ($date)
+    public function sprint_by_date($date)
     {
         $list = Sprint_calendar::all();
         $date = (Carbon::parse($date)->toDateString());
         $start = null;
         $end = null;
 
-        foreach($list as $li) {
+        foreach ($list as $li) {
             $li_date = Carbon::parse($li->sprint_start_date)->toDateString();
             if ($li_date >= $date) {
                 return $li->sprint_number;
@@ -219,15 +217,14 @@ class Release_milestone extends Model
         }
     }
 
-    public function sprint_details_by_number ($sprint)
+    public function sprint_details_by_number($sprint)
     {
         $list = Sprint_calendar::all();
 
-        foreach($list as $li) {
+        foreach ($list as $li) {
             if ($li->sprint_number == $sprint) {
                 return $li;
             }
         }
     }
-
 }

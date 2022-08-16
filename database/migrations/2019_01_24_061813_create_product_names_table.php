@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateProductNamesTable extends Migration
 {
@@ -17,7 +17,7 @@ class CreateProductNamesTable extends Migration
             $table->increments('id');
             $table->string('product_short_name');
             $table->string('product_long_name');
-            $table->char('product_is_active',1)->default('Y');
+            $table->char('product_is_active', 1)->default('Y');
             $table->timestamps();
             $table->softDeletes();
         });

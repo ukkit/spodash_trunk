@@ -3,15 +3,14 @@
 namespace App\Repositories;
 
 use App\Models\Team;
-#use App\Repositories\BaseRepository;
+//use App\Repositories\BaseRepository;
 use InfyOm\Generator\Common\BaseRepository;
 
 /**
  * Class TeamRepository
- * @package App\Repositories
+ *
  * @version February 25, 2020, 12:50 pm IST
-*/
-
+ */
 class TeamRepository extends BaseRepository
 {
     /**
@@ -19,7 +18,7 @@ class TeamRepository extends BaseRepository
      */
     protected $fieldSearchable = [
         'team_name',
-        'team_email'
+        'team_email',
     ];
 
     /**

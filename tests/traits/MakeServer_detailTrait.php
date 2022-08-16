@@ -1,15 +1,15 @@
 <?php
 
-use Faker\Factory as Faker;
 use App\Models\Server_detail;
 use App\Repositories\Server_detailRepository;
+use Faker\Factory as Faker;
 
 trait MakeServer_detailTrait
 {
     /**
      * Create fake instance of Server_detail and save it in database
      *
-     * @param array $serverDetailFields
+     * @param  array  $serverDetailFields
      * @return Server_detail
      */
     public function makeServer_detail($serverDetailFields = [])
@@ -17,13 +17,14 @@ trait MakeServer_detailTrait
         /** @var Server_detailRepository $serverDetailRepo */
         $serverDetailRepo = App::make(Server_detailRepository::class);
         $theme = $this->fakeServer_detailData($serverDetailFields);
+
         return $serverDetailRepo->create($theme);
     }
 
     /**
      * Get fake instance of Server_detail
      *
-     * @param array $serverDetailFields
+     * @param  array  $serverDetailFields
      * @return Server_detail
      */
     public function fakeServer_detail($serverDetailFields = [])
@@ -34,7 +35,7 @@ trait MakeServer_detailTrait
     /**
      * Get fake data of Server_detail
      *
-     * @param array $postFields
+     * @param  array  $postFields
      * @return array
      */
     public function fakeServer_detailData($serverDetailFields = [])
@@ -58,7 +59,7 @@ trait MakeServer_detailTrait
             'server_note' => $fake->text,
             'created_at' => $fake->date('Y-m-d H:i:s'),
             'updated_at' => $fake->date('Y-m-d H:i:s'),
-            'deleted_at' => $fake->date('Y-m-d H:i:s')
+            'deleted_at' => $fake->date('Y-m-d H:i:s'),
         ], $serverDetailFields);
     }
 }

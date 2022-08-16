@@ -2,7 +2,7 @@
 
 $total_pass = 0;
 $total_fail = 0;
-$total_time = array();
+$total_time = [];
 
 function add_hours($array) {
     $returnVal = Null;

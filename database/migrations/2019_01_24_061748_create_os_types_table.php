@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateOsTypesTable extends Migration
 {
@@ -19,7 +19,7 @@ class CreateOsTypesTable extends Migration
             $table->string('os_short_name');
             $table->string('os_long_name');
             $table->string('os_patchset')->nullable();
-            $table->char('os_is_active',1)->default('Y');
+            $table->char('os_is_active', 1)->default('Y');
             $table->timestamps();
             $table->softDeletes();
         });

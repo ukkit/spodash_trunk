@@ -7,10 +7,9 @@ use InfyOm\Generator\Common\BaseRepository;
 
 /**
  * Class Dba_detailRepository
- * @package App\Repositories
+ *
  * @version May 27, 2021, 10:42 am IST
-*/
-
+ */
 class Dba_detailRepository extends BaseRepository
 {
     /**
@@ -20,7 +19,7 @@ class Dba_detailRepository extends BaseRepository
         'server_details_id',
         'dba_user',
         'dba_password',
-        'db_sid'
+        'db_sid',
     ];
 
     /**

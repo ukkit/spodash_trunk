@@ -2,12 +2,11 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Models\Tablespace_detail;
+use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateTablespace_detailRequest extends FormRequest
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -26,7 +25,7 @@ class UpdateTablespace_detailRequest extends FormRequest
     public function rules()
     {
         $rules = Tablespace_detail::$rules;
-        
+
         return $rules;
     }
 }

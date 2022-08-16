@@ -2,14 +2,12 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use DB;
 use Carbon\Carbon;
-use Log;
+use DB;
+use Illuminate\Console\Command;
 
 class archiveDBSizes extends Command
 {
-
     protected $signature = 'command:archiveDBSizes';
 
     protected $description = 'Command description';
@@ -54,26 +52,25 @@ class archiveDBSizes extends Command
         $oldData = DB::table($existingTable)->whereRaw('created_at < now() - interval 60 DAY')->get();
 
         foreach ($oldData as $old) {
-            $delete_record = True;
+            $delete_record = true;
             $todayz = Carbon::now();
 
             try {
-                DB::table($archiveTable)->insert(['id' => Null,'db_sizes_id' => $old->id, 'database_details_id' => $old->database_details_id, 'db_creation_date' => $old->db_creation_date, 'db_access_datetime' => $old->db_access_datetime, 'db_size' => $old->db_size, 'db_temp_size' => $old->db_temp_size, 'tablespace_name' => $old->tablespace_name, 'tablespace_used' => $old->tablespace_used, 'tablespace_free' => $old->tablespace_free, 'temp_tablespace_name' => $old->temp_tablespace_name, 'temp_tablespace_used' => $old->temp_tablespace_used, 'temp_tablespace_free' => $old->temp_tablespace_free,'created_at' => $old->created_at, 'updated_at' => $old->updated_at, 'deleted_at' => $old->deleted_at, 'record_moved_to_archive_at' => $todayz]);
+                DB::table($archiveTable)->insert(['id' => null, 'db_sizes_id' => $old->id, 'database_details_id' => $old->database_details_id, 'db_creation_date' => $old->db_creation_date, 'db_access_datetime' => $old->db_access_datetime, 'db_size' => $old->db_size, 'db_temp_size' => $old->db_temp_size, 'tablespace_name' => $old->tablespace_name, 'tablespace_used' => $old->tablespace_used, 'tablespace_free' => $old->tablespace_free, 'temp_tablespace_name' => $old->temp_tablespace_name, 'temp_tablespace_used' => $old->temp_tablespace_used, 'temp_tablespace_free' => $old->temp_tablespace_free, 'created_at' => $old->created_at, 'updated_at' => $old->updated_at, 'deleted_at' => $old->deleted_at, 'record_moved_to_archive_at' => $todayz]);
             } catch (\Exception $e) {
                 echo $e->getMessage();
-                $delete_record = False;
+                $delete_record = false;
             }
 
-            if($delete_record) {
+            if ($delete_record) {
                 try {
                     DB::table($existingTable)->where('id', $old->id)->delete();
-                    echo "Record archived for $existingTable ID " . $old->id . "\n";
+                    echo "Record archived for $existingTable ID ".$old->id."\n";
                 } catch (\Throwable $th) {
-                    echo "Unable to archive record for $existingTable ID " . $old->id . ", hence removing record from $archiveTable also.\n";
+                    echo "Unable to archive record for $existingTable ID ".$old->id.", hence removing record from $archiveTable also.\n";
                     DB::table($archiveTable)->where('product_versions_id', $old->id)->delete();
                 }
             }
         }
-
     }
 }

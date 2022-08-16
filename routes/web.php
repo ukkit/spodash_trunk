@@ -11,7 +11,6 @@
 |
 */
 
-
 Auth::routes();
 
 Route::get('/', function () {
@@ -23,7 +22,6 @@ Route::get('/home', function () {
 });
 
 Route::group(['middleware' => 'auth'], function () {
-
     Route::resource('serverDetails', 'Server_detailController')->except(['index', 'show']);
     Route::resource('instanceDetails', 'Instance_detailController')->except(['index', 'show']);
 
@@ -74,7 +72,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('mlBuilds', 'Ml_buildController');
 });
-
 
 Route::get('/logout', function () {
     Auth::logout();

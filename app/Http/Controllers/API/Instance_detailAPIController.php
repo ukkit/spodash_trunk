@@ -2,29 +2,26 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\CreateInstance_detailAPIRequest;
 use App\Http\Requests\API\UpdateInstance_detailAPIRequest;
+use App\Models\Database_detail;
 use App\Models\Instance_detail;
+use App\Models\Product_name;
+use App\Models\Product_version;
+use App\Models\Server_detail;
 use App\Repositories\Instance_detailRepository;
 use Illuminate\Http\Request;
-use App\Http\Controllers\AppBaseController;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
-use DB;
-use App\Models\Server_detail;
-use App\Models\Product_name;
-use App\Models\Product_version;
-use App\Models\Database_detail;
 
 /**
  * Class Instance_detailController
- * @package App\Http\Controllers\API
  */
-
 class Instance_detailAPIController extends AppBaseController
 {
-    /** @var  Instance_detailRepository */
+    /** @var Instance_detailRepository */
     private $instanceDetailRepository;
 
     public function __construct(Instance_detailRepository $instanceDetailRepo)
@@ -33,7 +30,7 @@ class Instance_detailAPIController extends AppBaseController
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return Response
      *
      * @SWG\Get(
@@ -70,13 +67,13 @@ class Instance_detailAPIController extends AppBaseController
         $this->instanceDetailRepository->pushCriteria(new LimitOffsetCriteria($request));
         // $instanceDetails = $this->instanceDetailRepository->all();
 
-        $instanceDetails = Instance_detail::select('id','server_details_id','product_names_id','product_versions_id','database_details_id','instance_name','instance_tomcat_port','instance_login','instance_pwd','instance_install_path','instance_shared_dir','jenkins_url')->get();
+        $instanceDetails = Instance_detail::select('id', 'server_details_id', 'product_names_id', 'product_versions_id', 'database_details_id', 'instance_name', 'instance_tomcat_port', 'instance_login', 'instance_pwd', 'instance_install_path', 'instance_shared_dir', 'jenkins_url')->get();
 
         return $this->sendResponse($instanceDetails->toArray(), 'Instance Details retrieved successfully');
     }
 
     /**
-     * @param CreateInstance_detailAPIRequest $request
+     * @param  CreateInstance_detailAPIRequest  $request
      * @return Response
      *
      * @SWG\Post(
@@ -139,10 +136,10 @@ class Instance_detailAPIController extends AppBaseController
             return $this->sendError('Shared directory path cannot be blank');
         }
 
-        $serverDetail = Server_detail::where('id',$input['server_details_id'])->value('server_name');
-        $productName = Product_name::where('id',$input['product_names_id'])->value('product_short_name');
-        $productVersion = Product_version::where('id',$input['product_versions_id'])->value('pv_id');
-        $dbDetail = Database_detail::where('id',$input['database_details_id'])->value('db_sid');
+        $serverDetail = Server_detail::where('id', $input['server_details_id'])->value('server_name');
+        $productName = Product_name::where('id', $input['product_names_id'])->value('product_short_name');
+        $productVersion = Product_version::where('id', $input['product_versions_id'])->value('pv_id');
+        $dbDetail = Database_detail::where('id', $input['database_details_id'])->value('db_sid');
 
         if (empty($serverDetail)) {
             return $this->sendError('Server Detail ID '.$input['server_details_id'].' does not exist');
@@ -160,7 +157,7 @@ class Instance_detailAPIController extends AppBaseController
     }
 
     /**
-     * @param int $id
+     * @param  int  $id
      * @return Response
      *
      * @SWG\Get(
@@ -205,15 +202,15 @@ class Instance_detailAPIController extends AppBaseController
         if (empty($instanceDetail)) {
             return $this->sendError('Instance Detail not found');
         } else {
-            $instanceDetail = Instance_detail::select('id','server_details_id','product_names_id','product_versions_id','database_details_id','instance_name','instance_tomcat_port','instance_login','instance_pwd','jenkins_url','instance_install_path','instance_shared_dir','instance_is_auto_upgraded','instance_is_active','instance_show_on_site','show_jenkins_build','instance_owner','instance_note')->where('id',$id)->get();
+            $instanceDetail = Instance_detail::select('id', 'server_details_id', 'product_names_id', 'product_versions_id', 'database_details_id', 'instance_name', 'instance_tomcat_port', 'instance_login', 'instance_pwd', 'jenkins_url', 'instance_install_path', 'instance_shared_dir', 'instance_is_auto_upgraded', 'instance_is_active', 'instance_show_on_site', 'show_jenkins_build', 'instance_owner', 'instance_note')->where('id', $id)->get();
         }
 
         return $this->sendResponse($instanceDetail->toArray(), 'Instance Detail retrieved successfully');
     }
 
     /**
-     * @param int $id
-     * @param UpdateInstance_detailAPIRequest $request
+     * @param  int  $id
+     * @param  UpdateInstance_detailAPIRequest  $request
      * @return Response
      *
      * @SWG\Put(
@@ -261,20 +258,19 @@ class Instance_detailAPIController extends AppBaseController
     {
         $input = $request->all();
 
-
         /** @var Instance_detail $instanceDetail */
         // $instanceDetail = $this->instanceDetailRepository->findWithoutFail($id);
-        $instanceDetail = Instance_detail::select('id','server_details_id','product_names_id','product_versions_id','database_details_id','instance_name','instance_tomcat_port','instance_login','instance_pwd','jenkins_url','instance_install_path','instance_shared_dir','instance_is_auto_upgraded','instance_is_active','instance_show_on_site','show_jenkins_build','instance_owner','instance_note')->where('id',$id)->get();
+        $instanceDetail = Instance_detail::select('id', 'server_details_id', 'product_names_id', 'product_versions_id', 'database_details_id', 'instance_name', 'instance_tomcat_port', 'instance_login', 'instance_pwd', 'jenkins_url', 'instance_install_path', 'instance_shared_dir', 'instance_is_auto_upgraded', 'instance_is_active', 'instance_show_on_site', 'show_jenkins_build', 'instance_owner', 'instance_note')->where('id', $id)->get();
 
         if (empty($instanceDetail)) {
             return $this->sendError('Instance Detail not found');
         }
 
         if (isset($input['server_details_id'])) {
-            if ((empty($input['server_details_id'])) || (is_null($input['server_details_id'])))  {
+            if ((empty($input['server_details_id'])) || (is_null($input['server_details_id']))) {
                 return $this->sendError('Server Details ID cannot be blank or null');
             } else {
-                $serverDetail = Server_detail::where('id',$input['server_details_id'])->value('server_name');
+                $serverDetail = Server_detail::where('id', $input['server_details_id'])->value('server_name');
                 if (empty($serverDetail)) {
                     return $this->sendError('Server Detail ID '.$input['server_details_id'].' does not exist');
                 }
@@ -285,7 +281,7 @@ class Instance_detailAPIController extends AppBaseController
             if (empty($input['product_names_id'])) {
                 return $this->sendError('Product Name ID cannot be blank');
             } else {
-                $productName = Product_name::where('id',$input['product_names_id'])->value('product_short_name');
+                $productName = Product_name::where('id', $input['product_names_id'])->value('product_short_name');
                 if (empty($productName)) {
                     return $this->sendError('Product Name ID '.$input['product_names_id'].' does not exist');
                 }
@@ -296,7 +292,7 @@ class Instance_detailAPIController extends AppBaseController
             if (empty($input['product_versions_id'])) {
                 return $this->sendError('Product Version ID cannot be blank');
             } else {
-                $productVersion = Product_version::where('id',$input['product_versions_id'])->value('pv_id');
+                $productVersion = Product_version::where('id', $input['product_versions_id'])->value('pv_id');
                 if (empty($productVersion)) {
                     return $this->sendError('Product Version ID '.$input['product_versions_id'].' does not exist');
                 }
@@ -307,7 +303,7 @@ class Instance_detailAPIController extends AppBaseController
             if (empty($input['database_details_id'])) {
                 return $this->sendError('Database Detail ID cannot be blank');
             } else {
-                $dbDetail = Database_detail::where('id',$input['database_details_id'])->value('db_sid');
+                $dbDetail = Database_detail::where('id', $input['database_details_id'])->value('db_sid');
                 if (empty($dbDetail)) {
                     return $this->sendError('Database Detail ID '.$input['database_details_id'].' does not exist');
                 }
@@ -320,7 +316,7 @@ class Instance_detailAPIController extends AppBaseController
     }
 
     /**
-     * @param int $id
+     * @param  int  $id
      * @return Response
      *
      * @SWG\Delete(
@@ -329,7 +325,6 @@ class Instance_detailAPIController extends AppBaseController
      */
     public function destroy($id)
     {
-
         return $this->sendError('Deletion not supported through API');
     }
 }

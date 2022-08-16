@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use DB;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use DB;
 
 class System_statistic extends Model
 {
@@ -14,7 +14,6 @@ class System_statistic extends Model
 
     // const CREATED_AT = 'created_at';
     // const UPDATED_AT = 'updated_at';
-
 
     // protected $dates = ['deleted_at'];
 
@@ -57,7 +56,7 @@ class System_statistic extends Model
     public function data_for_release($release)
     {
         $value = DB::table('action_stats')->where('spm_version', $release)->orWhere('pai_version', $release)->get();
+
         return $value;
     }
-
 }

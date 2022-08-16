@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AddDbBackupEnabledToInstanceDetails extends Migration
 {
@@ -14,7 +14,7 @@ class AddDbBackupEnabledToInstanceDetails extends Migration
     public function up()
     {
         Schema::table('instance_details', function (Blueprint $table) {
-            $table->char('db_backup_enabled',1)->after('instance_status')->default('N');
+            $table->char('db_backup_enabled', 1)->after('instance_status')->default('N');
         });
     }
 

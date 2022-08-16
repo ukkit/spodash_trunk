@@ -37,7 +37,6 @@ class Kernel extends ConsoleKernel
         $schedule->command('command:urlCheck')->weekdays()->everyFifteenMinutes();
         $schedule->command('command:stats1')->daily()->at('02:00');
         $schedule->command('command:command:archiveFI')->daily()->at('02:30');
-
     }
 
     /**

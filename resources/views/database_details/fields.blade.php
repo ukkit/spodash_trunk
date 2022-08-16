@@ -1,5 +1,5 @@
 <?php
-$repo_array = array("SPO","PAI","Intellicus");
+$repo_array = ["SPO","PAI","Intellicus"];
 ?>
     <div class="row">
         <!-- Server Name Field -->

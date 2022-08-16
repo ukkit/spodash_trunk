@@ -1,5 +1,5 @@
 <?php
-$java_type_array = array("Oracle JDK","Amazon Corretto");
+$java_type_array = ["Oracle JDK","Amazon Corretto"];
 // $java_type_array = array("Oracle JDK","Amazon Corretto","OpenJDK");
 ?>
 <div class="row">

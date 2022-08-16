@@ -2,25 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Authorizable;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\Permission;
+use App\Models\Role;
 use App\Repositories\UserRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
-use Flash;
-use Response;
 use App\User;
 use DB;
-use App\Models\Team;
-use App\Models\Role;
-use App\Models\Permission;
-use App\Authorizable;
+use Flash;
+use Illuminate\Http\Request;
+use Response;
 
 class UserController extends AppBaseController
 {
     use Authorizable;
 
-    /** @var  UserRepository */
+    /** @var UserRepository */
     private $userRepository;
 
     public function __construct(UserRepository $userRepo)
@@ -31,8 +29,7 @@ class UserController extends AppBaseController
     /**
      * Display a listing of the User.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return Response
      */
     public function index(Request $request)
@@ -56,8 +53,7 @@ class UserController extends AppBaseController
     /**
      * Store a newly created User in storage.
      *
-     * @param CreateUserRequest $request
-     *
+     * @param  CreateUserRequest  $request
      * @return Response
      */
     public function store(CreateUserRequest $request)
@@ -66,19 +62,17 @@ class UserController extends AppBaseController
             'name' => 'bail|required|min:2',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
-            'roles' => 'required|min:1'
+            'roles' => 'required|min:1',
         ]);
 
         // hash password
         $request->merge(['password' => bcrypt($request->get('password'))]);
 
         // Create the user
-        if ( $user = User::create($request->except('roles', 'permissions')) ) {
-
+        if ($user = User::create($request->except('roles', 'permissions'))) {
             $this->syncPermissions($request, $user);
 
             flash('User has been created.');
-
         } else {
             flash()->error('Unable to create user.');
         }
@@ -97,8 +91,7 @@ class UserController extends AppBaseController
     /**
      * Display the specified User.
      *
-     * @param int $id
-     *
+     * @param  int  $id
      * @return Response
      */
     public function show($id)
@@ -117,19 +110,19 @@ class UserController extends AppBaseController
     /**
      * Show the form for editing the specified User.
      *
-     * @param int $id
-     *
+     * @param  int  $id
      * @return Response
      */
     public function edit($id)
     {
         $user = User::find($id);
 
-        $roles = Role::where('name','<>','superadmin')->pluck('name', 'id');
+        $roles = Role::where('name', '<>', 'superadmin')->pluck('name', 'id');
         $permissions = Permission::all('name', 'id');
-        $tm_arr['teams_arr'] = DB::table('user_has_teams')->where('user_id',$id)->get();
-        $team_ALL_id=DB::table('teams')->where('team_name',"ALL")->pluck('id')->first();
+        $tm_arr['teams_arr'] = DB::table('user_has_teams')->where('user_id', $id)->get();
+        $team_ALL_id = DB::table('teams')->where('team_name', 'ALL')->pluck('id')->first();
         $team_list['teams'] = \App\Models\Team::all()->except($team_ALL_id);
+
         return view('users.edit', compact('user', 'roles', 'permissions'))
         ->with($tm_arr)
         ->with($team_list)
@@ -139,16 +132,15 @@ class UserController extends AppBaseController
     /**
      * Update the specified User in storage.
      *
-     * @param int $id
-     * @param UpdateUserRequest $request
-     *
+     * @param  int  $id
+     * @param  UpdateUserRequest  $request
      * @return Response
      */
     public function update($id, UpdateUserRequest $request)
     {
         $this->validate($request, [
             'name' => 'bail|required|min:2',
-            'roles' => 'required|min:1'
+            'roles' => 'required|min:1',
         ]);
 
         // Get the user
@@ -162,39 +154,30 @@ class UserController extends AppBaseController
 
         $user->save();
 
+        DB::table('user_has_teams')->where('user_id', $id)->delete();
+        //$teams_to_update=$request->get('teams');
+        $teams_to_update = $request->get('teamName');
 
-
-        DB::table('user_has_teams')->where('user_id',$id)->delete();
-        #$teams_to_update=$request->get('teams');
-        $teams_to_update=$request->get('teamName');
-
-        if (!empty($teams_to_update) > 0)
-        {
-
+        if (! empty($teams_to_update) > 0) {
             foreach ($teams_to_update as $tu) {
-
-             DB::table('user_has_teams')->insert(
-                ['user_id' => $id, 'team_id' => $tu]
+                DB::table('user_has_teams')->insert(
+                    ['user_id' => $id, 'team_id' => $tu]
                 );
-
-
             }
         }
 
         flash()->success('User has been updated.');
 
         return redirect()->route('users.index');
-
     }
 
     /**
      * Remove the specified User from storage.
      *
-     * @param int $id
+     * @param  int  $id
+     * @return Response
      *
      * @throws \Exception
-     *
-     * @return Response
      */
     public function destroy($id)
     {
@@ -223,7 +206,7 @@ class UserController extends AppBaseController
         $roles = Role::find($roles);
 
         // check for current role changes
-        if( ! $user->hasAllRoles( $roles ) ) {
+        if (! $user->hasAllRoles($roles)) {
             // reset all direct permissions for user
             $user->permissions()->sync([]);
         } else {
@@ -235,5 +218,4 @@ class UserController extends AppBaseController
 
         return $user;
     }
-
 }

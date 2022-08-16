@@ -1,15 +1,15 @@
 <?php
 
-use Faker\Factory as Faker;
 use App\Models\Database_detail;
 use App\Repositories\Database_detailRepository;
+use Faker\Factory as Faker;
 
 trait MakeDatabase_detailTrait
 {
     /**
      * Create fake instance of Database_detail and save it in database
      *
-     * @param array $databaseDetailFields
+     * @param  array  $databaseDetailFields
      * @return Database_detail
      */
     public function makeDatabase_detail($databaseDetailFields = [])
@@ -17,13 +17,14 @@ trait MakeDatabase_detailTrait
         /** @var Database_detailRepository $databaseDetailRepo */
         $databaseDetailRepo = App::make(Database_detailRepository::class);
         $theme = $this->fakeDatabase_detailData($databaseDetailFields);
+
         return $databaseDetailRepo->create($theme);
     }
 
     /**
      * Get fake instance of Database_detail
      *
-     * @param array $databaseDetailFields
+     * @param  array  $databaseDetailFields
      * @return Database_detail
      */
     public function fakeDatabase_detail($databaseDetailFields = [])
@@ -34,7 +35,7 @@ trait MakeDatabase_detailTrait
     /**
      * Get fake data of Database_detail
      *
-     * @param array $postFields
+     * @param  array  $postFields
      * @return array
      */
     public function fakeDatabase_detailData($databaseDetailFields = [])
@@ -53,7 +54,7 @@ trait MakeDatabase_detailTrait
             'is_dba' => $fake->word,
             'created_at' => $fake->date('Y-m-d H:i:s'),
             'updated_at' => $fake->date('Y-m-d H:i:s'),
-            'deleted_at' => $fake->date('Y-m-d H:i:s')
+            'deleted_at' => $fake->date('Y-m-d H:i:s'),
         ], $databaseDetailFields);
     }
 }

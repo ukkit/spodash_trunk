@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use App\Models\Server_detail;
 
 class ServerDetailsTableSeeder extends Seeder
 {
@@ -17,16 +16,16 @@ class ServerDetailsTableSeeder extends Seeder
                     ->whereNull('gen_sd_id')
                     ->get();
 
-        foreach($seed_arr as $sar) {
+        foreach ($seed_arr as $sar) {
 
             // $value = DB::table('server_details')->select('server_ip')->where('id', $sar->id)->get()->first();
 
-            $stripped_ip = str_replace(".","",$sar->server_ip);
+            $stripped_ip = str_replace('.', '', $sar->server_ip);
             $lower_servername = strtolower($sar->server_name);
-            $stripped_servername = str_replace("_","",$lower_servername);
-            $stripped_servername = str_replace("-","",$stripped_servername);
-            $stripped_servername = str_replace(".","",$stripped_servername);
-            $gen_sd_id = $stripped_servername."_".$stripped_ip;
+            $stripped_servername = str_replace('_', '', $lower_servername);
+            $stripped_servername = str_replace('-', '', $stripped_servername);
+            $stripped_servername = str_replace('.', '', $stripped_servername);
+            $gen_sd_id = $stripped_servername.'_'.$stripped_ip;
 
             DB::table('server_details')
                 ->where('id', $sar->id)

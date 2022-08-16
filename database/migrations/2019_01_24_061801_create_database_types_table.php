@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateDatabaseTypesTable extends Migration
 {
@@ -18,7 +18,7 @@ class CreateDatabaseTypesTable extends Migration
             $table->string('db_short_name');
             $table->string('db_long_name');
             $table->string('db_patchset')->nullable();
-            $table->char('db_is_active',1)->default('Y');
+            $table->char('db_is_active', 1)->default('Y');
             $table->timestamps();
             $table->softDeletes();
         });

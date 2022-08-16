@@ -2,24 +2,22 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\CreateProduct_versionAPIRequest;
 use App\Http\Requests\API\UpdateProduct_versionAPIRequest;
 use App\Models\Product_version;
 use App\Repositories\Product_versionRepository;
 use Illuminate\Http\Request;
-use App\Http\Controllers\AppBaseController;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
 /**
  * Class Product_versionController
- * @package App\Http\Controllers\API
  */
-
 class Product_versionAPIController extends AppBaseController
 {
-    /** @var  Product_versionRepository */
+    /** @var Product_versionRepository */
     private $productVersionRepository;
 
     public function __construct(Product_versionRepository $productVersionRepo)
@@ -28,7 +26,7 @@ class Product_versionAPIController extends AppBaseController
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return Response
      *
      * @SWG\Get(
@@ -64,14 +62,13 @@ class Product_versionAPIController extends AppBaseController
         $this->productVersionRepository->pushCriteria(new RequestCriteria($request));
         $this->productVersionRepository->pushCriteria(new LimitOffsetCriteria($request));
         // $productVersions = $this->productVersionRepository->all();
-        $productVersions = Product_version::select('id','product_ver_number','product_build_numer','pv_id')->get();
-
+        $productVersions = Product_version::select('id', 'product_ver_number', 'product_build_numer', 'pv_id')->get();
 
         return $this->sendResponse($productVersions->toArray(), 'Product Versions retrieved successfully');
     }
 
     /**
-     * @param CreateProduct_versionAPIRequest $request
+     * @param  CreateProduct_versionAPIRequest  $request
      * @return Response
      *
      * @SWG\Post(
@@ -119,8 +116,8 @@ class Product_versionAPIController extends AppBaseController
             return $this->sendError('2. Product Build number cannot be blank');
         }
 
-        $strip_pvn = preg_replace("/[^0-9]/","",$input['product_ver_number']);
-        $strip_pbn = preg_replace("/[^0-9]/","",$input['product_build_numer']);
+        $strip_pvn = preg_replace('/[^0-9]/', '', $input['product_ver_number']);
+        $strip_pbn = preg_replace('/[^0-9]/', '', $input['product_build_numer']);
         $pv_id = $strip_pvn.$strip_pbn;
 
         $input['pv_id'] = $pv_id;
@@ -131,7 +128,7 @@ class Product_versionAPIController extends AppBaseController
     }
 
     /**
-     * @param int $id
+     * @param  int  $id
      * @return Response
      *
      * @SWG\Get(
@@ -176,15 +173,15 @@ class Product_versionAPIController extends AppBaseController
         if (empty($productVersion)) {
             return $this->sendError('Product Version not found');
         } else {
-            $productVersion = Product_version::select('id','product_ver_number','product_build_numer','pv_id')->where('id',$id)->get();
+            $productVersion = Product_version::select('id', 'product_ver_number', 'product_build_numer', 'pv_id')->where('id', $id)->get();
         }
 
         return $this->sendResponse($productVersion->toArray(), 'Product Version retrieved successfully');
     }
 
     /**
-     * @param int $id
-     * @param UpdateProduct_versionAPIRequest $request
+     * @param  int  $id
+     * @param  UpdateProduct_versionAPIRequest  $request
      * @return Response
      *
      * @SWG\Put(
@@ -243,20 +240,20 @@ class Product_versionAPIController extends AppBaseController
             if (empty($input['product_ver_number'])) {
                 return $this->sendError('Product Version number cannot be blank');
             } else {
-                $strip_pvn = preg_replace("/[^0-9]/","",$input['product_ver_number']);
+                $strip_pvn = preg_replace('/[^0-9]/', '', $input['product_ver_number']);
             }
         } else {
-            $strip_pvn = preg_replace("/[^0-9]/","",$productVersion['product_ver_number']);
+            $strip_pvn = preg_replace('/[^0-9]/', '', $productVersion['product_ver_number']);
         }
 
         if (isset($input['product_build_numer'])) {
             if (empty($input['product_build_numer'])) {
                 return $this->sendError('Product Build number cannot be blank');
             } else {
-                $strip_pbn = preg_replace("/[^0-9]/","",$input['product_build_numer']);
+                $strip_pbn = preg_replace('/[^0-9]/', '', $input['product_build_numer']);
             }
         } else {
-            $strip_pbn = preg_replace("/[^0-9]/","",$productVersion['product_build_numer']);
+            $strip_pbn = preg_replace('/[^0-9]/', '', $productVersion['product_build_numer']);
         }
 
         // if (empty($productVersion['product_ver_number'])) {
@@ -276,7 +273,7 @@ class Product_versionAPIController extends AppBaseController
     }
 
     /**
-     * @param int $id
+     * @param  int  $id
      * @return Response
      *
      * @SWG\Delete(
@@ -296,6 +293,5 @@ class Product_versionAPIController extends AppBaseController
 
         // return $this->sendResponse($id, 'Product Version deleted successfully');
         return $this->sendError('Deletion not supported through API');
-
     }
 }

@@ -2,18 +2,15 @@
 
 namespace App\Console\Commands;
 
+use Carbon\Carbon;
 use Illuminate\Console\Command;
-use Illuminate\Support\Str;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Artisan;
 
 class newpvid extends Command
 {
-
     // this is one-time executing script to change logic of generating pv_id
     // refer to IT-5593 for details
 
@@ -29,7 +26,7 @@ class newpvid extends Command
     public function handle()
     {
         $scriptID = '6uDh9i4FqPjfSUQ5XP7Mifx0Qgn9L8CHotGla8j7NvV4XxjlH9OlezKccJarHIvc'; //NOT TO BE CHANGED
-        $doIT = True;
+        $doIT = true;
 
         function pvid_column($tablename, $unique)
         {
@@ -54,10 +51,11 @@ class newpvid extends Command
 
         function gen_pvid($release, $build)
         {
-            $strip_pvn = preg_replace("/[^0-9]/", "", $release);
-            $strip_pbn = preg_replace("/[^0-9]/", "", $build);
-            $pv_id = $strip_pvn . "_" . $strip_pbn;
-            return ($pv_id);
+            $strip_pvn = preg_replace('/[^0-9]/', '', $release);
+            $strip_pbn = preg_replace('/[^0-9]/', '', $build);
+            $pv_id = $strip_pvn.'_'.$strip_pbn;
+
+            return $pv_id;
         }
 
         function update_tables($tablename, $id, $old_pvid, $release, $build, $field)
@@ -70,7 +68,7 @@ class newpvid extends Command
             if ($inst) {
                 foreach ($inst as $in) {
                     DB::table('instance_details')->where('id', $in->id)->update([$field => $pvid]);
-                    echo "Changed $field for instance_details " . $in->id . "\n";
+                    echo "Changed $field for instance_details ".$in->id."\n";
                 }
             }
         }
@@ -95,7 +93,7 @@ class newpvid extends Command
                 Schema::table('product_versions', function (Blueprint $table) {
                     $table->dropUnique('product_versions_pv_id_unique');
                 });
-                pvid_column('product_versions', True);
+                pvid_column('product_versions', true);
                 $pvsql = DB::table('product_versions')->get();
                 foreach ($pvsql as $pvr) {
                     // echo $pvr->old_pvid." | ";
@@ -104,7 +102,7 @@ class newpvid extends Command
                 echo ".... completed product_versions \n";
 
                 echo "Starting with archive_product_versions \n";
-                pvid_column('archive_product_versions', False);
+                pvid_column('archive_product_versions', false);
                 $apvsql = DB::table('archive_product_versions')->get();
                 foreach ($apvsql as $apv) {
                     update_tables('archive_product_versions', $apv->id, $apv->old_pvid, $apv->product_ver_number, $apv->product_build_numer, 'pv_id');
@@ -114,15 +112,14 @@ class newpvid extends Command
             } catch (\Throwable $th) {
                 echo "SOMETHING WENT WRONG = product_versions \n";
                 echo $th;
-                $doIT = False;
+                $doIT = false;
             }
 
             // dd("Done");
             // pai_builds & archive_pai_builds
             try {
-
                 echo "Starting with pai_builds \n";
-                pvid_column('pai_builds', True);
+                pvid_column('pai_builds', true);
                 $pbsql = DB::table('pai_builds')->get();
                 foreach ($pbsql as $pvr) {
                     update_tables('pai_builds', $pvr->id, $pvr->old_pvid, $pvr->pai_version, $pvr->pai_build, 'pai_pv_id');
@@ -130,7 +127,7 @@ class newpvid extends Command
                 echo "............ completed pai_builds \n";
 
                 echo "Starting with archive_pai_builds \n";
-                pvid_column('archive_pai_builds', False);
+                pvid_column('archive_pai_builds', false);
                 $apbsql = DB::table('archive_pai_builds')->get();
                 foreach ($apbsql as $pvr) {
                     update_tables('archive_pai_builds', $pvr->id, $pvr->old_pvid, $pvr->pai_version, $pvr->pai_build, 'pai_pv_id');
@@ -139,17 +136,16 @@ class newpvid extends Command
             } catch (\Throwable $th) {
                 echo "SOMETHING WENT WRONG = pai_builds / archive_pai_builds \n";
                 echo $th;
-                $doIT = False;
+                $doIT = false;
             }
 
             // sf_builds & archive_sf_builds
             try {
-
                 echo "Starting with sf_builds \n";
                 Schema::table('sf_builds', function (Blueprint $table) {
                     $table->dropUnique('sf_builds_pv_id_unique');
                 });
-                pvid_column('sf_builds', True);
+                pvid_column('sf_builds', true);
 
                 $sfsql = DB::table('sf_builds')->get();
                 foreach ($sfsql as $pvr) {
@@ -158,7 +154,7 @@ class newpvid extends Command
                 echo ".... completed sf_builds \n";
 
                 echo "Starting with archive_sf_builds \n";
-                pvid_column('archive_sf_builds', True);
+                pvid_column('archive_sf_builds', true);
                 $asfsql = DB::table('archive_sf_builds')->get();
                 foreach ($asfsql as $pvr) {
                     update_tables('archive_sf_builds', $pvr->id, $pvr->old_pvid, $pvr->sf_pai_version, $pvr->sf_pai_build, 'sf_pv_id');
@@ -167,7 +163,7 @@ class newpvid extends Command
             } catch (\Throwable $th) {
                 echo "SOMETHING WENT WRONG = sf_builds \n";
                 echo $th;
-                $doIT = False;
+                $doIT = false;
             }
         }
         // echo $scriptID;

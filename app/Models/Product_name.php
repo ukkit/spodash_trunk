@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Product_name
- * @package App\Models
+ *
  * @version January 24, 2019, 8:20 am UTC
  *
  * @property \Illuminate\Database\Eloquent\Collection InstanceDetail
@@ -23,16 +23,15 @@ class Product_name extends Model
     public $table = 'product_names';
 
     const CREATED_AT = 'created_at';
+
     const UPDATED_AT = 'updated_at';
 
-
     protected $dates = ['deleted_at'];
-
 
     public $fillable = [
         'product_short_name',
         'product_long_name',
-        'product_is_active'
+        'product_is_active',
     ];
 
     /**
@@ -44,7 +43,7 @@ class Product_name extends Model
         'id' => 'integer',
         'product_short_name' => 'string',
         'product_long_name' => 'string',
-        'product_is_active' => 'string'
+        'product_is_active' => 'string',
     ];
 
     /**
@@ -66,6 +65,6 @@ class Product_name extends Model
 
     public function product_version()
     {
-        return $this->hasMany('App\Models\Product_version');
+        return $this->hasMany(\App\Models\Product_version::class);
     }
 }

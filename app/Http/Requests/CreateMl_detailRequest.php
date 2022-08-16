@@ -2,12 +2,11 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Models\Ml_detail;
+use Illuminate\Foundation\Http\FormRequest;
 
 class CreateMl_detailRequest extends FormRequest
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *
