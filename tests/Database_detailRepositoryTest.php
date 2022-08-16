@@ -13,7 +13,7 @@ class Database_detailRepositoryTest extends TestCase
      */
     protected $databaseDetailRepo;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->databaseDetailRepo = App::make(Database_detailRepository::class);

@@ -13,7 +13,7 @@ class Product_versionRepositoryTest extends TestCase
      */
     protected $productVersionRepo;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->productVersionRepo = App::make(Product_versionRepository::class);

@@ -13,7 +13,7 @@ class Instance_detailRepositoryTest extends TestCase
      */
     protected $instanceDetailRepo;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->instanceDetailRepo = App::make(Instance_detailRepository::class);

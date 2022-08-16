@@ -13,7 +13,7 @@ class Server_detailRepositoryTest extends TestCase
      */
     protected $serverDetailRepo;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->serverDetailRepo = App::make(Server_detailRepository::class);
